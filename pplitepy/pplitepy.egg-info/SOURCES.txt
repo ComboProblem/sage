@@ -1,0 +1,17 @@
+README.rst
+pyproject.toml
+setup.py
+pplite/__init__.py
+pplite/flint_wrap.h
+pplite/integer_conversions.cpp
+pplite/integer_conversions.pxd
+pplite/integer_conversions.pyx
+pplite/linear_algebra.cpp
+pplite/linear_algebra.pxd
+pplite/linear_algebra.pyx
+pplite/pplite_decl.pxd
+pplitepy.egg-info/PKG-INFO
+pplitepy.egg-info/SOURCES.txt
+pplitepy.egg-info/dependency_links.txt
+pplitepy.egg-info/requires.txt
+pplitepy.egg-info/top_level.txt
