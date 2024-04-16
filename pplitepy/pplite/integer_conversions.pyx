@@ -3,7 +3,35 @@
 
 # cimport cython
 
-# from gmpy2 cimport import_gmpy2, mpz, GMPy_MPZ_From_mpz, MPZ_Check
+# from gmpy2 cimport import_gmpy2, mpz, mpz_t, GMPy_MPZ_From_mpz, MPZ_Check
+
+# from libcpp.vector cimport vector as cppvector
+
+# import_gmpy2()
+
+# cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
+#     r""" Converts FLINT_Integer to python integer.
+    
+#     TESTS::
+
+#         >>> cdef fmpz_t x
+#         >>> fmpz_init(x)
+#         >>> fmpz_set_ui(x, 7)
+#         >>> cdef FLINT_Integer &w
+#         >>> w = new FLINT_Integer(x)
+#         >>> fmpz_clear(x)
+#         >>> z = FLINT_Integer_to_Python(w)
+#         >>> print(z)
+#         7
+    
+#     """
+#     cdef mpz_t new_int
+#     mpz_init(new_int)
+#     fmpz_get_mpz(new_int, integer.impl())
+#     y = GMPy_MPZ_From_mpz(new_int)
+#     mpz_clear(new_int)
+#     return y
+    
 
 
 

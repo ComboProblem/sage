@@ -5,5 +5,7 @@ UNKNOWN.egg-info/PKG-INFO
 UNKNOWN.egg-info/SOURCES.txt
 UNKNOWN.egg-info/dependency_links.txt
 UNKNOWN.egg-info/top_level.txt
+pplite/integer_conversions.cpp
+pplite/integer_conversions.pyx
 pplite/linear_algebra.cpp
 pplite/linear_algebra.pyx

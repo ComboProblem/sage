@@ -4,36 +4,42 @@
 cimport cython
 
 from gmpy2 cimport import_gmpy2, mpz, mpz_t, GMPy_MPZ_From_mpz, MPZ_Check
-# from flint cimport fmpz
 from libcpp.vector cimport vector as cppvector
+
 import_gmpy2()
 
-cdef class Flint_Int(object):
-    r"""
-    Wrapper for FLINT_Integer
+# helper functions for object conversion. 
+# It is assumed that the pplite enviroment is set up to use FLINT_integers.
+# TODO:  Write a proper conversion module to handle the Integer class in PPLite so this works regardless of setup.
+
+cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
+    r""" Converts FLINT_Integer to python integer.
     
-    Stuff
-    
+    TESTS::
+
+        >>> cdef fmpz_t x
+        >>> fmpz_init(x)
+        >>> fmpz_set_ui(x, 7)
+        >>> cdef FLINT_Integer &w
+        >>> w = new FLINT_Integer(x)
+        >>> fmpz_clear(x)
+        >>> z = FLINT_Integer_to_Python(w)
+        >>> print(z)
+        7
     """
-    def __cinit__(self, int z):
-        cdef fmpz_t fmpz_int
-        fmpz_init(fmpz_int)
-        fmpz_set_ui(fmpz_int, z)
-        self.thisptr = new FLINT_Integer(fmpz_int)
-        fmpz_clear(fmpz_int)
-    def __dealloc__(self):
-        del self.thisptr
-    def __repr__(self):
-        self.thisptr.print()
+    cdef mpz_t new_int
+    mpz_init(new_int)
+    fmpz_get_mpz(new_int, integer.impl())
+    y = GMPy_MPZ_From_mpz(new_int)
+    mpz_clear(new_int)
+    return y
 
-# cdef FLINT_Integer_to_python(FLINT_Integer integer):
-#     cdef mpz_t new_integer
-#     fmpz_get_mpz(new_integer, integer.impl())
-#     py_int = GMPy_MPZ_From_mpz(new_integer)
-#     mpz_clear(new_integer)
-#     return py_int
-
-
+cdef FLINT_Integer Python_int_to_FLINT_Integer(integer):
+    cdef fmpz_t x
+    fmpz_init(x)
+    if isinstance(integer, (int, str)):
+        fmpz_set_si(x, integer)
+    return FLINT_Integer(x)
 
 @cython.freelist(128)
 cdef class Variable(object):
@@ -328,16 +334,17 @@ cdef class Linear_Expression(object):
         if len(args) == 2:
             a = args[0]
             b = args[1]
-            # self.thisptr = new Linear_Expr()
-            # if isinstance(a, dict):
-            #     if a:
-            #         self.thisptr.set_space_dimension(1 + max(a))
-            #         for i, coeff in a.items():
-            #             self.thisptr.set_coefficient(Var(i), PPL_Coefficient_from_pyobject(coeff))
-            # else:
-            #     self.thisptr.set_space_dimension(len(a))
-            #     for i, coeff in enumerate(a):
-            #         self.thisptr.set_coefficient(PPL_Variable(i), PPL_Coefficient_from_pyobject(coeff))
+            self.thisptr = new Linear_Expr()
+            if isinstance(a, dict):
+                if a:
+                    self.thisptr.set_space_dim(1 + max(a))
+                    for i, coeff in a.items():
+                        self.thisptr.impl()[Variable(i).id()] = Python_int_to_FLINT_Integer(coeff)
+            else:
+                self.thisptr.set_space_dim(len(a))
+                for i, coeff in enumerate(a):
+                    self.thisptr.impl()[Variable(i).id()] =  Python_int_to_FLINT_Integer(coeff)
+            return 
             # self.thisptr.set_inhomogeneous_term(PPL_Coefficient_from_pyobject(b))
             # return
         if len(args) == 1:
@@ -350,7 +357,8 @@ cdef class Linear_Expression(object):
                 e = <Linear_Expression>arg
                 self.thisptr = new Linear_Expr(e.thisptr[0])
                 return
-            self.thisptr = new Linear_Expr()
+            #self.thisptr. 
+            #raise ValueError("Initalizing with one argument requires either a linear expression or a variable to be passed in.")
         elif len(args) == 0:
             self.thisptr = new Linear_Expr()
             return
@@ -401,25 +409,9 @@ cdef class Linear_Expression(object):
         2
         """
         return self.thisptr.space_dim()
-
-#     def get_coeffients_list(self):
-#         # Problem, how to get python to access the data contained in the class construction. These methods aren't written explicltily or done for me in friendly way.
-        
-#         # Goal. Convert Impl being a vecotr of integers to a list of integers in python or to a python object or be able to access particular elements of the vector Impl as python objects.
-        
-#         # Impl is an iterating object so I should be able to iterate over it. 
-        
-#         # Last time: Impl, standard vector. This is the place in the class decleartions where the data is stored. These are private members and can be access via the public method of the impl() method. Assuming that I have read this correctly.
-        
-#         # Impl is a vector (in the standard libary) of the type Integer. 
-#         # The type Integer might be defined defined in Integer_fwd.hh. I am unsure where this type is defined. 
-#         # The integer type is used to alais the integers used for computaions - either FLINT or GMP. 
-#         #
-        
-#         # So where does Integer come from?
-#         Other questions include:
-#         How to take in new data because in the constructor,   explicit Linear_Expr(dim_type dim) : row(dim)
-
+    
+    def set_space_dimension(self, dim_type dim):
+        self.thisptr.set_space_dim(dim)
         
     def coefficient(self, v):
         """
@@ -431,7 +423,7 @@ cdef class Linear_Expression(object):
 
         OUTPUT:
 
-        An Integer. 
+        An (Python) Integer. 
 
         Examples:
 
@@ -448,93 +440,140 @@ cdef class Linear_Expression(object):
             vv = <Variable> v
         else:
             vv = Variable(v)
-        #return FLINT_Integer_to_python(self.thisptr.impl()[vv.id()])
-#     def inhomogeneous_term(self):
-#         """
-#         Return the inhomogeneous term of the linear expression.
-
-#         OUTPUT:
-
-#         Integer.
-
-#         Examples:
-
-#         >>> from ppl import Linear_Expression
-#         >>> Linear_Expression(10).inhomogeneous_term()
-#         mpz(10)
-#         """
-#         return GMPy_MPZ_From_mpz(self.thisptr.inhomogeneous_term().get_mpz_t())
+        return FLINT_Integer_to_Python(self.thisptr.impl()[vv.id()])
     
-#     def __repr__(self):
-#         r"""
-#         Return a string representation of the linear expression.
+    def set_coefficient(self, i, v):
+        """
+        Set the ``i``-th coefficient to ``v``.
 
-#         OUTPUT:
+        INPUT:
 
-#         A string.
+        - ``i`` - variable or variable index
 
-#         Examples:
+        - ``v`` - integer
 
-#         >>> from ppl import Linear_Expression, Variable
-#         >>> x = Variable(0)
-#         >>> y = Variable(1)
-#         >>> x+1
-#         x0+1
-#         >>> x+1-x
-#         1
-#         >>> 2*x
-#         2*x0
-#         >>> x-x-1
-#         -1
-#         >>> x-x
-#         0
-#         """
-#         s = ''
-#         first = True
-#         for i in range(self.space_dimension()):
-#             x = Variable(i)
-#             coeff = self.coefficient(x)
-#             if coeff == 0:
-#                 continue
-#             if first and coeff == 1:
-#                 s += '%r' % x
-#                 first = False
-#             elif first and coeff == -1:
-#                 s += '-%r' % x
-#                 first = False
-#             elif first and coeff != 1:
-#                 s += '%d*%r' % (coeff, x)
-#                 first = False
-#             elif coeff == 1:
-#                 s += '+%r' % x
-#             elif coeff == -1:
-#                 s += '-%r' % x
-#             else:
-#                 s += '%+d*%r' % (coeff, x)
-#         inhomog = self.inhomogeneous_term()
-#         if inhomog != 0:
-#             if first:
-#                 s += '%d' % inhomog
-#                 first = False
-#             else:
-#                 s += '%+d' % inhomog
-#         if first:
-#             s = '0'
-#         return s
+        Examples:
 
+        >>> from ppl import Variable
+        >>> L = Variable(0) + 3 * Variable(1)
+        >>> L.set_coefficient(1, -5)
+        >>> L.set_coefficient(7, 3)
+        >>> L
+        x0-5*x1
+        """
+        cdef Variable ii
+        if type(i) is Variable:
+            ii = <Variable> i
+        else:
+            ii = Variable(i)
+        cdef FLINT_Integer vv 
+        vv = Python_int_to_FLINT_Integer(v)
+        self.thisptr.impl()[ii.id()] = vv
+    
+    def __repr__(self):
+        r"""
+        Return a string representation of the linear expression.
 
+        OUTPUT:
+
+        A string.
+
+        Examples:
+
+        >>> from ppl import Linear_Expression, Variable
+        >>> x = Variable(0)
+        >>> y = Variable(1)
+        >>> x+1
+        x0+1
+        >>> x+1-x
+        1
+        >>> 2*x
+        2*x0
+        >>> x-x-1
+        -1
+        >>> x-x
+        0
+        """
+        s = ''
+        first = True
+        for i in range(self.space_dimension()):
+            x = Variable(i)
+            coeff = self.coefficient(x)
+            if coeff == 0:
+                continue
+            if first and coeff == 1:
+                s += '%r' % x
+                first = False
+            elif first and coeff == -1:
+                s += '-%r' % x
+                first = False
+            elif first and coeff != 1:
+                s += '%d*%r' % (coeff, x)
+                first = False
+            elif coeff == 1:
+                s += '+%r' % x
+            elif coeff == -1:
+                s += '-%r' % x
+            else:
+                s += '%+d*%r' % (coeff, x)
+        if first:
+            s = '0'
+        return s
+
+    def swap_space_dimensions(self, v1, v2):
+        r"""
+        Swaps the coefficients of ``v1`` and ``v2``.
+
+        INPUT:
+
+        - ``v1``, ``v2`` - variables or indices of variables
+
+        Examples:
+
+        >>> import ppl
+        >>> L = ppl.Variable(1) - 3 * ppl.Variable(3)
+        >>> L.swap_space_dimensions(ppl.Variable(1), ppl.Variable(3))
+        >>> L
+        -3*x1+x3
+
+        >>> L = ppl.Variable(1) - 3 * ppl.Variable(3)
+        >>> L.swap_space_dimensions(1, 3)
+        >>> L
+        -3*x1+x3
+        """
+        cdef Variable vv1, vv2
+        if type(v1) is Variable:
+            vv1 = <Variable> v1
+        else:
+            vv1 = Variable(v1)
+        if type(v2) is Variable:
+            vv2 = <Variable> v2
+        else:
+            vv2 = Variable(v2)
+        self.thispter.swap_space_dims(vv1.id(), vv2.id())
+        # cdef dim_type var_1, var_2
+        # if type(v1) is Variable:
+        #     var_1 = v1.space_dim()
+        # else:
+        #     vv1 = new Var(v1)
+        #     var_1 = vv1.space_dim()
+        # if type(v2) is Variable:
+        #     var_2 = v2.space_dim()
+        # else:
+        #     vv2 = new Var(v2)
+        #     var_2 = vv2.space_dim()
+        # self.thisptr.swap_space_dims(var_1, var_2)
 
 def test_current_obj():
-    # cdef fmpz_t x
-    # fmpz_init(x)
-    # fmpz_set_ui(x, 7)
-    # w = FLINT_Integer(x)
-    # fmpz_clear(x)
-    # z = FLINT_Integer_to_python(w)
-    z = Flint_Int(7)
-    print(z)
-    # x = Variable(10)
-    # e = Linear_Expression(x)
-    # x_2 = Variable(2)
+    x = Variable(0)
+    e = Linear_Expression(x)
+    x_2 = Variable(2)
     # print(e.coefficient(x))
     # print(e.coefficient(x_2))
+    # cdef FLINT_Integer w
+    # w = Python_int_to_FLINT_Integer(2)
+    # print(FLINT_Integer_to_Python(w))
+    e.set_coefficient(x_2, 4)
+    print(e.coefficient(x_2))
+    e_2 = Linear_Expression([1, 2, 3, 4], 5)
+    print(e_2)

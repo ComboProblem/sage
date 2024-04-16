@@ -4,10 +4,10 @@
 {
     "distutils": {
         "depends": [
-            "/tmp/pip-build-env-supea8_f/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h"
+            "/tmp/pip-build-env-v94xb0im/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h"
         ],
         "include_dirs": [
-            "/tmp/pip-build-env-supea8_f/overlay/lib/python3.10/site-packages/gmpy2"
+            "/tmp/pip-build-env-v94xb0im/overlay/lib/python3.10/site-packages/gmpy2"
         ],
         "language": "c++",
         "libraries": [
