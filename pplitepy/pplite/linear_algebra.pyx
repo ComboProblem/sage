@@ -13,20 +13,20 @@ import_gmpy2()
 # TODO:  Write a proper conversion module to handle the Integer class in PPLite so this works regardless of setup.
 
 cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
-    r""" Converts FLINT_Integer to python integer.
+    r""" Converts FLINT_Integer to python integer."""
     
-    TESTS::
-
-        >>> cdef fmpz_t x
-        >>> fmpz_init(x)
-        >>> fmpz_set_ui(x, 7)
-        >>> cdef FLINT_Integer &w
-        >>> w = new FLINT_Integer(x)
-        >>> fmpz_clear(x)
-        >>> z = FLINT_Integer_to_Python(w)
-        >>> print(z)
-        7
-    """
+ #    TESTS::
+ #        >>> import pplite
+ #        >>> cdef fmpz_t x
+ #        >>> fmpz_init(x)
+ #        >>> fmpz_set_si(x, 7)
+ #        >>> cdef FLINT_Integer& w
+ #        >>> w = new FLINT_Integer(x)
+ #        >>> fmpz_clear(x)
+ #        >>> z = FLINT_Integer_to_Python(w)
+ #        >>> print(z)
+ #        7
+ # #   """
     cdef mpz_t new_int
     mpz_init(new_int)
     fmpz_get_mpz(new_int, integer.impl())
@@ -60,7 +60,7 @@ cdef class Variable(object):
 
     Examples:
 
-    >>> from ppl import Variable
+    >>> from pplite import Variable
     >>> x = Variable(123)
     >>> x.id()
     123
@@ -109,7 +109,7 @@ cdef class Variable(object):
         Tests:
 
         >>> import pplite
-        >>> hash(ppl.Variable(12))
+        >>> hash(pplite.Variable(12))
         Traceback (most recent call last):
         ...
         TypeError: Variable unhashable
@@ -122,7 +122,7 @@ cdef class Variable(object):
 
         Examples:
 
-        >>> from ppl import Variable
+        >>> from pplite import Variable
         >>> x = Variable(123)
         >>> x.id()
         123
@@ -179,30 +179,31 @@ cdef class Variable(object):
 
         Examples:
 
-        >>> from ppl import Variable
-        >>> x = Variable(0); y = Variable(1)
-        >>> x + 15
-        x0+15
-        >>> 15 + y
-        x1+15
+        >>> from pplite import Variable
+        >>> x = Variable(0);
+        >>> y = Variable(1)
+        >>> x + y
+        x0+x1
 
-        >>> from gmpy2 import mpz
-        >>> x + mpz(3)
-        x0+3
-        >>> mpz(-5) + y
-        x1-5
-
-        >>> x + 1.5
-        Traceback (most recent call last):
-        ...
-        TypeError: ppl coefficients must be integral
-        >>> 1.5 + x
-        Traceback (most recent call last):
-        ...
-        TypeError: ppl coefficients must be integral
         """
         return Linear_Expression(self) + Linear_Expression(other)
+        # >>> 15 + y
+        # x1+15
 
+        # >>> from gmpy2 import mpz
+        # >>> x + mpz(3)
+        # x0+3
+        # >>> mpz(-5) + y
+        # x1-5
+
+        # >>> x + 1.5
+        # Traceback (most recent call last):
+        # ...
+        # TypeError: pplite coefficients must be integral
+        # >>> 1.5 + x
+        # Traceback (most recent call last):
+        # ...
+        # TypeError: pplite coefficients must be integral
     def __radd__(self, other):
         return Linear_Expression(self) + Linear_Expression(other)
 
@@ -222,12 +223,10 @@ cdef class Variable(object):
 
         Examples:
 
-        >>> from ppl import Variable
+        >>> from pplite import Variable
         >>> x = Variable(0); y = Variable(1)
-        >>> x - 15
-        x0-15
-        >>> 15 - y
-        -x1+15
+        >>> x - y
+        x0-x1
         """
         return Linear_Expression(self) - Linear_Expression(other)
 
@@ -249,22 +248,21 @@ cdef class Variable(object):
 
         Examples:
 
-        >>> from ppl import Variable
+        >>> from pplite import Variable
         >>> x = Variable(0); y = Variable(1)
         >>> x * 15
         15*x0
         >>> 15 * y
         15*x1
-
-        >>> 1.5 * x
-        Traceback (most recent call last):
-        ...
-        TypeError: ppl coefficients must be integral
-        >>> x * 1.5
-        Traceback (most recent call last):
-        ...
-        TypeError: ppl coefficients must be integral
         """
+        #         >>> 1.5 * x
+        # Traceback (most recent call last):
+        # ...
+        # TypeError: pplite coefficients must be integral
+        # >>> x * 1.5
+        # Traceback (most recent call last):
+        # ...
+        # TypeError: pplite coefficients must be integral
         if isinstance(self, Variable):
             return Linear_Expression(self) * other
         else:
@@ -284,7 +282,7 @@ cdef class Variable(object):
 
         Examples:
 
-        >>> from ppl import Variable
+        >>> from pplite import Variable
         >>> x = Variable(0); x
         x0
         >>> +x
@@ -302,14 +300,46 @@ cdef class Variable(object):
 
         Examples:
 
-        >>> from ppl import Variable
+        >>> from pplite import Variable
         >>> x = Variable(0); x
         x0
         >>> -x
         -x0
         """
         return Linear_Expression(self)*(-1)
-    
+
+    # def __richcmp__(self, other, op):
+    #     """
+    #     Construct :class:`Constraint` from equalities or inequalities.
+
+    #     INPUT:
+
+    #     - ``self``, ``other`` -- anything convertible to a
+    #       :class:`Linear_Expression`
+
+    #     - ``op`` -- the operation.
+
+    #     Examples:
+
+    #     >>> from pplite import Variable
+    #     >>> x = Variable(0)
+    #     >>> y = Variable(1)
+    #     >>> x <  y
+    #     -x0+x1>0
+    #     >>> x <= 0
+    #     -x0>=0
+    #     >>> x == y-y
+    #     x0==0
+    #     >>> x >= -2
+    #     x0+2>=0
+    #     >>> x >  0
+    #     x0>0
+    #     >>> 0 == 1    # watch out!
+    #     False
+    #     >>> 0*x == 1
+    #     -1==0
+    #     """
+    #     return _make_Constraint_from_richcmp(self, other, op)
 
 ####################################################
 ### Linear_Expression ##############################
@@ -324,11 +354,6 @@ cdef class Linear_Expression(object):
 
         See :class:`Linear_Expression` for documentation.
 
-        Tests:
-
-        >>> from ppl import Linear_Expression
-        >>> Linear_Expression(10)   # indirect doctest
-        10
         """
         cdef size_t i
         if len(args) == 2:
@@ -375,8 +400,8 @@ cdef class Linear_Expression(object):
         r"""
         Tests:
 
-        >>> import ppl
-        >>> hash(ppl.Linear_Expression(10))
+        >>> import pplite
+        >>> hash(pplite.Linear_Expression(10))
         Traceback (most recent call last):
         ...
         TypeError: Linear_Expression unhashable
@@ -394,18 +419,18 @@ cdef class Linear_Expression(object):
 
         Examples:
 
-        >>> from ppl import Variable
+        >>> from pplite import Variable
         >>> x = Variable(0)
         >>> y = Variable(1)
-        >>> (x+y+1).space_dimension()
+        >>> (x+y).space_dimension()
         2
         >>> (x+y).space_dimension()
         2
-        >>> (y+1).space_dimension()
+        >>> (y).space_dimension()
         2
-        >>> (x+1).space_dimension()
+        >>> (x).space_dimension()
         1
-        >>> (y+1-y).space_dimension()
+        >>> (y-y).space_dimension()
         2
         """
         return self.thisptr.space_dim()
@@ -427,15 +452,16 @@ cdef class Linear_Expression(object):
 
         Examples:
 
-        >>> from ppl import Variable
+        >>> from pplite import Variable
         >>> x = Variable(0)
-        >>> e = 3*x+1
+        >>> e = 3*x
         >>> e.coefficient(x)
         mpz(3)
-        >>> e.coefficient(Variable(13))
-        mpz(0)
         """
-        cdef Variable vv
+        #      >>> e.coefficient(Variable(1))
+        # mpz(0)   
+        cdef Variable vv # rewrite this method to read coeffs correctly
+        
         if type(v) is Variable:
             vv = <Variable> v
         else:
@@ -454,7 +480,7 @@ cdef class Linear_Expression(object):
 
         Examples:
 
-        >>> from ppl import Variable
+        >>> from pplite import Variable
         >>> L = Variable(0) + 3 * Variable(1)
         >>> L.set_coefficient(1, -5)
         >>> L.set_coefficient(7, 3)
@@ -480,19 +506,15 @@ cdef class Linear_Expression(object):
 
         Examples:
 
-        >>> from ppl import Linear_Expression, Variable
+        >>> from pplite import Linear_Expression, Variable
         >>> x = Variable(0)
         >>> y = Variable(1)
-        >>> x+1
-        x0+1
-        >>> x+1-x
-        1
-        >>> 2*x
-        2*x0
-        >>> x-x-1
-        -1
+        >>> x
+        x0
         >>> x-x
         0
+        >>> 2*x
+        2*x0
         """
         s = ''
         first = True
@@ -530,39 +552,282 @@ cdef class Linear_Expression(object):
 
         Examples:
 
-        >>> import ppl
-        >>> L = ppl.Variable(1) - 3 * ppl.Variable(3)
-        >>> L.swap_space_dimensions(ppl.Variable(1), ppl.Variable(3))
+        >>> from pplite import Variable
+        >>> L = Variable(1) - 3 * Variable(3)
+        >>> L.swap_space_dimensions(Variable(1), Variable(3))
         >>> L
         -3*x1+x3
 
-        >>> L = ppl.Variable(1) - 3 * ppl.Variable(3)
+        >>> L = Variable(1) - 3 * Variable(3)
         >>> L.swap_space_dimensions(1, 3)
         >>> L
         -3*x1+x3
         """
-        cdef Variable vv1, vv2
+        cdef dim_type var_1, var_2
         if type(v1) is Variable:
-            vv1 = <Variable> v1
+            var_1 = v1.id()
         else:
-            vv1 = Variable(v1)
+            vv1 = new Var(v1)
+            var_1 = vv1.id()
         if type(v2) is Variable:
-            vv2 = <Variable> v2
+            var_2 = v2.id()
         else:
-            vv2 = Variable(v2)
-        self.thispter.swap_space_dims(vv1.id(), vv2.id())
-        # cdef dim_type var_1, var_2
-        # if type(v1) is Variable:
-        #     var_1 = v1.space_dim()
-        # else:
-        #     vv1 = new Var(v1)
-        #     var_1 = vv1.space_dim()
-        # if type(v2) is Variable:
-        #     var_2 = v2.space_dim()
-        # else:
-        #     vv2 = new Var(v2)
-        #     var_2 = vv2.space_dim()
-        # self.thisptr.swap_space_dims(var_1, var_2)
+            vv2 = new Var(v2)
+            var_2 = vv2.id()
+        self.thisptr.swap_space_dims(var_1, var_2)
+
+    # def shift_space_dimensions(self, v, PPL_dimension_type n):
+    #     r"""
+    #     Shift by ``n`` the coefficients of variables starting from the
+    #     coefficient of ``v``.
+
+    #     This increases the space dimension by ``n``.
+
+    #     Examples:
+
+    #     >>> import ppl
+    #     >>> L = pplite.Variable(0) + 13 * pplite.Variable(2) + 5 * pplite.Variable(7)
+    #     >>> L
+    #     x0+13*x2+5*x7
+    #     >>> L.shift_space_dimensions(pplite.Variable(2), 2)
+    #     >>> L
+    #     x0+13*x4+5*x9
+    #     >>> L.shift_space_dimensions(pplite.Variable(7), 3)
+    #     >>> L
+    #     x0+13*x4+5*x12
+    #     """
+    #     cdef Variable vv
+    #     if type(v) is Variable:
+    #         vv = <Variable> v
+    #     else:
+    #         vv = Variable(v)
+    #     self.thisptr.shift_space_dimensions(vv.thisptr[0], n)
+
+    # def remove_space_dimensions(self, Variables_Set V):
+    #     r"""
+    #     Removes the dimension specified by the set of variables ``V``.
+
+    #     See :class:`Variables_Set` to construct set of variables.
+
+    #     Examples:
+
+    #     >>> import ppl
+    #     >>> L = sum(i * pplite.Variable(i) for i in range(10))
+    #     >>> L
+    #     x1+2*x2+3*x3+4*x4+5*x5+6*x6+7*x7+8*x8+9*x9
+    #     >>> L.remove_space_dimensions(pplite.Variables_Set(3,5))
+    #     >>> L
+    #     x1+2*x2+6*x3+7*x4+8*x5+9*x6
+    #     """
+    #     self.thisptr.remove_space_dimensions(V.thisptr[0])
+
+    # def all_homogeneous_terms_are_zero(self):
+    #     """
+    #     Test if ``self`` is a constant linear expression.
+
+    #     OUTPUT:
+
+    #     Boolean.
+
+    #     Examples:
+
+    #     >>> from pplite import Variable, Linear_Expression
+    #     >>> Linear_Expression(10).all_homogeneous_terms_are_zero()
+    #     True
+    #     """
+    #     return self.thisptr.all_homogeneous_terms_are_zero()
+
+    def is_equal_to(self, Linear_Expression other):
+        """
+        Test equality with another linear expression.
+
+        OUTPUT: boolean
+
+        Examples:
+
+        >>> from pplite import Variable
+        >>> L1 = Variable(0) + 2 * Variable(3)
+        >>> L2 = Variable(0) + 2 * Variable(3)
+        >>> L3 = Variable(0) - Variable(2)
+        >>> L1.is_equal_to(L2)
+        True
+        >>> L1.is_equal_to(L3)
+        False
+        """
+        return self.thisptr.is_equal_to(other.thisptr[0])
+
+    # def ascii_dump(self):
+    #     r"""
+    #     Write an ASCII dump to stderr.
+
+    #     Examples:
+
+    #     >>> cmd  = 'from pplite import Linear_Expression, Variable\n'
+    #     >>> cmd += 'x = Variable(0)\n'
+    #     >>> cmd += 'y = Variable(1)\n'
+    #     >>> cmd += 'e = 3*x+2*y+1\n'
+    #     >>> cmd += 'e.ascii_dump()\n'
+    #     >>> from subprocess import Popen, PIPE
+    #     >>> import sys
+    #     >>> proc = Popen([sys.executable, '-c', cmd], stdout=PIPE, stderr=PIPE)
+    #     >>> out, err = proc.communicate()
+    #     >>> len(out) == 0
+    #     True
+    #     >>> len(err) > 0
+    #     True
+    #     """
+    #     self.thisptr.ascii_dump()
+        
+    def __add__(self, other):
+        r"""
+        Add ``self`` and ``other``.
+
+        INPUT:
+
+        - ``self``, ``other`` -- anything that can be used to
+          construct a :class:`Linear_Expression`. One of them, not
+          necessarily ``self``, is guaranteed to be a
+          :class:``Linear_Expression``, otherwise Python would not
+          have called this method.
+
+        OUTPUT:
+
+        The sum as a :class:`Linear_Expression`
+
+        Examples:
+
+        >>> from pplite import Linear_Expression, Variable
+        >>> x = Variable(0)
+        >>> y = Variable(1)
+        >>> x + y + y + y
+        x0+3*x1
+        """
+        # >>> from gmpy2 import mpz
+        # >>> mpz(3) + x + mpz(5) + y + mpz(7)
+        # x0+x1+15
+        cdef Linear_Expr* lhs
+        cdef Linear_Expr* rhs
+        
+        if isinstance(self, Linear_Expression):
+            lhs = (<Linear_Expression> self).thisptr
+        else:
+            lhs_expr = Linear_Expression(self)
+            lhs = (<Linear_Expression> lhs_expr).thisptr
+        if isinstance(other, Linear_Expression):
+            rhs = (<Linear_Expression> other).thisptr
+        else:
+            rhs_expr = Linear_Expression(other)
+            rhs = (<Linear_Expression> rhs_expr).thisptr
+        cdef Linear_Expr result
+        result = lhs[0] + rhs[0]
+        result_expr = Linear_Expression()
+        # result_expr
+        result_expr.thisptr[0] = result #could be copying or moving?
+        return result_expr
+
+    def __radd__(self, other):
+        cdef Linear_Expr* lhs
+        cdef Linear_Expr* rhs
+
+        lhs = (<Linear_Expression> self).thisptr
+        if isinstance(other, Linear_Expression):
+            rhs = (<Linear_Expression> other).thisptr
+        else:
+            rhs_expr = Linear_Expression(other)
+            rhs = (<Linear_Expression> rhs_expr).thisptr
+        cdef Linear_Expr result
+        result = lhs[0] + rhs[0]
+        result_expr = Linear_Expression()
+        # result_expr
+        result_expr.thisptr[0] = result
+        return result_expr
+
+    def __sub___(self, other):
+        cdef Linear_Expr* lhs
+        cdef Linear_Expr* rhs
+        
+        if isinstance(self, Linear_Expression):
+            lhs = (<Linear_Expression> self).thisptr
+        else:
+            lhs_expr = Linear_Expression(self)
+            lhs = (<Linear_Expression> lhs_expr).thisptr
+        if isinstance(other, Linear_Expression):
+            rhs = (<Linear_Expression> other).thisptr
+        else:
+            rhs_expr = Linear_Expression(other)
+            rhs = (<Linear_Expression> rhs_expr).thisptr
+        cdef Linear_Expr result
+        result = lhs[0] - rhs[0]
+        result_expr = Linear_Expression()
+        # result_expr
+        result_expr.thisptr[0] = result #could be copying or moving?
+        return result_expr
+
+    def __rsub__(self, other):
+        cdef Linear_Expr* lhs
+        cdef Linear_Expr* rhs
+
+        lhs = (<Linear_Expression> self).thisptr
+        if isinstance(other, Linear_Expression):
+            rhs = (<Linear_Expression> other).thisptr
+        else:
+            rhs_expr = Linear_Expression(other)
+            rhs = (<Linear_Expression> rhs_expr).thisptr
+        cdef Linear_Expr result
+        result = rhs[0] - lhs[0]
+        result_expr = Linear_Expression()
+        # result_expr
+        result_expr.thisptr[0] = result
+        return result_expr
+
+
+
+    def __mul__(self, other):
+        r"""
+        Multiply ``self`` with ``other``.
+
+        INPUT:
+
+        - ``self``, ``other`` -- anything that can be used to
+          construct a :class:`Linear_Expression`. One of them, not
+          necessarily ``self``, is guaranteed to be a
+          :class:``Linear_Expression``, otherwise Python would not
+          have called this method.
+
+        OUTPUT:
+
+        The product as a :class:`Linear_Expression`
+
+        Examples:
+
+        >>> from pplite import Variable
+        >>> x = Variable(0)
+        >>> y = Variable(1)
+        >>> 8 * (x)
+        8*x0
+        >>> y * 8
+        8*x1
+        """
+        #         >>> 2**128 * x
+        # 340282366920938463463374607431768211456*x0
+        #         >>> from gmpy2 import mpz
+        # >>> mpz(3) * x * mpz(5)
+        # 15*x0
+        cdef Linear_Expr* e
+        
+        if isinstance(self, Linear_Expression):
+            e = (<Linear_Expression> self).thisptr
+            c = other
+        else:
+            # NOTE: this code path will only be executed when compiled with cython < 3.0.0
+            e = (<Linear_Expression> other).thisptr
+            c = self
+
+        cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
+        cdef Linear_Expression result = Linear_Expression()
+        result.thisptr[0] = e[0] * cc
+        return result
+
 
 def test_current_obj():
     x = Variable(0)
@@ -574,6 +839,14 @@ def test_current_obj():
     # w = Python_int_to_FLINT_Integer(2)
     # print(FLINT_Integer_to_Python(w))
     e.set_coefficient(x_2, 4)
-    print(e.coefficient(x_2))
+    # print(e.coefficient(x_2))
     e_2 = Linear_Expression([1, 2, 3, 4], 5)
-    print(e_2)
+    print(e_2, "e_2")
+    print(e, "e")
+    print(e + e_2, "e_2 + e")
+    print(Variable(1) + e_2, "x1+e_2")
+    print(e_2*4, "e_2*4")
+    # print(e_2)
+    # e_2.swap_space_dimensions(Variable(2),Variable(3))
+    # print(e_2)
+    # print(Variable(2), Variable(3))

@@ -35,8 +35,8 @@ cdef extern from "flint/fmpz.h":
     void fmpz_set_si(fmpz_t f, slong g)
     void fmpz_clear(fmpz_t f)
     int fmpz_print(const fmpz_t x)
-
-cdef extern from "pplite/FLINT_Integer.hh" namespace "pplite":
+cdef extern from "pplite/pplite.hh" namespace "pplite":
+# cdef extern from "pplite/FLINT_Integer.hh" namespace "pplite":
     cdef cppclass FLINT_Integer
     cdef cppclass FLINT_Integer:
         FLINT_Integer()
@@ -54,19 +54,22 @@ cdef extern from "pplite/FLINT_Integer.hh" namespace "pplite":
 #         GMP_Integer(signed int si)
 #         GMP_Integer(const mpz_t z)
 
-cdef extern from "pplite/globals.hh" namespace "pplite":
+
+
+# cdef extern from "pplite/globals.hh" namespace "pplite":
     ctypedef size_t dim_type
 
-cdef extern from "pplite/Var.hh" namespace "pplite":
+# cdef extern from "pplite/Var.hh" namespace "pplite":
     cdef cppclass Var
     cdef cppclass Var:
+#       Var()
         Var(dim_type i)
         dim_type id()
         dim_type space_dim()
     ctypedef struct Vars_Set
 
     
-cdef extern from "pplite/Linear_Expr.hh" namespace "pplite":
+# cdef extern from "pplite/Linear_Expr.hh" namespace "pplite":
     ctypedef cppvector[FLINT_Integer] Impl
     cdef cppclass Linear_Expr
     cdef cppclass Linear_Expr:
@@ -75,6 +78,9 @@ cdef extern from "pplite/Linear_Expr.hh" namespace "pplite":
         Linear_Expr(dim_type dim)
         Linear_Expr(Linear_Expr &e)
         Linear_Expr(const Linear_Expr &e, dim_type dim)
+        Linear_Expr operator+(Linear_Expr &e)
+        Linear_Expr operator-(Linear_Expr &e)
+        Linear_Expr operator*(FLINT_Integer &c)
         dim_type id()  #methods? #linear_expr.hh lines 39-112
         dim_type space_dim()
         void set_space_dim(dim_type dim)
@@ -82,5 +88,6 @@ cdef extern from "pplite/Linear_Expr.hh" namespace "pplite":
         void shift_space_dims(dim_type start, dim_type n)
         void shift_space_dims(Var start, dim_type n)
         Impl impl()
+        cppbool is_equal_to(Linear_Expr& y)
 
     
