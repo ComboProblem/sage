@@ -2,6 +2,9 @@ README.rst
 pyproject.toml
 setup.py
 pplite/__init__.py
+pplite/constraint.cpp
+pplite/constraint.pxd
+pplite/constraint.pyx
 pplite/flint_wrap.h
 pplite/integer_conversions.cpp
 pplite/integer_conversions.pxd

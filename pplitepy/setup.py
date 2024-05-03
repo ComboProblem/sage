@@ -77,8 +77,8 @@ class TestCommand(Command):
             shutil.rmtree(tempdir_path)
 
 extensions = [
-    Extension('pplite.linear_algebra', sources=['pplite/linear_algebra.pyx', 'pplite/integer_conversions.pyx'])
-    #Extension('ppl.linear_algebra', sources=['ppl/linear_algebra.pyx', 'ppl/ppl_shim.cc']),
+    Extension('pplite.linear_algebra', sources=['pplite/linear_algebra.pyx']),
+    Extension('pplite.constraint', sources=['pplite/constraint.pyx'])
     ]
 #finish writing setup at some point
 setup(

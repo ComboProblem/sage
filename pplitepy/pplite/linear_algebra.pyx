@@ -5,6 +5,7 @@ cimport cython
 
 from gmpy2 cimport import_gmpy2, mpz, mpz_t, GMPy_MPZ_From_mpz, MPZ_Check
 from libcpp.vector cimport vector as cppvector
+from .constraint cimport _make_Constraint_from_richcmp
 
 import_gmpy2()
 
@@ -308,38 +309,40 @@ cdef class Variable(object):
         """
         return Linear_Expression(self)*(-1)
 
-    # def __richcmp__(self, other, op):
-    #     """
-    #     Construct :class:`Constraint` from equalities or inequalities.
+    def __richcmp__(self, other, op):
+        """
+        Construct :class:`Constraint` from equalities or inequalities.
 
-    #     INPUT:
+        INPUT:
 
-    #     - ``self``, ``other`` -- anything convertible to a
-    #       :class:`Linear_Expression`
+        - ``self``, ``other`` -- anything convertible to a
+          :class:`Linear_Expression`
 
-    #     - ``op`` -- the operation.
+        - ``op`` -- the operation.
 
-    #     Examples:
+        Examples:
 
-    #     >>> from pplite import Variable
-    #     >>> x = Variable(0)
-    #     >>> y = Variable(1)
-    #     >>> x <  y
-    #     -x0+x1>0
-    #     >>> x <= 0
-    #     -x0>=0
-    #     >>> x == y-y
-    #     x0==0
-    #     >>> x >= -2
-    #     x0+2>=0
-    #     >>> x >  0
-    #     x0>0
-    #     >>> 0 == 1    # watch out!
-    #     False
-    #     >>> 0*x == 1
-    #     -1==0
-    #     """
-    #     return _make_Constraint_from_richcmp(self, other, op)
+        """
+
+        
+        # >>> from pplite import Variable
+        # >>> x = Variable(0)
+        # >>> y = Variable(1)
+        # >>> x <  y
+        # -x0+x1>0
+        # >>> x <= 0
+        # -x0>=0
+        # >>> x == y-y
+        # x0==0
+        # >>> x >= -2
+        # x0+2>=0
+        # >>> x >  0
+        # x0>0
+        # >>> 0 == 1    # watch out!
+        # False
+        # >>> 0*x == 1
+        # -1==0
+        return _make_Constraint_from_richcmp(self, other, op)
 
 ####################################################
 ### Linear_Expression ##############################
@@ -576,32 +579,32 @@ cdef class Linear_Expression(object):
             var_2 = vv2.id()
         self.thisptr.swap_space_dims(var_1, var_2)
 
-    # def shift_space_dimensions(self, v, PPL_dimension_type n):
-    #     r"""
-    #     Shift by ``n`` the coefficients of variables starting from the
-    #     coefficient of ``v``.
+    def shift_space_dimensions(self, v, dim_type n):
+        r"""
+        Shift by ``n`` the coefficients of variables starting from the
+        coefficient of ``v``.
 
-    #     This increases the space dimension by ``n``.
+        This increases the space dimension by ``n``.
 
-    #     Examples:
+        Examples:
 
-    #     >>> import ppl
-    #     >>> L = pplite.Variable(0) + 13 * pplite.Variable(2) + 5 * pplite.Variable(7)
-    #     >>> L
-    #     x0+13*x2+5*x7
-    #     >>> L.shift_space_dimensions(pplite.Variable(2), 2)
-    #     >>> L
-    #     x0+13*x4+5*x9
-    #     >>> L.shift_space_dimensions(pplite.Variable(7), 3)
-    #     >>> L
-    #     x0+13*x4+5*x12
-    #     """
-    #     cdef Variable vv
-    #     if type(v) is Variable:
-    #         vv = <Variable> v
-    #     else:
-    #         vv = Variable(v)
-    #     self.thisptr.shift_space_dimensions(vv.thisptr[0], n)
+        >>> from pplite import Variable
+        >>> L = Variable(0) + 13 * Variable(2) + 5 * Variable(7)
+        >>> L
+        x0+13*x2+5*x7
+        >>> L.shift_space_dimensions(Variable(2), 2)
+        >>> L
+        x0+13*x4+5*x9
+        >>> L.shift_space_dimensions(Variable(7), 3)
+        >>> L
+        x0+13*x4+5*x12
+        """
+        cdef Variable vv
+        if type(v) is Variable:
+            vv = <Variable> v
+        else:
+            vv = Variable(v)
+        self.thisptr.shift_space_dims(vv.thisptr[0], n)
 
     # def remove_space_dimensions(self, Variables_Set V):
     #     r"""
@@ -611,31 +614,32 @@ cdef class Linear_Expression(object):
 
     #     Examples:
 
-    #     >>> import ppl
-    #     >>> L = sum(i * pplite.Variable(i) for i in range(10))
+    #     >>> from pplite import Variable
+    #     >>> L = sum(i * Variable(i) for i in range(10))
     #     >>> L
     #     x1+2*x2+3*x3+4*x4+5*x5+6*x6+7*x7+8*x8+9*x9
-    #     >>> L.remove_space_dimensions(pplite.Variables_Set(3,5))
+    #     >>> L.remove_space_dimensions(Variables_Set(3,5))
     #     >>> L
     #     x1+2*x2+6*x3+7*x4+8*x5+9*x6
     #     """
     #     self.thisptr.remove_space_dimensions(V.thisptr[0])
 
-    # def all_homogeneous_terms_are_zero(self):
-    #     """
-    #     Test if ``self`` is a constant linear expression.
+    def all_homogeneous_terms_are_zero(self):
+        """
+        Test if ``self`` is a constant linear expression.
 
-    #     OUTPUT:
+        OUTPUT:
 
-    #     Boolean.
+        Boolean.
 
-    #     Examples:
+        Examples:
 
-    #     >>> from pplite import Variable, Linear_Expression
-    #     >>> Linear_Expression(10).all_homogeneous_terms_are_zero()
-    #     True
-    #     """
-    #     return self.thisptr.all_homogeneous_terms_are_zero()
+        >>> from pplite import Variable, Linear_Expression
+        >>> x = Variable(1)
+        >>> (x-x).all_homogeneous_terms_are_zero()
+        True
+        """
+        return self.thisptr.is_zero()
 
     def is_equal_to(self, Linear_Expression other):
         """
@@ -828,25 +832,24 @@ cdef class Linear_Expression(object):
         result.thisptr[0] = e[0] * cc
         return result
 
+    def __richcmp__(self, other, op):
+        """
+        Construct :class:`Constraint`s
 
-def test_current_obj():
-    x = Variable(0)
-    e = Linear_Expression(x)
-    x_2 = Variable(2)
-    # print(e.coefficient(x))
-    # print(e.coefficient(x_2))
-    # cdef FLINT_Integer w
-    # w = Python_int_to_FLINT_Integer(2)
-    # print(FLINT_Integer_to_Python(w))
-    e.set_coefficient(x_2, 4)
-    # print(e.coefficient(x_2))
-    e_2 = Linear_Expression([1, 2, 3, 4], 5)
-    print(e_2, "e_2")
-    print(e, "e")
-    print(e + e_2, "e_2 + e")
-    print(Variable(1) + e_2, "x1+e_2")
-    print(e_2*4, "e_2*4")
-    # print(e_2)
-    # e_2.swap_space_dimensions(Variable(2),Variable(3))
-    # print(e_2)
-    # print(Variable(2), Variable(3))
+        Examples:
+
+        >>> from ppl import Variable
+        >>> x = Variable(0)
+        >>> y = Variable(1)
+        >>> x+1 <  y-2
+        -x0+x1-3>0
+        >>> x+1 <= y-2
+        -x0+x1-3>=0
+        >>> x+1 == y-2
+        x0-x1+3==0
+        >>> x+1 >= y-2
+        x0-x1+3>=0
+        >>> x+1 >  y-2
+        x0-x1+3>0
+        """
+        return _make_Constraint_from_richcmp(self, other, op)

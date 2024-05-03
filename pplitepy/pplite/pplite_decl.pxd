@@ -69,7 +69,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     ctypedef struct Vars_Set
 
     
-# cdef extern from "pplite/Linear_Expr.hh" namespace "pplite":
+#Linear_Expr (really linear forms)
     ctypedef cppvector[FLINT_Integer] Impl
     cdef cppclass Linear_Expr
     cdef cppclass Linear_Expr:
@@ -81,13 +81,39 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Linear_Expr operator+(Linear_Expr &e)
         Linear_Expr operator-(Linear_Expr &e)
         Linear_Expr operator*(FLINT_Integer &c)
+        Con operator >(Linear_Expr &e)
+        Con operator <(Linear_Expr &e)
+        Con operator <=(Linear_Expr &e)
+        Con operator >=(Linear_Expr &e)
+        Con operator ==(Linear_Expr &e)       
         dim_type id()  #methods? #linear_expr.hh lines 39-112
         dim_type space_dim()
         void set_space_dim(dim_type dim)
         void swap_space_dims(dim_type i, dim_type j)
         void shift_space_dims(dim_type start, dim_type n)
         void shift_space_dims(Var start, dim_type n)
+        # void remove_space_dims(Iter first, Iter last)
         Impl impl()
         cppbool is_equal_to(Linear_Expr& y)
+        cppbool is_zero()
 
-    
+#Con and constraints
+    cdef cppclass Con
+    cdef cppclass Con:
+        Con()
+        Con(Con &c)
+        # Con(Linear_Exper expr, FLINT_Integer inhomo, Type type)
+        # gotta add all varsations of this
+        Con operator=(Con &c)
+        # Con operator<(Linear_Expr e1, Linear_Expr e2)
+        # Con operator<(Var e1, Var e2)
+        # Con operator>(Linear_Expr e1, Linear_Expr e2)
+        # Con operator>(Var e1, Var e2)
+        # Con operator<=(Linear_Expr e1, Linear_Expr e2)
+        # Con operator<=(Var e1, Var e2)
+        # Con operator>=(Linear_Expr e1, Linear_Expr e2)
+        # Con operator>=(Var e1, Var e2)
+        # Con operator==(Linear_Expr e1, Linear_Expr e2)
+        # Con operator==(Var e1, Var e2)
+        # Con operator!=(Linear_Expr e1, Linear_Expr e2)
+        # Con operator!=(Var e1, Var e2)  
