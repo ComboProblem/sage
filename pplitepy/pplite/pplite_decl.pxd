@@ -67,9 +67,8 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         dim_type id()
         dim_type space_dim()
     ctypedef struct Vars_Set
-
     
-#Linear_Expr (really linear forms)
+# cdef extern from "pplite/Linear_Expr.hh" namespace "pplite":
     ctypedef cppvector[FLINT_Integer] Impl
     cdef cppclass Linear_Expr
     cdef cppclass Linear_Expr:
@@ -97,7 +96,24 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         cppbool is_equal_to(Linear_Expr& y)
         cppbool is_zero()
 
-#Con and constraints
+# cdef extern from "pplite/Affine_Expr.hh" namespace "pplite":
+    cdef cppclass Affine_Expr
+    cdef cppclass Affine_Expr:
+        Affine_Expr()
+        Affine_Expr(FLINT_Integer i)
+        Affine_Expr(Linear_Expr e, FLINT_Integer i)
+        Affine_Expr(Affine_Expr &e)
+        dim_type space_dim()
+        void set_space_dim(dim_type dim)
+        cppbool is_zero()
+        Affine_Expr operator+(Affine_Expr &a)
+        Affine_Expr operator+(Linear_Expr &e, FLINT_Integer &n)
+        Affine_Expr operator+(Affine_Expr &e, FLINT_Integer &n)
+        Affine_Expr operator+(Linear_Expr &e, Var &v)
+        Affine_Expr operator-(Affine_Expr &a)
+        Affine_Expr operator*(FLINT_Integer &c)
+
+# cdef extern from "pplite/Con.hh" namespace "pplite":
     cdef cppclass Con
     cdef cppclass Con:
         Con()
@@ -117,3 +133,4 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         # Con operator==(Var e1, Var e2)
         # Con operator!=(Linear_Expr e1, Linear_Expr e2)
         # Con operator!=(Var e1, Var e2)  
+
