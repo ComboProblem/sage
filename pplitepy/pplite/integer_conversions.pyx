@@ -32,7 +32,7 @@
 #     mpz_clear(new_int)
 #     return y
     
-
+# note within the scope of a function, once declared, a variables type must remain staticly declared. Unlike python cython doesn't do dynamiac type reallocation
 
 
     

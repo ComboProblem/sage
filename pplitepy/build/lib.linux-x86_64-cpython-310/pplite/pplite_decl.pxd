@@ -78,7 +78,8 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Linear_Expr(Linear_Expr &e)
         Linear_Expr(const Linear_Expr &e, dim_type dim)
         Linear_Expr operator+(Linear_Expr &e)
-        Linear_Expr operator-(Linear_Expr &e)
+        # Linear_Expr operator+(Var v, Linear_Expr e)
+        Linear_Expr operator-(Linear_Expr &e) # which is correct?
         Linear_Expr operator*(FLINT_Integer &c)
         Con operator >(Linear_Expr &e)
         Con operator <(Linear_Expr &e)
@@ -87,18 +88,33 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Con operator ==(Linear_Expr &e)       
         dim_type id()  #methods? #linear_expr.hh lines 39-112
         dim_type space_dim()
+        FLINT_Integer get(dim_type dim)
+        FLINT_Integer get(Var v)
+        void set(dim_type dim, FLINT_Integer n)
+        void set(Var v, FLINT_Integer n)
         void set_space_dim(dim_type dim)
         void swap_space_dims(dim_type i, dim_type j)
         void shift_space_dims(dim_type start, dim_type n)
         void shift_space_dims(Var start, dim_type n)
         # void remove_space_dims(Iter first, Iter last)
         Impl impl()
-        cppbool is_equal_to(Linear_Expr& y)
+        cppbool is_equal_to(Linear_Expr& y) 
         cppbool is_zero()
+    # Linear_Expr operator+(Linear_Expr e1, Linear_Expr e2)
+    Linear_Expr operator+(Linear_Expr e, Var v) 
+    Linear_Expr operator+(Var v, Linear_Expr v)
+    Linear_Expr operator+(Var v, Var w)
+    # Linear_Expr operator-(Linear_Expr e1, Linear_Expr e2)
+    Linear_Expr operator-(Linear_Expr e, Var v)
+    Linear_Expr operator-(Var v, Linear_Expr v)
+    Linear_Expr operator-(Var v, Var w)
+
 
 # cdef extern from "pplite/Affine_Expr.hh" namespace "pplite":
     cdef cppclass Affine_Expr
     cdef cppclass Affine_Expr:
+        Linear_Expr expr
+        FLINT_Integer inhomo
         Affine_Expr()
         Affine_Expr(FLINT_Integer i)
         Affine_Expr(Linear_Expr e, FLINT_Integer i)
@@ -107,12 +123,12 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         void set_space_dim(dim_type dim)
         cppbool is_zero()
         Affine_Expr operator+(Affine_Expr &a)
-        Affine_Expr operator+(Linear_Expr &e, FLINT_Integer &n)
+    #    Affine_Expr operator+(Linear_Expr &e, FLINT_Integer &n)
         Affine_Expr operator+(Affine_Expr &e, FLINT_Integer &n)
-        Affine_Expr operator+(Linear_Expr &e, Var &v)
         Affine_Expr operator-(Affine_Expr &a)
         Affine_Expr operator*(FLINT_Integer &c)
-
+        Affine_Expr operator+(Linear_Expr &e, Var &v)
+    Affine_Expr operator+(Linear_Expr &e, FLINT_Integer &n)
 # cdef extern from "pplite/Con.hh" namespace "pplite":
     cdef cppclass Con
     cdef cppclass Con:
