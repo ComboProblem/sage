@@ -17,19 +17,6 @@ import_gmpy2()
 
 cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
     r""" Converts FLINT_Integer to python integer."""
-    
- #    TESTS::
- #        >>> import pplite
- #        >>> cdef fmpz_t x
- #        >>> fmpz_init(x)
- #        >>> fmpz_set_si(x, 7)
- #        >>> cdef FLINT_Integer& w
- #        >>> w = new FLINT_Integer(x)
- #        >>> fmpz_clear(x)
- #        >>> z = FLINT_Integer_to_Python(w)
- #        >>> print(z)
- #        7
- # #   """
     cdef mpz_t new_int
     mpz_init(new_int)
     fmpz_get_mpz(new_int, integer.impl())
@@ -191,7 +178,7 @@ cdef class Variable(object):
         # in pplite, Var v and Var w, the sum v+w is only defined as a linear expression,
         # not as an affine expression. 
         if not isinstance(self, Variable):
-            raise NotImplementedError 
+            raise NotImplemented 
         if not isinstance(other, Variable): # promote variable to linear expression. 
             return Linear_Expression(self) +  other
         # only use this method if both classes are an instance of Variable
@@ -202,10 +189,9 @@ cdef class Variable(object):
 
     def __radd__(self, other):
         if not isinstance(self, Variable):
-            raise NotImplementedError # This will kick to python's interperter to check others' __radd__() method.
+            raise NotImplemented
         if not isinstance(other, Variable):
-            print("qsizzths")
-            raise NotImplementedError
+            return other + Linear_Expression(self) # promote variable to linear expression
         # only use this method if both classes are an instance of Variable
         other_var = <Variable> other
         result = Linear_Expression()
@@ -235,7 +221,7 @@ cdef class Variable(object):
         x0-x1
         """
         if not isinstance(self, Variable):
-            raise NotImplementedError
+            return NotImplemented
         if not isinstance(other, Variable):
             return Linear_Expression(self) - other
         other_var = <Variable> other
@@ -246,7 +232,7 @@ cdef class Variable(object):
 
     def __rsub__(self, other):
         if not isinstance(self, Variable): 
-            raise NotImplementedError
+            return NotImplemented
         if not isinstance(other, Variable):
             return other - Linear_Expression(self)
         other_var = <Variable> other
@@ -288,7 +274,7 @@ cdef class Variable(object):
         # TypeError: pplite coefficients must be integral
         if isinstance(self, Variable): # pplite doesn't explictly multiply Var and ints, convert to linear expr
             return Linear_Expression(self) * other
-        raise NotImplementedError 
+        return NotImplemented
 
     def __rmul__(self, other):
         return Linear_Expression(self) * other
@@ -574,7 +560,7 @@ cdef class Linear_Expression(object):
         >>> L
         x0-5*x1
         >>> L.set_coefficient(3, 7); L
-        x0-5*x1+7x3
+        x0-5*x1+7*x3
         """
         cdef FLINT_Integer nn
         if isinstance(i, Variable):
@@ -764,14 +750,33 @@ cdef class Linear_Expression(object):
 
         Examples:
 
-        >>> from pplite import Linear_Expression, Variable
+        >>> from pplite import Affine_Expression, Linear_Expression, Variable
         >>> x = Variable(0)
         >>> y = Variable(1)
         >>> x + y + y + y
         x0+3*x1
+        >>> e = x + y + x
+        >>> isinstance(e, Linear_Expression)
+        True
+        >>> e2 = 7 + e; e2
+        2*x0+x1+7
+        >>> isinstance(e2, Linear_Expression)
+        False
+        >>> isinstance(e2, Affine_Expression)
+        True
+        >>> e + 7
+        2*x0+x1+7
+        >>> e + Variable(0)
+        3*x0+x1
+        >>> Variable(1) + e
+        2*x0+2*x1
+        >>> e3 = e + e2; e3
+        4*x0+2*x1+7
+        >>> isinstance(e3, Affine_Expression)
+        True
         """
         if not isinstance(self, Linear_Expression):
-            raise NotImplementedError
+            return NotImplemented
         # to mimic pplite, we use cases for type conversions.
         # case 1: linear_expr + var -> linear_expr
         if isinstance(other, Variable):
@@ -791,58 +796,120 @@ cdef class Linear_Expression(object):
             result.thisptr[0] = result_expr
             return result
         # case 3: linear_expr + affine_expr -> affine_expr
-        # note this case is implicitly done in pplite
+        # this should be handeled by the affine expression class
         if isinstance(other, Affine_Expression):
-            return Affine_Expression(self, 0) + other
+            return NotImplemented 
         # case 4, linear_expr + integer -> affine expression
         # other should be an integer of some sorts
         result_aff = Affine_Expression(self, other)
         return result_aff
 
     def __radd__(self, other):
-        # return self.__add__(self, other)
-        # 
-        raise NotImplementedError
+        return self + other        
 
-    def __sub___(self, other):
-        cdef Linear_Expr* lhs
-        cdef Linear_Expr* rhs
-        
-        if isinstance(self, Linear_Expression):
-            lhs = (<Linear_Expression> self).thisptr
-        else:
-            lhs_expr = Linear_Expression(self)
-            lhs = (<Linear_Expression> lhs_expr).thisptr
+    def __sub__(self, other):
+        r"""
+        Subtract ``self`` and ``other``.
+
+        INPUT:
+
+        - ``self``, ``other`` -- anything that can be used to
+          construct a :class:`Linear_Expression` or :class:`Affine_Expression`. One of them, not
+          necessarily ``self``, is guaranteed to be a
+          :class:``Linear_Expression``, otherwise Python would not
+          have called this method.
+
+        OUTPUT:
+
+        The sum as a :class:`Linear_Expression` or :class:`Affine_Expression` depending on input.
+
+        Examples:
+
+        >>> from pplite import Affine_Expression, Linear_Expression, Variable
+        >>> x = Variable(0)
+        >>> y = Variable(1)
+        >>> x - y + y + y
+        x0+x1
+        >>> e = y - x + y - x; e
+        -2*x0+2*x1
+        >>> isinstance(e, Linear_Expression)
+        True
+        >>> e - e
+        0
+        >>> e1 = y - x
+        >>> e1 - e
+        x0-x1
+        >>> e2 = e - 7; e2
+        -2*x0+2*x1-7
+        >>> e3 = 7 - e; e3
+        2*x0-2*x1+7
+        >>> isinstance(e3, Linear_Expression)
+        False
+        >>> isinstance(e3, Affine_Expression)
+        True
+        """
+        # to mimic pplite, we use cases for type conversions.
+        # case 1: linear_expr - var -> linear_expr
+        if not isinstance(self, Linear_Expression):
+            return NotImplemented
+        # to mimic pplite, we use cases for type conversions.
+        # case 1: linear_expr + var -> linear_expr
+
+        if isinstance(other, Variable):
+            other_var = <Variable> other
+            result = Linear_Expression()
+            self.thisptr[0] -= other_var.thisptr[0]
+            result.thisptr = new Linear_Expr(self.thisptr[0])  
+            return result
+        # case 2: linear_expr + linear_expr -> linear_expr
+        cdef Linear_Expr* lhs_expr
+        cdef Linear_Expr* rhs_expr
+        cdef Linear_Expr result_expr
         if isinstance(other, Linear_Expression):
-            rhs = (<Linear_Expression> other).thisptr
-        else:
-            rhs_expr = Linear_Expression(other)
-            rhs = (<Linear_Expression> rhs_expr).thisptr
-        cdef Linear_Expr result
-        result = lhs[0] - rhs[0]
-        result_expr = Linear_Expression()
-        # result_expr
-        result_expr.thisptr[0] = result #could be copying or moving?
-        return result_expr
+            lhs_expr = (<Linear_Expression> self).thisptr
+            rhs_expr = (<Linear_Expression> other).thisptr
+            result_expr = lhs_expr[0] - rhs_expr[0]
+            result = Linear_Expression()
+            result.thisptr[0] = result_expr
+            return result
+        # case 3: linear_expr + affine_expr -> affine_expr
+        # this should be handeled by the affine expression class
+        if isinstance(other, Affine_Expression):
+            return NotImplemented 
+        # case 4, linear_expr + integer -> affine expression
+        # other should be an integer of some sorts
+        result_aff = Affine_Expression(self, -other)
+        return result_aff
 
     def __rsub__(self, other):
-        cdef Linear_Expr* lhs
-        cdef Linear_Expr* rhs
-
-        lhs = (<Linear_Expression> self).thisptr
+        if not isinstance(self, Linear_Expression):
+            return NotImplemented
+        # to mimic pplite, we use cases for type conversions.
+        # case 1: linear_expr + var -> linear_expr
+        if isinstance(other, Variable):
+            other_var = <Variable> other
+            result = Linear_Expression()
+            result.thisptr = new Linear_Expr(other_var.thisptr[0] - self.thisptr[0])  
+            return result
+        # case 2: linear_expr + linear_expr -> linear_expr
+        cdef Linear_Expr* lhs_expr
+        cdef Linear_Expr* rhs_expr
+        cdef Linear_Expr result_expr
         if isinstance(other, Linear_Expression):
-            rhs = (<Linear_Expression> other).thisptr
-        else:
-            rhs_expr = Linear_Expression(other)
-            rhs = (<Linear_Expression> rhs_expr).thisptr
-        cdef Linear_Expr result
-        result = rhs[0] - lhs[0]
-        result_expr = Linear_Expression()
-        # result_expr
-        result_expr.thisptr[0] = result
-        return result_expr
-
-
+            lhs_expr = (<Linear_Expression> self).thisptr
+            rhs_expr = (<Linear_Expression> other).thisptr
+            result_expr = rhs_expr[0] - lhs_expr[0]
+            result = Linear_Expression()
+            result.thisptr[0] = result_expr
+            return result
+        # case 3: linear_expr + affine_expr -> affine_expr
+        # this should be handeled by the affine expression class
+        if isinstance(other, Affine_Expression):
+            return NotImplemented 
+        # case 4, linear_expr + integer -> affine expression
+        # other should be an integer of some sorts
+        result_aff = Affine_Expression(-1*self, other)
+        return result_aff
 
     def __mul__(self, other):
         r"""
@@ -876,7 +943,6 @@ cdef class Linear_Expression(object):
         # >>> mpz(3) * x * mpz(5)
         # 15*x0
         cdef Linear_Expr* e
-        
         if isinstance(self, Linear_Expression):
             e = (<Linear_Expression> self).thisptr
             c = other
@@ -889,6 +955,9 @@ cdef class Linear_Expression(object):
         cdef Linear_Expression result = Linear_Expression()
         result.thisptr[0] = e[0] * cc
         return result
+
+    def __rmul__(self, other):
+        return self*other
 
     def __richcmp__(self, other, op):
         """
@@ -945,13 +1014,15 @@ cdef class Affine_Expression(object):
     >>> from pplite import Variable, Linear_Expression, Affine_Expression
 
     >>> e = Variable(2) - 3*Variable(4)
+    >>> isinstance(e, Linear_Expression)
+    True
     >>> Affine_Expression(e, 7)
     x2-3*x4+7
-
-    String, rationals and floating point types are accepted as long as they
-    represent exact integers:
-
+    >>> Affine_Expression()
+    0
     """
+#     String, rationals and floating point types are accepted as long as they
+#    represent exact integers:
     def __init__(self, *args):
         """
         The Cython constructor.
@@ -1024,19 +1095,19 @@ cdef class Affine_Expression(object):
         Integer.
 
         Examples:
-
-
+        >>> from pplite import Variable
+        >>> x = Variable(0)
+        >>> y = Variable(1)
+        >>> (x+y+1).space_dimension()
+        2
         """
-        # >>> from pplite import Variable
-        # >>> x = Variable(0)
-        # >>> y = Variable(1)
-        # >>> (x+y+1).space_dimension()
-        # 2
         return self.thisptr.space_dim()
 
-    def set_space_dimension(self, dim_type dim):
-        pass
-        # self.thisptr.set_space_dim(dim)
+    def set_space_dimension(self, dim):
+        # cdef dim_type ddim
+        # ddim = Python_int_to_FLINT_Integer(dim)
+        # self.thisptr.set_space_dim(ddim)
+        raise NotImplementedError
 
     def linear_form(self):
         """
@@ -1047,7 +1118,8 @@ cdef class Affine_Expression(object):
         Examples:
         >>> from pplite import Variable, Affine_Expression
         >>> e = Variable(2) - 3*Variable(4)
-        >>> a = Affine_Expression(e, 7)
+        >>> a = Affine_Expression(e, 7); a
+        x2-3*x4+7
         >>> a.linear_form()
         x2-3*x4
         """
@@ -1076,7 +1148,6 @@ cdef class Affine_Expression(object):
         c = self.thisptr.inhomo
         return FLINT_Integer_to_Python(c)
 
-
     def coefficient(self, v):
         """
         Return the coefficient of the variable ``v``.
@@ -1098,28 +1169,6 @@ cdef class Affine_Expression(object):
         mpz(1)
         """
         return self.linear_form().coefficient(v)
-
-    # def set_coefficient(self, i, v):
-    #     """
-    #     Set the ``i``-th coefficient to ``v``.
-
-    #     INPUT:
-
-    #     - ``i`` - variable or variable index
-
-    #     - ``v`` - integer
-
-    #     Examples:
-
-    #     >>> from pplite import Variable, Affine_Expression
-    #     >>> L = Variable(0) + 3 * Variable(1) + 2; L
-    #     x0+3*x1+2
-    #     >>> L.set_coefficient(1, -5); L
-    #     x0-5*x1+2
-    #     >>> L.set_coefficient(7, 3); L
-    #     x0-5*x1+2
-    #     """
-    #     self.linear_form().set_coefficient(i ,v)
 
     def __repr__(self):
         r"""
@@ -1206,31 +1255,51 @@ cdef class Affine_Expression(object):
         INPUT:
 
         - ``self``, ``other`` -- anything that can be used to
-          construct a :class:`Linear_Expression`. One of them, not
+          construct a :class:`Affine_Expression`. One of them, not
           necessarily ``self``, is guaranteed to be a
-          :class:``Linear_Expression``, otherwise Python would not
+          :class:``Affine_Expression``, otherwise Python would not
           have called this method.
 
         OUTPUT:
 
-        The sum as a :class:`Linear_Expression`
+        The sum as a :class:`Affine_Expression`
 
         Examples:
 
         >>> from pplite import Affine_Expression, Variable
         >>> x = Variable(0)
         >>> y = Variable(1)
-        >>> x + y + y + y + 1
+        >>> a = x + y + y + y + 1; a
         x0+3*x1+1
+        >>> a + a
+        2*x0+6*x1+2 
+        >>> 12 + a
+        x0+3*x1+13
+        >>> a + Variable(2)
+        x0+3*x1+x2+1
         """
         cdef Affine_Expr* lhs
-        cdef Affine_Expr* rhs
-        
         if isinstance(self, Affine_Expression):
             lhs = (<Affine_Expression> self).thisptr
         else:
             lhs_expr = Affine_Expression(self)
             lhs = (<Affine_Expression> lhs_expr).thisptr
+        result_expr = Affine_Expression()
+        cdef Var* vv
+        if isinstance(other, Variable):
+            other_var = <Variable> other
+            vv = other_var.thisptr
+            self.thisptr[0] += vv[0] #this works wtf. Calling += seems to work in this case but not in other. I'm unsure why. 
+            result_expr.thisptr = new Affine_Expr(self.thisptr[0]) #should I modify in place or just create a new object. I'm unsure of design choice here. 
+            return result_expr
+        cdef Linear_Expr* e1
+        if isinstance(other, Linear_Expression):
+            other_lin = <Linear_Expression> other
+            e1 = other_lin.thisptr
+            self.thisptr[0] += e1[0]
+            result_expr.thisptr = new Affine_Expr(self.thisptr[0])
+            return result_expr
+        # TO DO: Make int add explicit. For now, converting to affine expr. 
         if isinstance(other, Affine_Expression):
             rhs = (<Affine_Expression> other).thisptr
         else:
@@ -1243,18 +1312,133 @@ cdef class Affine_Expression(object):
         return result_expr
 
     def __radd__(self, other):
-        pass
+        return self + other
 
     def __sub__(self, other):
-        pass
+        r"""
+        Subtract ``self`` and ``other``.
+
+        INPUT:
+
+        - ``self``, ``other`` -- anything that can be used to
+          construct a :class:`Affine_Expression`. One of them, not
+          necessarily ``self``, is guaranteed to be a
+          :class:``Affine_Expression``, otherwise Python would not
+          have called this method.
+
+        OUTPUT:
+
+        The sum as a :class:`Affine_Expression`
+
+        Examples:
+
+        >>> from pplite import Affine_Expression, Linear_Expression, Variable
+        >>> x = Variable(0)
+        >>> y = Variable(1)
+        >>> e = x + y + y + y + 1; e
+        x0+3*x1+1
+        >>> e - e
+        0
+        >>> isinstance(e, Affine_Expression)
+        True
+        >>> 12 - e
+        -x0-3*x1+11
+        >>> e - 3 * Variable(3) - 3 * y
+        x0-3*x3+1
+        """
+        cdef Affine_Expr* lhs
+        if isinstance(self, Affine_Expression):
+            lhs = (<Affine_Expression> self).thisptr
+        else:
+            lhs_expr = Affine_Expression(self)
+            lhs = (<Affine_Expression> lhs_expr).thisptr
+        result_expr = Affine_Expression()
+        cdef Var* vv
+        if isinstance(other, Variable):
+            other_var = <Variable> other
+            vv = other_var.thisptr
+            self.thisptr[0] -= vv[0] #this works wtf. Calling += seems to work in this case but not in other. I'm unsure why. 
+            result_expr.thisptr = new Affine_Expr(self.thisptr[0]) #should I modify in place or just create a new object. I'm unsure of design choice here. 
+            return result_expr
+        cdef Linear_Expr* e1
+        if isinstance(other, Linear_Expression):
+            other_lin = <Linear_Expression> other
+            e1 = other_lin.thisptr
+            self.thisptr[0] -= e1[0]
+            result_expr.thisptr = new Affine_Expr(self.thisptr[0])
+            return result_expr
+        # TO DO: Make int add explicit. For now, converting to affine expr. b.c we either have an int or affine_expr here.  
+        if isinstance(other, Affine_Expression):
+            rhs = (<Affine_Expression> other).thisptr
+        else:
+            rhs_expr = Affine_Expression(other)
+            rhs = (<Affine_Expression> rhs_expr).thisptr
+        cdef Affine_Expr result
+        result = lhs[0] - rhs[0]
+        result_expr = Affine_Expression()
+        result_expr.thisptr[0] = result
+        return result_expr
 
     def __rsub__(self, other):
-        pass
+        cdef Affine_Expr* lhs
+        if isinstance(self, Affine_Expression):
+            lhs = (<Affine_Expression> self).thisptr
+        else:
+            lhs_expr = Affine_Expression(self)
+            lhs = (<Affine_Expression> lhs_expr).thisptr
+        result_expr = Affine_Expression()
+        cdef Var* vv
+        if isinstance(other, Variable):
+            other_var = <Variable> other
+            vv = other_var.thisptr
+            #self.thisptr[0] -= vv[0] #this works wtf. Calling += seems to work in this case but not in other. I'm unsure why. 
+            result_expr.thisptr = new Affine_Expr(vv[0] - self.thisptr[0]) #should I modify in place or just create a new object. I'm unsure of design choice here. 
+            return result_expr
+        # cdef Linear_Expr* e1
+        # if isinstance(other, Linear_Expression):
+        #     other_lin = <Linear_Expression> other
+        #     e1 = other_lin.thisptr
+        #     # self.thisptr[0] -= e1[0]
+        #     result_expr.thisptr = new Affine_Expr(e1[0] - self.thisptr[0])
+        #     return result_expr
+        # TO DO: Make int add explicit. For now, converting to affine expr. b.c we either have an int or affine_expr here.  
+        if isinstance(other, Affine_Expression):
+            rhs = (<Affine_Expression> other).thisptr
+        else:
+            rhs_expr = Affine_Expression(other)
+            rhs = (<Affine_Expression> rhs_expr).thisptr
+        cdef Affine_Expr result
+        result = rhs[0] - lhs[0]
+        result_expr = Affine_Expression()
+        result_expr.thisptr[0] = result
+        return result_expr
 
     def __mul__(self, other):
-        pass
+        cdef Affine_Expr* a
+        if isinstance(self, Linear_Expression):
+            a = (<Affine_Expression> self).thisptr
+            c = other
+        else:
+            # NOTE: this code path will only be executed when compiled with cython < 3.0.0
+            a = (<Affine_Expression> other).thisptr
+            c = self
+        cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
+        cdef Affine_Expression result = Linear_Expression()
+        result.thisptr[0] = a[0] * cc
+        return result
 
     def __rmul__(self, other):
-        pass
+        cdef Affine_Expr* a
+        if isinstance(self, Linear_Expression):
+            a = (<Affine_Expression> self).thisptr
+            c = other
+        else:
+            # NOTE: this code path will only be executed when compiled with cython < 3.0.0
+            a = (<Affine_Expression> other).thisptr
+            c = self
+        cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
+        cdef Affine_Expression result = Linear_Expression()
+        result.thisptr[0] = a[0] * cc
+        return result
 
 

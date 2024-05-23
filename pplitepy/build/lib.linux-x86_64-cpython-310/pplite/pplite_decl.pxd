@@ -105,8 +105,8 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     Linear_Expr operator+(Var v, Linear_Expr v)
     Linear_Expr operator+(Var v, Var w)
     # Linear_Expr operator-(Linear_Expr e1, Linear_Expr e2)
-    Linear_Expr operator-(Linear_Expr e, Var v)
-    Linear_Expr operator-(Var v, Linear_Expr v)
+    Linear_Expr operator-(Linear_Expr &e, Var &v)
+    Linear_Expr operator-(Var &v, Linear_Expr &v)
     Linear_Expr operator-(Var v, Var w)
 
 
@@ -124,11 +124,17 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         cppbool is_zero()
         Affine_Expr operator+(Affine_Expr &a)
     #    Affine_Expr operator+(Linear_Expr &e, FLINT_Integer &n)
-        Affine_Expr operator+(Affine_Expr &e, FLINT_Integer &n)
         Affine_Expr operator-(Affine_Expr &a)
         Affine_Expr operator*(FLINT_Integer &c)
-        Affine_Expr operator+(Linear_Expr &e, Var &v)
-    Affine_Expr operator+(Linear_Expr &e, FLINT_Integer &n)
+    # Affine_Expr operator+(Linear_Expr &e, Var &v)
+    # Affine_Expr operator+(Linear_Expr &e, FLINT_Integer &n)
+    # Affine_Expr operator+(Affine_Expr &e, FLINT_Integer &n)
+    # Affine_Expr operator+(Affine_Expr &a1, Linear_Expr &e2)
+    # Affine_Expr operator+(Affine_Expr &a, Linear_Expr &e2)
+    Affine_Expr operator+(Affine_Expr a, Var v)
+    Affine_Expr operator-(Var v, Affine_Expr a)
+    Affine_Expr operator-(Linear_Expr e1, Affine_Expr a1)
+    # Affine_Expr& operator+=(Affine_Expr& a1, Var v) #+= operator not yet supported. FML.
 # cdef extern from "pplite/Con.hh" namespace "pplite":
     cdef cppclass Con
     cdef cppclass Con:
