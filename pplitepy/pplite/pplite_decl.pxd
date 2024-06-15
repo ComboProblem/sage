@@ -44,7 +44,6 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         FLINT_Integer(const fmpz_t z)
         FLINT_Integer(signed int si)
         FLINT_Integer(const mpz_t z)
-        
 # cdef extern from "pplite/GMP_Integer.hh" namespace "pplite":
 #     cdef cppclass GMP_Integer
 #     cdef cppclass GMP_Integer:
@@ -66,7 +65,10 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Var(dim_type i)
         dim_type id()
         dim_type space_dim()
+        # void m_swap(Var& v)
     ctypedef struct Vars_Set
+    cppbool less_than(Var v, Var w)
+    void swap(Var& v, Var& w)
     
 # cdef extern from "pplite/Linear_Expr.hh" namespace "pplite":
     ctypedef cppvector[FLINT_Integer] Impl
@@ -108,6 +110,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     Linear_Expr operator-(Linear_Expr &e, Var &v)
     Linear_Expr operator-(Var &v, Linear_Expr &v)
     Linear_Expr operator-(Var v, Var w)
+    void neg_assign(Linear_Expr& e)
 
 
 # cdef extern from "pplite/Affine_Expr.hh" namespace "pplite":
@@ -122,6 +125,9 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         dim_type space_dim()
         void set_space_dim(dim_type dim)
         cppbool is_zero()
+        void m_swap(Affine_Expr& y)
+        void normalize()
+        void sign_normalize()
         Affine_Expr operator+(Affine_Expr &a)
     #    Affine_Expr operator+(Linear_Expr &e, FLINT_Integer &n)
         Affine_Expr operator-(Affine_Expr &a)
@@ -134,25 +140,111 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     Affine_Expr operator+(Affine_Expr a, Var v)
     Affine_Expr operator-(Var v, Affine_Expr a)
     Affine_Expr operator-(Linear_Expr e1, Affine_Expr a1)
+    void neg_assign(Affine_Expr& a)
     # Affine_Expr& operator+=(Affine_Expr& a1, Var v) #+= operator not yet supported. FML.
 # cdef extern from "pplite/Con.hh" namespace "pplite":
+#     ctypedef enum ConType "pplite::Con::Type":
+#         EQUALITY, NONSTRICT_INEQUALITY, STRICT_INEQUALITY        
     cdef cppclass Con
     cdef cppclass Con:
+        # enum Type:
+        #     pass
+        # struct Impl
+        enum ConType "Type":
+        # # # ctypedef enum Type:
+            EQUALITY, NONSTRICT_INEQUALITY, STRICT_INEQUALITY
+        struct Impl:
+            Linear_Expr expr
+            FLINT_Integer inhomo
+            ConType type
+            Impl()
+            Impl(Linear_Expr e, FLINT_Integer i, ConType t)
         Con()
-        Con(Con &c)
-        # Con(Linear_Exper expr, FLINT_Integer inhomo, Type type)
-        # gotta add all varsations of this
+        Con(const Con &c)
+        Con(Linear_Expr expr, FLINT_Integer inhomo, ConType type)
+        Con(Affine_Expr ae, ConType type)
+        dim_type space_dim()
+        void set_space_dim(dim_type dim)
+        # void permute_space_dims_cycle(const Dims& cycle, dim_type d)
+        Impl& impl()
+        ConType type()
+        cppbool is_equality()
+        cppbool is_inequality()
+        cppbool is_nonstrict_inequality()
+        cppbool is_strict_inequality()
+        Linear_Expr linear_expr()
+        FLINT_Integer coeff(Var v)
+        FLINT_Integer inhomo_term()
+        Con zero_dim_false()
+        
+
+        # con.hh lines 215-489. mwho thought it was a good idea to code by copy paste 
         Con operator=(Con &c)
-        # Con operator<(Linear_Expr e1, Linear_Expr e2)
-        # Con operator<(Var e1, Var e2)
-        # Con operator>(Linear_Expr e1, Linear_Expr e2)
-        # Con operator>(Var e1, Var e2)
-        # Con operator<=(Linear_Expr e1, Linear_Expr e2)
-        # Con operator<=(Var e1, Var e2)
-        # Con operator>=(Linear_Expr e1, Linear_Expr e2)
-        # Con operator>=(Var e1, Var e2)
-        # Con operator==(Linear_Expr e1, Linear_Expr e2)
-        # Con operator==(Var e1, Var e2)
+    Con operator<(Linear_Expr e1, const Linear_Expr& e2)
+    Con operator<(Var v1, Var v2)
+    Con operator<(Linear_Expr e, FLINT_Integer n)
+    Con operator<(FLINT_Integer n, Linear_Expr e)
+    Con operator>(Linear_Expr e1, const Linear_Expr& e2)
+    Con operator>(Var v1, Var v2)
+    Con operator>(Linear_Expr e, FLINT_Integer n)
+    Con operator>(FLINT_Integer n, Linear_Expr e)
+    Con operator==(Linear_Expr e1, const Linear_Expr& e2)
+    Con operator==(Var v1, Var v2)
+    Con operator==(Linear_Expr e, FLINT_Integer n)
+    Con operator==(FLINT_Integer n, Linear_Expr e)
+    Con operator<=(Linear_Expr e1, const Linear_Expr& e2)
+    Con operator<=(Var v1, Var v2)
+    Con operator<=(Linear_Expr e, FLINT_Integer n)
+    Con operator<=(FLINT_Integer n, Linear_Expr e)
+    Con operator>=(Linear_Expr e1, const Linear_Expr& e2)
+    Con operator>=(Var v1, Var v2)
+    Con operator>=(Linear_Expr e, FLINT_Integer n)
+    Con operator>=(FLINT_Integer n, Linear_Expr e)
+    Con operator<(Affine_Expr e1, const Affine_Expr& e2)
+    Con operator<(Affine_Expr e, const FLINT_Integer& n)
+    Con operator<(Affine_Expr e, Var v)
+    Con operator<(const FLINT_Integer& n, Affine_Expr e)
+    Con operator<(Var v, Affine_Expr e)
+    Con operator>(Affine_Expr e1, const Affine_Expr& e2)
+    Con operator>(Affine_Expr e, const FLINT_Integer& n)
+    Con operator>(Affine_Expr e, Var v)
+    Con operator>(const FLINT_Integer& n, Affine_Expr e)
+    Con operator>(Var v, Affine_Expr e)
+    Con operator==(Affine_Expr e1, const Affine_Expr& e2)
+    Con operator==(Affine_Expr e, const FLINT_Integer& n)
+    Con operator==(Affine_Expr e, Var v)
+    Con operator==(const FLINT_Integer& n, Affine_Expr e)
+    Con operator==(Var v, Affine_Expr e)
+    Con operator<=(Affine_Expr e1, const Affine_Expr& e2)
+    Con operator<=(Affine_Expr e, const FLINT_Integer& n)
+    Con operator<=(Affine_Expr e, Var v)
+    Con operator<=(const FLINT_Integer& n, Affine_Expr e)
+    Con operator<=(Var v, Affine_Expr e)
+    Con operator>=(Affine_Expr e1, const Affine_Expr& e2)
+    Con operator>=(Affine_Expr e, const FLINT_Integer& n)
+    Con operator>=(Affine_Expr e, Var v)
+    Con operator>=(const FLINT_Integer& n, Affine_Expr e)
+    Con operator>=(Var v, Affine_Expr e)
+
+    # Con operator<(Affine_Expr e1, const Affine_Expr& e2)
+    # Con operator>(Affine_Expr e1, const Affine_Expr& e2)
+    # Con operator<=(Affine_Expr e1, const Affine_Expr& e2)
+    # Con operator>=(Affine_Expr e1, const Affine_Expr& e2)
+    #     # Con operator!=(Affine_Expr e1, const Affine_Expr& e2)
+    # Con operator==(Affine_Expr e1, const Affine_Expr& e2)
+    #     # Con operator
+    # Con operator<(Linear_Expr e1, Linear_Expr e2)
+    # Con operator<(Var e1, Var e2)
+    # Con operator<(Var v1, Linear_Expr e2)
+    # Con operator<(Var e1, Var e2)
+    # Con operator>(Linear_Expr e1, Linear_Expr e2)
+    # Con operator>(Var e1, Var e2)
+    # Con operator<=(Linear_Expr e1, Linear_Expr e2)
+    # Con operator<=(Var e1, Var e2)
+    # Con operator>=(Linear_Expr e1, Linear_Expr e2)
+    # Con operator>=(Var e1, Var e2)
+    # Con operator==(Linear_Expr e1, Linear_Expr e2)
+    # Con operator==(Var e1, Var e2)
         # Con operator!=(Linear_Expr e1, Linear_Expr e2)
         # Con operator!=(Var e1, Var e2)  
 

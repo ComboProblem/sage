@@ -10,5 +10,3 @@ cdef class Linear_Expression:
 
 cdef class Affine_Expression:
     cdef Affine_Expr *thisptr
-    
-# cdef PPL_Coefficient PPL_Coefficient_from_pyobject(c) except *
