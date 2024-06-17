@@ -163,7 +163,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Con(const Con &c)
         Con(Linear_Expr expr, FLINT_Integer inhomo, ConType type)
         Con(Affine_Expr ae, ConType type)
-        dim_type space_dim()
+        dim_type space_dim()    
         void set_space_dim(dim_type dim)
         # void permute_space_dims_cycle(const Dims& cycle, dim_type d)
         Impl& impl()
@@ -178,8 +178,8 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Con zero_dim_false()
         
 
-        # con.hh lines 215-489. mwho thought it was a good idea to code by copy paste 
-        Con operator=(Con &c)
+        # con.hh lines 215-489. who thought it was a good idea to code by copy paste 
+    Con operator=(Con &c)
     Con operator<(Linear_Expr e1, const Linear_Expr& e2)
     Con operator<(Var v1, Var v2)
     Con operator<(Linear_Expr e, FLINT_Integer n)
@@ -217,7 +217,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     Con operator==(Var v, Affine_Expr e)
     Con operator<=(Affine_Expr e1, const Affine_Expr& e2)
     Con operator<=(Affine_Expr e, const FLINT_Integer& n)
-    Con operator<=(Affine_Expr e, Var v)
+    Con operator<=(Affine_Expr e, Var v)    
     Con operator<=(const FLINT_Integer& n, Affine_Expr e)
     Con operator<=(Var v, Affine_Expr e)
     Con operator>=(Affine_Expr e1, const Affine_Expr& e2)

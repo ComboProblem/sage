@@ -4,13 +4,13 @@
 {
     "distutils": {
         "depends": [
-            "/tmp/pip-build-env-d9z6m38s/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
-            "/tmp/pip-build-env-d9z6m38s/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
-            "/tmp/pip-build-env-d9z6m38s/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
-            "/tmp/pip-build-env-d9z6m38s/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
+            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
+            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
+            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
+            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
         ],
         "include_dirs": [
-            "/tmp/pip-build-env-d9z6m38s/overlay/lib/python3.10/site-packages/gmpy2"
+            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2"
         ],
         "language": "c++",
         "libraries": [
