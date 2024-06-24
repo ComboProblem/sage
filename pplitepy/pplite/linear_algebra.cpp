@@ -4,13 +4,13 @@
 {
     "distutils": {
         "depends": [
-            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
-            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
-            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
-            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
+            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
+            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
+            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
+            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
         ],
         "include_dirs": [
-            "/tmp/pip-build-env-nl5k8slc/overlay/lib/python3.10/site-packages/gmpy2"
+            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2"
         ],
         "language": "c++",
         "libraries": [
@@ -1559,11 +1559,25 @@ struct __pyx_obj_6pplite_14linear_algebra_Variable;
 struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression;
 struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression;
 
+/* "constraint.pxd":10
+ * 	cdef Con *thisptr
+ * 
+ * cdef enum ConType:             # <<<<<<<<<<<<<<
+ * 	EQUALITY
+ * 	NONSTRICT_INEQUALITY
+ */
+enum __pyx_t_6pplite_10constraint_ConType {
+  __pyx_e_6pplite_10constraint_EQUALITY,
+  __pyx_e_6pplite_10constraint_NONSTRICT_INEQUALITY,
+  __pyx_e_6pplite_10constraint_STRICT_INEQUALITY
+};
+
 /* "constraint.pxd":7
  * cdef _make_Constraint_from_richcmp(lhs_, rhs_, op)
  * 
  * cdef class Constraint(object):             # <<<<<<<<<<<<<<
  * 	cdef Con *thisptr
+ * 
  */
 struct __pyx_obj_6pplite_10constraint_Constraint {
   PyObject_HEAD

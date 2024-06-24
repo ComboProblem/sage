@@ -83,11 +83,11 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         # Linear_Expr operator+(Var v, Linear_Expr e)
         Linear_Expr operator-(Linear_Expr &e) # which is correct?
         Linear_Expr operator*(FLINT_Integer &c)
-        Con operator >(Linear_Expr &e)
-        Con operator <(Linear_Expr &e)
-        Con operator <=(Linear_Expr &e)
-        Con operator >=(Linear_Expr &e)
-        Con operator ==(Linear_Expr &e)       
+        # Con operator >(Linear_Expr &e)
+        # Con operator <(Linear_Expr &e)
+        # Con operator <=(Linear_Expr &e)
+        # Con operator >=(Linear_Expr &e)
+        # Con operator ==(Linear_Expr &e)       
         dim_type id()  #methods? #linear_expr.hh lines 39-112
         dim_type space_dim()
         FLINT_Integer get(dim_type dim)
@@ -142,17 +142,15 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     Affine_Expr operator-(Linear_Expr e1, Affine_Expr a1)
     void neg_assign(Affine_Expr& a)
     # Affine_Expr& operator+=(Affine_Expr& a1, Var v) #+= operator not yet supported. FML.
-# cdef extern from "pplite/Con.hh" namespace "pplite":
-#     ctypedef enum ConType "pplite::Con::Type":
+# cdef extern from "pplite/Con.hh":
+#     ctypedef enum ConType "Con::Type":
 #         EQUALITY, NONSTRICT_INEQUALITY, STRICT_INEQUALITY        
     cdef cppclass Con
     cdef cppclass Con:
-        # enum Type:
-        #     pass
-        # struct Impl
-        enum ConType "Type":
-        # # # ctypedef enum Type:
-            EQUALITY, NONSTRICT_INEQUALITY, STRICT_INEQUALITY
+        enum ConType "Con::Type":
+            EQUALITY
+            NONSTRICT_INEQUALITY
+            STRICT_INEQUALITY
         struct Impl:
             Linear_Expr expr
             FLINT_Integer inhomo
@@ -167,7 +165,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         void set_space_dim(dim_type dim)
         # void permute_space_dims_cycle(const Dims& cycle, dim_type d)
         Impl& impl()
-        ConType type()
+        ConType  type()
         cppbool is_equality()
         cppbool is_inequality()
         cppbool is_nonstrict_inequality()
@@ -178,18 +176,18 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Con zero_dim_false()
         
 
-        # con.hh lines 215-489. who thought it was a good idea to code by copy paste 
+        # con.hh lines 215-489. 
     Con operator=(Con &c)
     Con operator<(Linear_Expr e1, const Linear_Expr& e2)
     Con operator<(Var v1, Var v2)
-    Con operator<(Linear_Expr e, FLINT_Integer n)
+    Con operator<(Linear_Expr e, const FLINT_Integer& n)
     Con operator<(FLINT_Integer n, Linear_Expr e)
     Con operator>(Linear_Expr e1, const Linear_Expr& e2)
     Con operator>(Var v1, Var v2)
     Con operator>(Linear_Expr e, FLINT_Integer n)
     Con operator>(FLINT_Integer n, Linear_Expr e)
     Con operator==(Linear_Expr e1, const Linear_Expr& e2)
-    Con operator==(Var v1, Var v2)
+    Con operator==(Var v1, Var v2)          
     Con operator==(Linear_Expr e, FLINT_Integer n)
     Con operator==(FLINT_Integer n, Linear_Expr e)
     Con operator<=(Linear_Expr e1, const Linear_Expr& e2)
