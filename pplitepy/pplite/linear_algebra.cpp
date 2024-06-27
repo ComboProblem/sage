@@ -4,13 +4,13 @@
 {
     "distutils": {
         "depends": [
-            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
-            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
-            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
-            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
+            "/tmp/pip-build-env-ir0zme83/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
+            "/tmp/pip-build-env-ir0zme83/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
+            "/tmp/pip-build-env-ir0zme83/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
+            "/tmp/pip-build-env-ir0zme83/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
         ],
         "include_dirs": [
-            "/tmp/pip-build-env-wv9liqg5/overlay/lib/python3.10/site-packages/gmpy2"
+            "/tmp/pip-build-env-ir0zme83/overlay/lib/python3.10/site-packages/gmpy2"
         ],
         "language": "c++",
         "libraries": [
@@ -1533,7 +1533,7 @@ static const char *__pyx_f[] = {
 
 /* #### Code section: numeric_typedefs ### */
 
-/* "pplite_decl.pxd":26
+/* "pplite_decl.pxd":28
  *         mpz_class operator%(mpz_class, mpz_class)
  * 
  * ctypedef mp_limb_t ulong             # <<<<<<<<<<<<<<
@@ -1542,7 +1542,7 @@ static const char *__pyx_f[] = {
  */
 typedef mp_limb_t __pyx_t_6pplite_11pplite_decl_ulong;
 
-/* "pplite_decl.pxd":27
+/* "pplite_decl.pxd":29
  * 
  * ctypedef mp_limb_t ulong
  * ctypedef mp_limb_signed_t slong             # <<<<<<<<<<<<<<

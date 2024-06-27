@@ -6,6 +6,10 @@ pplite/constraint.cpp
 pplite/constraint.pxd
 pplite/constraint.pyx
 pplite/flint_wrap.h
+pplite/generators.c
+pplite/generators.cpp
+pplite/generators.pxd
+pplite/generators.pyx
 pplite/integer_conversions.cpp
 pplite/integer_conversions.pxd
 pplite/integer_conversions.pyx
