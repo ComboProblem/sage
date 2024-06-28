@@ -523,7 +523,7 @@ cdef class Linear_Expression(object):
     
     def set_space_dimension(self, dim_type dim):
         self.thisptr.set_space_dim(dim)
-        
+
     def coefficient(self, v):
         """
         Return the coefficient of the variable ``v``.
