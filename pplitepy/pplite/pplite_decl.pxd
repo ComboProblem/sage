@@ -259,7 +259,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
             RAY
             POINT
             CLOSURE_POINT
-        struct Impl:
+        struct Impl "Gen::Impl":
             Linear_Expr expr
             FLINT_Integer inhomo
             GenType type
@@ -299,3 +299,8 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     # Gen closure_point(Linear_Expr e, FLINT_Integer d)
     # cppbool operator==(const Gen& x, const Gen& y)
     # cppbool operator!=(const Gen& x, const Gen& y)
+    # void erase_space_dims(Gens& gs, Iter first, Iter last)
+    # Index_Set invalid_lines(const Gens& gs)
+    # Index_Set invalid_rays(const Gens& gs)
+    # void rase_higher_dims(Gens& gs, dim_type d)
+    # Gen materialize(const Indices& is, const Gens& gs)
