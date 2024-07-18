@@ -2,7 +2,7 @@ from libcpp cimport bool as cppbool
 from libcpp.vector cimport vector as cppvector
 from gmpy2 cimport mpz 
 
-# gmp and flint integer cdefs
+# gmp and flint integer/rational cdefs 
 
 cdef extern from "gmp.h":
     ctypedef unsigned long mp_limb_t
@@ -38,6 +38,16 @@ cdef extern from "flint/fmpz.h":
     void fmpz_clear(fmpz_t f)
     int fmpz_print(const fmpz_t x)
 
+cdef extern from "flint/fmpq.h":
+    ctypedef struct fmpq:
+        pass
+    ctypedef fmpq fmpq_t[1]
+    void fmpz_init(fmpq_t x)
+    void fmpq_clear(fmpq_t x)
+    void fmpq_set(fmpq_t dest, const fmpq_t src)
+    void fmpq_get_mpz_frac(mpz_t a, mpz_t b, fmpq_t c)
+    void fmpq_set_si(fmpq_t res, slong p, ulong q)
+
 # Starting pplite definitons
 
 cdef extern from "pplite/pplite.hh" namespace "pplite":
@@ -52,6 +62,17 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         FLINT_Integer(signed int si)
         FLINT_Integer(const mpz_t z)
 
+# "pplite/FLINT_Rational.hh":
+    
+    cdef cppclass FLINT_Rational
+    cdef cppclass FLINT_Rational:
+        FLINT_Rational()
+        FLINT_Rational(FLINT_Rational x)
+        FLINT_Rational(const FLINT_Integer& n, const FLINT_Integer& d)
+        fmpq* impl() 
+        void operator=(FLINT_Rational x)
+
+
 # "pplite/GMP_Integer.hh"
 
 #     cdef cppclass GMP_Integer
@@ -65,6 +86,22 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
 # "pplite/globals.hh"
  
     ctypedef size_t dim_type
+    cdef enum class Spec_Elem:
+        EMPTY
+        UNIVERSE
+
+
+    # cdef enum class Widen_Spec:
+    #     SAFE
+    #     RISKY
+
+    # cdef enum class Widen_Impl:
+    #     H79
+    #     BOXED_H79
+    #     BHRZ03
+
+    # Topol get_default_topology()
+
 
 # "pplite/Var.hh"
 
@@ -304,3 +341,68 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     # Index_Set invalid_rays(const Gens& gs)
     # void rase_higher_dims(Gens& gs, dim_type d)
     # Gen materialize(const Indices& is, const Gens& gs)
+
+    # "pplite/Itv.hh"
+    ctypedef struct Itv:
+        # cdef enum Kind
+        # #     UNIVERSE
+        # #     L_BOUNDED
+        # #     U_BOUNDED
+        # #     LU_BOUNDED
+        # #     EMPTY 
+        # Kind kind
+        FLINT_Rational lb
+        FLINT_Rational ub
+        Itv(Spec_Elem s)
+        Itv& empty()
+        Itv& universe()
+        Itv& zero()
+        cppbool check_inv()
+        cppbool is_empty()
+        cppbool is_universe()
+        cppbool has_lb()
+        cppbool has_ub()
+        cppbool inf_lb()
+        cppbool inf_ub()
+        cppbool is_bounded()
+        cppbool is_singleton()
+        cppbool is_zero()
+        cppbool is_disjoint_from(Itv& y)
+        cppbool intersects(Itv& y)
+        size_t hash()
+        FLINT_Rational length()
+        dim_type num_min_cons()
+        dim_type num_rays()
+        cppbool contains(Itv& y)
+        cppbool contains(FLINT_Integer& num, FLINT_Integer& den)
+        cppbool operator==(Itv& y)
+        void set_empty()
+        void set_universe()
+        void set_zero()
+        void set_lb(FLINT_Rational value)
+        void set_up(FLINT_Rational value)
+        void set_singleton(FLINT_Rational value)
+        void unset_lb()
+        void unset_ub()
+        cppbool glb_assign(const Itv& y)
+        void lub_assign(const Itv& y)
+        void widen_assign(const Itv& y)
+        cppbool refine_as_integral()
+        void complement_assign()
+        void add_assign(const Itv& y)
+        void mul_assign(const FLINT_Rational& r)
+
+    # Itv itv_from_con_inhomo(const Con& c)
+    # Itv itv_from_itv_con(const Con& c)
+    # Itv split_itv(Itv& itv, const Con&c, bool integral)
+    # Con get_lb_con(Var var, const Itv& itv)
+    # Con get_ub_con(Var var, const Itv& itv)
+    # Con get_eq_con(Var var, const Itv& itv)
+
+
+    # "pplite/BBox.hh"
+
+    # cppclass Box
+    # cppclass Box:
+    #     Box(Box& y)
+    #     Boxdim_type sd, S

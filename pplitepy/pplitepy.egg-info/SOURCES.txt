@@ -13,6 +13,8 @@ pplite/generators.pyx
 pplite/integer_conversions.cpp
 pplite/integer_conversions.pxd
 pplite/integer_conversions.pyx
+pplite/intervals.pxd
+pplite/intervals.pyx
 pplite/linear_algebra.cpp
 pplite/linear_algebra.pxd
 pplite/linear_algebra.pyx

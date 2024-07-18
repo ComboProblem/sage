@@ -80,7 +80,8 @@ extensions = [
     Extension('pplite.integer_conversions', sources=['pplite/integer_conversions.pyx']),
     Extension('pplite.linear_algebra', sources=['pplite/linear_algebra.pyx']),
     Extension('pplite.constraint', sources=['pplite/constraint.pyx']),
-    Extension('pplite.generators', sources=['pplite/generators.pyx'])
+    Extension('pplite.generators', sources=['pplite/generators.pyx']),
+    Extension('pplite.intervals', sources=['pplite/intervals.pyx'])
     ]
 #finish writing setup at some point
 setup(

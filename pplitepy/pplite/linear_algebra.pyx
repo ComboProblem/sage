@@ -6,6 +6,7 @@ cimport cython
 from gmpy2 cimport import_gmpy2, mpz, mpz_t, GMPy_MPZ_From_mpz, MPZ_Check
 from libcpp.vector cimport vector as cppvector
 from .constraint cimport _make_Constraint_from_richcmp
+# from .integer_conversions cimport FLINT_Integer_to_Python, Python_int_to_FLINT_Integer
 
 import_gmpy2()
 
