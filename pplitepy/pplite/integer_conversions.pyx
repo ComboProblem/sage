@@ -47,7 +47,7 @@ cdef FLINT_Rational_to_Python(FLINT_Rational& rational):
     den = GMPy_MPZ_From_mpz(b)
     mpz_clear(a)
     mpz_clear(b)
-    return num/den
+    return mpq(num/den)
 
 cdef FLINT_Rational Python_float_to_FLINT_Rational(rational):
     """ Converts python float or fraction """

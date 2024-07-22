@@ -343,13 +343,9 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     # Gen materialize(const Indices& is, const Gens& gs)
 
     # "pplite/Itv.hh"
-    ctypedef struct Itv:
-        # cdef enum Kind
-        # #     UNIVERSE
-        # #     L_BOUNDED
-        # #     U_BOUNDED
-        # #     LU_BOUNDED
-        # #     EMPTY 
+    cdef struct Itv:
+        # cdef enum Kind:
+        #     UNIVERSE, L_BOUNDED, U_BOUNDED, LU_BOUNDED, EMPTY 
         # Kind kind
         FLINT_Rational lb
         FLINT_Rational ub
