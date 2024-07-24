@@ -344,12 +344,17 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
 
     # "pplite/Itv.hh"
     cdef struct Itv:
-        # cdef enum Kind:
-        #     UNIVERSE, L_BOUNDED, U_BOUNDED, LU_BOUNDED, EMPTY 
+        # enum Kind "Itv::Kind"
+        # # enum Kind "Itv::Kind":
+        # #     UNIVERSE
+        # #     L_BOUNDED
+        # #     U_BOUNDED
+        # #     LU_BOUNDED
+        # #     EMPTY 
         # Kind kind
         FLINT_Rational lb
         FLINT_Rational ub
-        Itv(Spec_Elem s)
+        Itv(Spec_Elem s) #
         Itv& empty()
         Itv& universe()
         Itv& zero()
@@ -376,7 +381,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         void set_universe()
         void set_zero()
         void set_lb(FLINT_Rational value)
-        void set_up(FLINT_Rational value)
+        void set_ub(FLINT_Rational value)
         void set_singleton(FLINT_Rational value)
         void unset_lb()
         void unset_ub()
@@ -388,12 +393,12 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         void add_assign(const Itv& y)
         void mul_assign(const FLINT_Rational& r)
 
-    # Itv itv_from_con_inhomo(const Con& c)
-    # Itv itv_from_itv_con(const Con& c)
-    # Itv split_itv(Itv& itv, const Con&c, bool integral)
-    # Con get_lb_con(Var var, const Itv& itv)
-    # Con get_ub_con(Var var, const Itv& itv)
-    # Con get_eq_con(Var var, const Itv& itv)
+    Itv itv_from_con_inhomo(const Con& c)
+    Itv itv_from_itv_con(const Con& c)
+    Itv split_itv(Itv& itv, const Con&c, cppbool integral)
+    Con get_lb_con(Var var, const Itv& itv)
+    Con get_ub_con(Var var, const Itv& itv)
+    Con get_eq_con(Var var, const Itv& itv)
 
 
     # "pplite/BBox.hh"
