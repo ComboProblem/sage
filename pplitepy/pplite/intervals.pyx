@@ -50,10 +50,10 @@ cdef class Interval(object):
         >>> I = Interval()
         >>> I["lb"] = 3/2
         >>> I["lb"]
-        mpq(3/2)
+        mpq(3,2)
         >>> I["ub"] = 12
         >>> I["ub"]
-        mpq(12)
+        mpq(12,1)
         """
         if member == "lb":
             self.set_lower_bound(value)
@@ -66,14 +66,14 @@ cdef class Interval(object):
     def __getitem__(self, member):
         """
         TESTS:
-        >>> from pplite.interval import Interval
+        >>> from pplite.intervals import Interval
         >>> I = Interval()
         >>> I["lb"] = 3/2
         >>> I["lb"]
-        mpq(3/2)
+        mpq(3,2)
         >>> I["ub"] = 12
         >>> I["ub"]
-        mpq(12)
+        mpq(12,1)
         """
         if member == "lb":
             return self.get_lower_bound()
@@ -88,11 +88,11 @@ cdef class Interval(object):
         INPUT: Value - Rational or value convertible to python rational. 
 
         TESTS:
-        >>> from pplite.interval import Interval
+        >>> from pplite.intervals import Interval
         >>> I = Interval()
         >>> I["lb"] = 3/2 #  indirect test
         >>> I["lb"]
-        mpq(3/2)
+        mpq(3,2)
         """
         cdef FLINT_Rational lower_bound
         lower_bound = Python_float_to_FLINT_Rational(value)
@@ -105,11 +105,11 @@ cdef class Interval(object):
         OUTPUT: Rational
 
         TESTS:
-        >>> from pplite.interval import Interval
+        >>> from pplite.intervals import Interval
         >>> I = Interval()
         >>> I["lb"] = 3/2 #  indirect test
         >>> I["lb"]
-        mpq(3/2)
+        mpq(3,2)
         """
         cdef FLINT_Rational lower_bound
         lower_bound = self.interval.lb
@@ -122,28 +122,28 @@ cdef class Interval(object):
         INPUT: Value - Rational or value convertible to python rational. 
 
         TESTS:
-        >>> from pplite.interval import Interval
+        >>> from pplite.intervals import Interval
         >>> I = Interval()
         >>> I["ub"] = 3/2 #  indirect test
         >>> I["ub"]
-        mpq(3/2)
+        mpq(3,2)
         """
         cdef FLINT_Rational upper_bound
         upper_bound = Python_float_to_FLINT_Rational(value)
         self.interval.set_ub(upper_bound)
 
-    def get_upper_bound(self, value):
+    def get_upper_bound(self):
         """
         Gets the upper bound of the interval. 
 
         OUTPUT: Rational
 
         TESTS:
-        >>> from pplite.interval import Interval
+        >>> from pplite.intervals import Interval
         >>> I = Interval()
         >>> I["ub"] = 3/2 #  indirect test
         >>> I["ub"]
-        mpq(3/2)
+        mpq(3,2)
         """
         cdef FLINT_Rational upper_bound
         upper_bound  = self.interval.ub
@@ -229,12 +229,12 @@ cdef class Interval(object):
         >>> from pplite.intervals import Interval
         >>> I = Interval()
         >>> I["lb"] = 3/2
-        >>> I.has_lb()
-        True
+        >>> I.has_ub()
+        False
         >>> J = Interval()
         >>> J["ub"] = 12
-        >>> J.has_lb()
-        False
+        >>> J.has_ub()
+        True
         """
         return self.interval.has_ub()
 
@@ -291,7 +291,7 @@ cdef class Interval(object):
         >>> J = Interval()
         >>> J.set_zero()
         >>> J.is_zero()
-        False
+        True
         """
         return self.interval.is_zero()
 

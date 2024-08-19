@@ -4,13 +4,13 @@
 {
     "distutils": {
         "depends": [
-            "/tmp/pip-build-env-tisuf9c_/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
-            "/tmp/pip-build-env-tisuf9c_/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
-            "/tmp/pip-build-env-tisuf9c_/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
-            "/tmp/pip-build-env-tisuf9c_/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
+            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
+            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
+            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
+            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
         ],
         "include_dirs": [
-            "/tmp/pip-build-env-tisuf9c_/overlay/lib/python3.10/site-packages/gmpy2"
+            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2"
         ],
         "language": "c++",
         "libraries": [
@@ -1761,55 +1761,44 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
 #define __Pyx_PyObject_FastCall(func, args, nargs)  __Pyx_PyObject_FastCallDict(func, args, (size_t)(nargs), NULL)
 static CYTHON_INLINE PyObject* __Pyx_PyObject_FastCallDict(PyObject *func, PyObject **args, size_t nargs, PyObject *kwargs);
 
-/* PyObjectCallOneArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
+/* RaiseTooManyValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
 
-/* PyDictVersioning.proto */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
-#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
-    (version_var) = __PYX_GET_DICT_VERSION(dict);\
-    (cache_var) = (value);
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
-        (VAR) = __pyx_dict_cached_value;\
-    } else {\
-        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
-        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
-    }\
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
-#else
-#define __PYX_GET_DICT_VERSION(dict)  (0)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+/* RaiseNeedMoreValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
+
+/* IterFinish.proto */
+static CYTHON_INLINE int __Pyx_IterFinish(void);
+
+/* UnpackItemEndCheck.proto */
+static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
+
+/* GetTopmostException.proto */
+#if CYTHON_USE_EXC_INFO_STACK && CYTHON_FAST_THREAD_STATE
+static _PyErr_StackItem * __Pyx_PyErr_GetTopmostException(PyThreadState *tstate);
 #endif
 
-/* GetModuleGlobalName.proto */
-#if CYTHON_USE_DICT_VERSIONS
-#define __Pyx_GetModuleGlobalName(var, name)  do {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    (var) = (likely(__pyx_dict_version == __PYX_GET_DICT_VERSION(__pyx_d))) ?\
-        (likely(__pyx_dict_cached_value) ? __Pyx_NewRef(__pyx_dict_cached_value) : __Pyx_GetBuiltinName(name)) :\
-        __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
-} while(0)
-#define __Pyx_GetModuleGlobalNameUncached(var, name)  do {\
-    PY_UINT64_T __pyx_dict_version;\
-    PyObject *__pyx_dict_cached_value;\
-    (var) = __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
-} while(0)
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value);
+/* SaveResetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_ExceptionSave(type, value, tb)  __Pyx__ExceptionSave(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#define __Pyx_ExceptionReset(type, value, tb)  __Pyx__ExceptionReset(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
 #else
-#define __Pyx_GetModuleGlobalName(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
-#define __Pyx_GetModuleGlobalNameUncached(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
+#define __Pyx_ExceptionSave(type, value, tb)   PyErr_GetExcInfo(type, value, tb)
+#define __Pyx_ExceptionReset(type, value, tb)  PyErr_SetExcInfo(type, value, tb)
 #endif
+
+/* GetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#else
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
+#endif
+
+/* RaiseException.proto */
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
 /* MoveIfSupported.proto */
 #if CYTHON_USE_CPP_STD_MOVE
@@ -1818,9 +1807,6 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #else
   #define __PYX_STD_MOVE_IF_SUPPORTED(x) x
 #endif
-
-/* RaiseException.proto */
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
 /* TupleAndListFromArray.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1917,12 +1903,6 @@ enum __Pyx_ImportType_CheckSize_3_0_11 {
 };
 static PyTypeObject *__Pyx_ImportType_3_0_11(PyObject* module, const char *module_name, const char *class_name, size_t size, size_t alignment, enum __Pyx_ImportType_CheckSize_3_0_11 check_size);
 #endif
-
-/* Import.proto */
-static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
-
-/* ImportFrom.proto */
-static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name);
 
 /* IncludeStructmemberH.proto */
 #include <structmember.h>
@@ -2072,6 +2052,32 @@ static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml,
                                       PyObject *module, PyObject *globals,
                                       PyObject* code);
 
+/* PyDictVersioning.proto */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
+#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
+    (version_var) = __PYX_GET_DICT_VERSION(dict);\
+    (cache_var) = (value);
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
+        (VAR) = __pyx_dict_cached_value;\
+    } else {\
+        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
+        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
+    }\
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
+#else
+#define __PYX_GET_DICT_VERSION(dict)  (0)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+#endif
+
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
 #define __Pyx_CLineForTraceback(tstate, c_line)  (((CYTHON_CLINE_IN_TRACEBACK)) ? c_line : 0)
@@ -2187,18 +2193,13 @@ int __pyx_module_is_main_pplite__integer_conversions = 0;
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin_ValueError;
 /* #### Code section: string_decls ### */
-static const char __pyx_k__2[] = ".";
-static const char __pyx_k__5[] = "?";
+static const char __pyx_k__4[] = "?";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_import[] = "__import__";
-static const char __pyx_k_numbers[] = "numbers";
-static const char __pyx_k_Rational[] = "Rational";
-static const char __pyx_k_numerator[] = "numerator";
 static const char __pyx_k_ValueError[] = "ValueError";
-static const char __pyx_k_denominator[] = "denominator";
 static const char __pyx_k_is_coroutine[] = "_is_coroutine";
+static const char __pyx_k_as_integer_ratio[] = "as_integer_ratio";
 static const char __pyx_k_possible_integer[] = "possible_integer";
 static const char __pyx_k_asyncio_coroutines[] = "asyncio.coroutines";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
@@ -2256,27 +2257,22 @@ typedef struct {
   #if CYTHON_USE_MODULE_STATE
   #endif
   PyObject *__pyx_n_s_FLINT_Integer_Conversion_Check;
-  PyObject *__pyx_n_s_Rational;
   PyObject *__pyx_kp_u_Rational_Conversion_Failed;
   PyObject *__pyx_n_s_ValueError;
-  PyObject *__pyx_kp_u__2;
-  PyObject *__pyx_n_s__5;
+  PyObject *__pyx_n_s__4;
+  PyObject *__pyx_n_s_as_integer_ratio;
   PyObject *__pyx_n_s_asyncio_coroutines;
   PyObject *__pyx_n_s_cline_in_traceback;
-  PyObject *__pyx_n_s_denominator;
-  PyObject *__pyx_n_s_import;
   PyObject *__pyx_n_s_is_coroutine;
   PyObject *__pyx_n_s_main;
   PyObject *__pyx_n_s_name;
-  PyObject *__pyx_n_s_numbers;
-  PyObject *__pyx_n_s_numerator;
   PyObject *__pyx_n_s_possible_integer;
   PyObject *__pyx_n_s_pplite_integer_conversions;
   PyObject *__pyx_kp_s_pplite_integer_conversions_pyx;
   PyObject *__pyx_n_s_test;
   PyObject *__pyx_tuple_;
-  PyObject *__pyx_tuple__3;
-  PyObject *__pyx_codeobj__4;
+  PyObject *__pyx_tuple__2;
+  PyObject *__pyx_codeobj__3;
 } __pyx_mstate;
 
 #if CYTHON_USE_MODULE_STATE
@@ -2324,27 +2320,22 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_ptype_5gmpy2_5gmpy2_mpfr);
   Py_CLEAR(clear_module_state->__pyx_ptype_5gmpy2_5gmpy2_mpc);
   Py_CLEAR(clear_module_state->__pyx_n_s_FLINT_Integer_Conversion_Check);
-  Py_CLEAR(clear_module_state->__pyx_n_s_Rational);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Rational_Conversion_Failed);
   Py_CLEAR(clear_module_state->__pyx_n_s_ValueError);
-  Py_CLEAR(clear_module_state->__pyx_kp_u__2);
-  Py_CLEAR(clear_module_state->__pyx_n_s__5);
+  Py_CLEAR(clear_module_state->__pyx_n_s__4);
+  Py_CLEAR(clear_module_state->__pyx_n_s_as_integer_ratio);
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
   Py_CLEAR(clear_module_state->__pyx_n_s_cline_in_traceback);
-  Py_CLEAR(clear_module_state->__pyx_n_s_denominator);
-  Py_CLEAR(clear_module_state->__pyx_n_s_import);
   Py_CLEAR(clear_module_state->__pyx_n_s_is_coroutine);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
-  Py_CLEAR(clear_module_state->__pyx_n_s_numbers);
-  Py_CLEAR(clear_module_state->__pyx_n_s_numerator);
   Py_CLEAR(clear_module_state->__pyx_n_s_possible_integer);
   Py_CLEAR(clear_module_state->__pyx_n_s_pplite_integer_conversions);
   Py_CLEAR(clear_module_state->__pyx_kp_s_pplite_integer_conversions_pyx);
   Py_CLEAR(clear_module_state->__pyx_n_s_test);
   Py_CLEAR(clear_module_state->__pyx_tuple_);
-  Py_CLEAR(clear_module_state->__pyx_tuple__3);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__4);
+  Py_CLEAR(clear_module_state->__pyx_tuple__2);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__3);
   return 0;
 }
 #endif
@@ -2370,27 +2361,22 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_ptype_5gmpy2_5gmpy2_mpfr);
   Py_VISIT(traverse_module_state->__pyx_ptype_5gmpy2_5gmpy2_mpc);
   Py_VISIT(traverse_module_state->__pyx_n_s_FLINT_Integer_Conversion_Check);
-  Py_VISIT(traverse_module_state->__pyx_n_s_Rational);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Rational_Conversion_Failed);
   Py_VISIT(traverse_module_state->__pyx_n_s_ValueError);
-  Py_VISIT(traverse_module_state->__pyx_kp_u__2);
-  Py_VISIT(traverse_module_state->__pyx_n_s__5);
+  Py_VISIT(traverse_module_state->__pyx_n_s__4);
+  Py_VISIT(traverse_module_state->__pyx_n_s_as_integer_ratio);
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
   Py_VISIT(traverse_module_state->__pyx_n_s_cline_in_traceback);
-  Py_VISIT(traverse_module_state->__pyx_n_s_denominator);
-  Py_VISIT(traverse_module_state->__pyx_n_s_import);
   Py_VISIT(traverse_module_state->__pyx_n_s_is_coroutine);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
-  Py_VISIT(traverse_module_state->__pyx_n_s_numbers);
-  Py_VISIT(traverse_module_state->__pyx_n_s_numerator);
   Py_VISIT(traverse_module_state->__pyx_n_s_possible_integer);
   Py_VISIT(traverse_module_state->__pyx_n_s_pplite_integer_conversions);
   Py_VISIT(traverse_module_state->__pyx_kp_s_pplite_integer_conversions_pyx);
   Py_VISIT(traverse_module_state->__pyx_n_s_test);
   Py_VISIT(traverse_module_state->__pyx_tuple_);
-  Py_VISIT(traverse_module_state->__pyx_tuple__3);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__4);
+  Py_VISIT(traverse_module_state->__pyx_tuple__2);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__3);
   return 0;
 }
 #endif
@@ -2440,27 +2426,22 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #if CYTHON_USE_MODULE_STATE
 #endif
 #define __pyx_n_s_FLINT_Integer_Conversion_Check __pyx_mstate_global->__pyx_n_s_FLINT_Integer_Conversion_Check
-#define __pyx_n_s_Rational __pyx_mstate_global->__pyx_n_s_Rational
 #define __pyx_kp_u_Rational_Conversion_Failed __pyx_mstate_global->__pyx_kp_u_Rational_Conversion_Failed
 #define __pyx_n_s_ValueError __pyx_mstate_global->__pyx_n_s_ValueError
-#define __pyx_kp_u__2 __pyx_mstate_global->__pyx_kp_u__2
-#define __pyx_n_s__5 __pyx_mstate_global->__pyx_n_s__5
+#define __pyx_n_s__4 __pyx_mstate_global->__pyx_n_s__4
+#define __pyx_n_s_as_integer_ratio __pyx_mstate_global->__pyx_n_s_as_integer_ratio
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
 #define __pyx_n_s_cline_in_traceback __pyx_mstate_global->__pyx_n_s_cline_in_traceback
-#define __pyx_n_s_denominator __pyx_mstate_global->__pyx_n_s_denominator
-#define __pyx_n_s_import __pyx_mstate_global->__pyx_n_s_import
 #define __pyx_n_s_is_coroutine __pyx_mstate_global->__pyx_n_s_is_coroutine
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
-#define __pyx_n_s_numbers __pyx_mstate_global->__pyx_n_s_numbers
-#define __pyx_n_s_numerator __pyx_mstate_global->__pyx_n_s_numerator
 #define __pyx_n_s_possible_integer __pyx_mstate_global->__pyx_n_s_possible_integer
 #define __pyx_n_s_pplite_integer_conversions __pyx_mstate_global->__pyx_n_s_pplite_integer_conversions
 #define __pyx_kp_s_pplite_integer_conversions_pyx __pyx_mstate_global->__pyx_kp_s_pplite_integer_conversions_pyx
 #define __pyx_n_s_test __pyx_mstate_global->__pyx_n_s_test
 #define __pyx_tuple_ __pyx_mstate_global->__pyx_tuple_
-#define __pyx_tuple__3 __pyx_mstate_global->__pyx_tuple__3
-#define __pyx_codeobj__4 __pyx_mstate_global->__pyx_codeobj__4
+#define __pyx_tuple__2 __pyx_mstate_global->__pyx_tuple__2
+#define __pyx_codeobj__3 __pyx_mstate_global->__pyx_codeobj__3
 /* #### Code section: module_code ### */
 
 /* "gmpy2/gmpy2.pxd":129
@@ -2915,7 +2896,7 @@ static CYTHON_INLINE MPC_Object *__pyx_f_5gmpy2_5gmpy2_GMPy_MPC_From_mpfr(mpfr_s
   return __pyx_r;
 }
 
-/* "pplite/integer_conversions.pyx":13
+/* "pplite/integer_conversions.pyx":15
  * import_gmpy2()
  * 
  * cdef FLINT_Integer_to_Python(FLINT_Integer& integer):             # <<<<<<<<<<<<<<
@@ -2934,7 +2915,7 @@ static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Integer_to_Python(p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("FLINT_Integer_to_Python", 1);
 
-  /* "pplite/integer_conversions.pyx":20
+  /* "pplite/integer_conversions.pyx":22
  *     """
  *     cdef mpz_t new_int
  *     mpz_init(new_int)             # <<<<<<<<<<<<<<
@@ -2943,7 +2924,7 @@ static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Integer_to_Python(p
  */
   mpz_init(__pyx_v_new_int);
 
-  /* "pplite/integer_conversions.pyx":21
+  /* "pplite/integer_conversions.pyx":23
  *     cdef mpz_t new_int
  *     mpz_init(new_int)
  *     fmpz_get_mpz(new_int, integer.impl())             # <<<<<<<<<<<<<<
@@ -2952,19 +2933,19 @@ static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Integer_to_Python(p
  */
   fmpz_get_mpz(__pyx_v_new_int, __pyx_v_integer.impl());
 
-  /* "pplite/integer_conversions.pyx":22
+  /* "pplite/integer_conversions.pyx":24
  *     mpz_init(new_int)
  *     fmpz_get_mpz(new_int, integer.impl())
  *     y = GMPy_MPZ_From_mpz(new_int)             # <<<<<<<<<<<<<<
  *     mpz_clear(new_int)
  *     return y
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5gmpy2_5gmpy2_GMPy_MPZ_From_mpz(__pyx_v_new_int)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5gmpy2_5gmpy2_GMPy_MPZ_From_mpz(__pyx_v_new_int)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_y = ((MPZ_Object *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pplite/integer_conversions.pyx":23
+  /* "pplite/integer_conversions.pyx":25
  *     fmpz_get_mpz(new_int, integer.impl())
  *     y = GMPy_MPZ_From_mpz(new_int)
  *     mpz_clear(new_int)             # <<<<<<<<<<<<<<
@@ -2973,7 +2954,7 @@ static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Integer_to_Python(p
  */
   mpz_clear(__pyx_v_new_int);
 
-  /* "pplite/integer_conversions.pyx":24
+  /* "pplite/integer_conversions.pyx":26
  *     y = GMPy_MPZ_From_mpz(new_int)
  *     mpz_clear(new_int)
  *     return y             # <<<<<<<<<<<<<<
@@ -2985,7 +2966,7 @@ static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Integer_to_Python(p
   __pyx_r = ((PyObject *)__pyx_v_y);
   goto __pyx_L0;
 
-  /* "pplite/integer_conversions.pyx":13
+  /* "pplite/integer_conversions.pyx":15
  * import_gmpy2()
  * 
  * cdef FLINT_Integer_to_Python(FLINT_Integer& integer):             # <<<<<<<<<<<<<<
@@ -3005,7 +2986,7 @@ static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Integer_to_Python(p
   return __pyx_r;
 }
 
-/* "pplite/integer_conversions.pyx":26
+/* "pplite/integer_conversions.pyx":28
  *     return y
  * 
  * cdef FLINT_Integer Python_int_to_FLINT_Integer(integer):             # <<<<<<<<<<<<<<
@@ -3023,7 +3004,7 @@ static pplite::FLINT_Integer __pyx_f_6pplite_19integer_conversions_Python_int_to
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "pplite/integer_conversions.pyx":29
+  /* "pplite/integer_conversions.pyx":31
  *     cdef fmpz_t x
  *     cdef fmpz y
  *     if isinstance(integer, (int, str)):             # <<<<<<<<<<<<<<
@@ -3041,7 +3022,7 @@ static pplite::FLINT_Integer __pyx_f_6pplite_19integer_conversions_Python_int_to
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "pplite/integer_conversions.pyx":30
+    /* "pplite/integer_conversions.pyx":32
  *     cdef fmpz y
  *     if isinstance(integer, (int, str)):
  *         fmpz_init(x)             # <<<<<<<<<<<<<<
@@ -3050,17 +3031,17 @@ static pplite::FLINT_Integer __pyx_f_6pplite_19integer_conversions_Python_int_to
  */
     fmpz_init(__pyx_v_x);
 
-    /* "pplite/integer_conversions.pyx":31
+    /* "pplite/integer_conversions.pyx":33
  *     if isinstance(integer, (int, str)):
  *         fmpz_init(x)
  *         fmpz_set_si(x, integer)             # <<<<<<<<<<<<<<
  *     return FLINT_Integer(x)
  *     if MPZ_Check(integer): # is this okay?
  */
-    __pyx_t_3 = __Pyx_PyInt_As_mp_limb_signed_t(__pyx_v_integer); if (unlikely((__pyx_t_3 == ((mp_limb_signed_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_As_mp_limb_signed_t(__pyx_v_integer); if (unlikely((__pyx_t_3 == ((mp_limb_signed_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 33, __pyx_L1_error)
     fmpz_set_si(__pyx_v_x, __pyx_t_3);
 
-    /* "pplite/integer_conversions.pyx":29
+    /* "pplite/integer_conversions.pyx":31
  *     cdef fmpz_t x
  *     cdef fmpz y
  *     if isinstance(integer, (int, str)):             # <<<<<<<<<<<<<<
@@ -3069,7 +3050,7 @@ static pplite::FLINT_Integer __pyx_f_6pplite_19integer_conversions_Python_int_to
  */
   }
 
-  /* "pplite/integer_conversions.pyx":32
+  /* "pplite/integer_conversions.pyx":34
  *         fmpz_init(x)
  *         fmpz_set_si(x, integer)
  *     return FLINT_Integer(x)             # <<<<<<<<<<<<<<
@@ -3079,7 +3060,7 @@ static pplite::FLINT_Integer __pyx_f_6pplite_19integer_conversions_Python_int_to
   __pyx_r = pplite::FLINT_Integer(__pyx_v_x);
   goto __pyx_L0;
 
-  /* "pplite/integer_conversions.pyx":26
+  /* "pplite/integer_conversions.pyx":28
  *     return y
  * 
  * cdef FLINT_Integer Python_int_to_FLINT_Integer(integer):             # <<<<<<<<<<<<<<
@@ -3095,7 +3076,7 @@ static pplite::FLINT_Integer __pyx_f_6pplite_19integer_conversions_Python_int_to
   return __pyx_r;
 }
 
-/* "pplite/integer_conversions.pyx":39
+/* "pplite/integer_conversions.pyx":41
  * 
  * 
  * cdef FLINT_Rational_to_Python(FLINT_Rational& rational):             # <<<<<<<<<<<<<<
@@ -3106,18 +3087,16 @@ static pplite::FLINT_Integer __pyx_f_6pplite_19integer_conversions_Python_int_to
 static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Rational_to_Python(pplite::FLINT_Rational &__pyx_v_rational) {
   mpz_t __pyx_v_a;
   mpz_t __pyx_v_b;
-  MPZ_Object *__pyx_v_num = NULL;
-  MPZ_Object *__pyx_v_den = NULL;
+  MPQ_Object *__pyx_v_frac = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("FLINT_Rational_to_Python", 1);
 
-  /* "pplite/integer_conversions.pyx":43
+  /* "pplite/integer_conversions.pyx":45
  *     cdef mpz_t a
  *     cdef mpz_t b
  *     mpz_init(a)             # <<<<<<<<<<<<<<
@@ -3126,84 +3105,67 @@ static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Rational_to_Python(
  */
   mpz_init(__pyx_v_a);
 
-  /* "pplite/integer_conversions.pyx":44
+  /* "pplite/integer_conversions.pyx":46
  *     cdef mpz_t b
  *     mpz_init(a)
  *     mpz_init(b)             # <<<<<<<<<<<<<<
  *     fmpq_get_mpz_frac(a , b, rational.impl())
- *     num = GMPy_MPZ_From_mpz(a)
+ *     frac = GMPy_MPQ_From_mpz(a, b)
  */
   mpz_init(__pyx_v_b);
 
-  /* "pplite/integer_conversions.pyx":45
+  /* "pplite/integer_conversions.pyx":47
  *     mpz_init(a)
  *     mpz_init(b)
  *     fmpq_get_mpz_frac(a , b, rational.impl())             # <<<<<<<<<<<<<<
- *     num = GMPy_MPZ_From_mpz(a)
- *     den = GMPy_MPZ_From_mpz(b)
+ *     frac = GMPy_MPQ_From_mpz(a, b)
+ *     mpz_clear(a)
  */
   fmpq_get_mpz_frac(__pyx_v_a, __pyx_v_b, __pyx_v_rational.impl());
 
-  /* "pplite/integer_conversions.pyx":46
+  /* "pplite/integer_conversions.pyx":48
  *     mpz_init(b)
  *     fmpq_get_mpz_frac(a , b, rational.impl())
- *     num = GMPy_MPZ_From_mpz(a)             # <<<<<<<<<<<<<<
- *     den = GMPy_MPZ_From_mpz(b)
- *     mpz_clear(a)
- */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5gmpy2_5gmpy2_GMPy_MPZ_From_mpz(__pyx_v_a)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_num = ((MPZ_Object *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "pplite/integer_conversions.pyx":47
- *     fmpq_get_mpz_frac(a , b, rational.impl())
- *     num = GMPy_MPZ_From_mpz(a)
- *     den = GMPy_MPZ_From_mpz(b)             # <<<<<<<<<<<<<<
+ *     frac = GMPy_MPQ_From_mpz(a, b)             # <<<<<<<<<<<<<<
  *     mpz_clear(a)
  *     mpz_clear(b)
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5gmpy2_5gmpy2_GMPy_MPZ_From_mpz(__pyx_v_b)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5gmpy2_5gmpy2_GMPy_MPQ_From_mpz(__pyx_v_a, __pyx_v_b)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_den = ((MPZ_Object *)__pyx_t_1);
+  __pyx_v_frac = ((MPQ_Object *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pplite/integer_conversions.pyx":48
- *     num = GMPy_MPZ_From_mpz(a)
- *     den = GMPy_MPZ_From_mpz(b)
+  /* "pplite/integer_conversions.pyx":49
+ *     fmpq_get_mpz_frac(a , b, rational.impl())
+ *     frac = GMPy_MPQ_From_mpz(a, b)
  *     mpz_clear(a)             # <<<<<<<<<<<<<<
  *     mpz_clear(b)
- *     return mpq(num/den)
+ *     return frac
  */
   mpz_clear(__pyx_v_a);
 
-  /* "pplite/integer_conversions.pyx":49
- *     den = GMPy_MPZ_From_mpz(b)
+  /* "pplite/integer_conversions.pyx":50
+ *     frac = GMPy_MPQ_From_mpz(a, b)
  *     mpz_clear(a)
  *     mpz_clear(b)             # <<<<<<<<<<<<<<
- *     return mpq(num/den)
+ *     return frac
  * 
  */
   mpz_clear(__pyx_v_b);
 
-  /* "pplite/integer_conversions.pyx":50
+  /* "pplite/integer_conversions.pyx":51
  *     mpz_clear(a)
  *     mpz_clear(b)
- *     return mpq(num/den)             # <<<<<<<<<<<<<<
+ *     return frac             # <<<<<<<<<<<<<<
  * 
  * cdef FLINT_Rational Python_float_to_FLINT_Rational(rational):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyNumber_Divide(((PyObject *)__pyx_v_num), ((PyObject *)__pyx_v_den)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_5gmpy2_5gmpy2_mpq), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __Pyx_INCREF((PyObject *)__pyx_v_frac);
+  __pyx_r = ((PyObject *)__pyx_v_frac);
   goto __pyx_L0;
 
-  /* "pplite/integer_conversions.pyx":39
+  /* "pplite/integer_conversions.pyx":41
  * 
  * 
  * cdef FLINT_Rational_to_Python(FLINT_Rational& rational):             # <<<<<<<<<<<<<<
@@ -3214,193 +3176,262 @@ static PyObject *__pyx_f_6pplite_19integer_conversions_FLINT_Rational_to_Python(
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("pplite.integer_conversions.FLINT_Rational_to_Python", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_num);
-  __Pyx_XDECREF((PyObject *)__pyx_v_den);
+  __Pyx_XDECREF((PyObject *)__pyx_v_frac);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "pplite/integer_conversions.pyx":52
- *     return mpq(num/den)
+/* "pplite/integer_conversions.pyx":53
+ *     return frac
  * 
  * cdef FLINT_Rational Python_float_to_FLINT_Rational(rational):             # <<<<<<<<<<<<<<
  *     """ Converts python float or fraction """
- *     # I'm unsure of how to handle this in terms of expected input. I'm going to
+ *     cdef FLINT_Integer num
  */
 
 static pplite::FLINT_Rational __pyx_f_6pplite_19integer_conversions_Python_float_to_FLINT_Rational(PyObject *__pyx_v_rational) {
   pplite::FLINT_Integer __pyx_v_num;
+  PyObject *__pyx_v_numerator = NULL;
+  PyObject *__pyx_v_denominator = NULL;
   pplite::FLINT_Integer __pyx_v_dem;
   pplite::FLINT_Rational __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  int __pyx_t_3;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  unsigned int __pyx_t_6;
-  pplite::FLINT_Integer __pyx_t_7;
+  PyObject *__pyx_t_6 = NULL;
+  unsigned int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *(*__pyx_t_9)(PyObject *);
+  int __pyx_t_10;
+  pplite::FLINT_Integer __pyx_t_11;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("Python_float_to_FLINT_Rational", 0);
-  __Pyx_INCREF(__pyx_v_rational);
+  __Pyx_RefNannySetupContext("Python_float_to_FLINT_Rational", 1);
+
+  /* "pplite/integer_conversions.pyx":57
+ *     cdef FLINT_Integer num
+ *     cdef FLINT_Integer den
+ *     try:             # <<<<<<<<<<<<<<
+ *         numerator, denominator = rational.as_integer_ratio()
+ *     except ValueError:
+ */
+  {
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ExceptionSave(&__pyx_t_1, &__pyx_t_2, &__pyx_t_3);
+    __Pyx_XGOTREF(__pyx_t_1);
+    __Pyx_XGOTREF(__pyx_t_2);
+    __Pyx_XGOTREF(__pyx_t_3);
+    /*try:*/ {
+
+      /* "pplite/integer_conversions.pyx":58
+ *     cdef FLINT_Integer den
+ *     try:
+ *         numerator, denominator = rational.as_integer_ratio()             # <<<<<<<<<<<<<<
+ *     except ValueError:
+ *         raise ValueError("Rational Conversion Failed.")
+ */
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_rational, __pyx_n_s_as_integer_ratio); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 58, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_6 = NULL;
+      __pyx_t_7 = 0;
+      #if CYTHON_UNPACK_METHODS
+      if (likely(PyMethod_Check(__pyx_t_5))) {
+        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+        if (likely(__pyx_t_6)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+          __Pyx_INCREF(__pyx_t_6);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_5, function);
+          __pyx_t_7 = 1;
+        }
+      }
+      #endif
+      {
+        PyObject *__pyx_callargs[2] = {__pyx_t_6, NULL};
+        __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_7, 0+__pyx_t_7);
+        __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 58, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      }
+      if ((likely(PyTuple_CheckExact(__pyx_t_4))) || (PyList_CheckExact(__pyx_t_4))) {
+        PyObject* sequence = __pyx_t_4;
+        Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
+        if (unlikely(size != 2)) {
+          if (size > 2) __Pyx_RaiseTooManyValuesError(2);
+          else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
+          __PYX_ERR(0, 58, __pyx_L3_error)
+        }
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        if (likely(PyTuple_CheckExact(sequence))) {
+          __pyx_t_5 = PyTuple_GET_ITEM(sequence, 0); 
+          __pyx_t_6 = PyTuple_GET_ITEM(sequence, 1); 
+        } else {
+          __pyx_t_5 = PyList_GET_ITEM(sequence, 0); 
+          __pyx_t_6 = PyList_GET_ITEM(sequence, 1); 
+        }
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_6);
+        #else
+        __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 58, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 58, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_6);
+        #endif
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      } else {
+        Py_ssize_t index = -1;
+        __pyx_t_8 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 58, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_8);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __pyx_t_9 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_8);
+        index = 0; __pyx_t_5 = __pyx_t_9(__pyx_t_8); if (unlikely(!__pyx_t_5)) goto __pyx_L9_unpacking_failed;
+        __Pyx_GOTREF(__pyx_t_5);
+        index = 1; __pyx_t_6 = __pyx_t_9(__pyx_t_8); if (unlikely(!__pyx_t_6)) goto __pyx_L9_unpacking_failed;
+        __Pyx_GOTREF(__pyx_t_6);
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) __PYX_ERR(0, 58, __pyx_L3_error)
+        __pyx_t_9 = NULL;
+        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+        goto __pyx_L10_unpacking_done;
+        __pyx_L9_unpacking_failed:;
+        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+        __pyx_t_9 = NULL;
+        if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
+        __PYX_ERR(0, 58, __pyx_L3_error)
+        __pyx_L10_unpacking_done:;
+      }
+      __pyx_v_numerator = __pyx_t_5;
+      __pyx_t_5 = 0;
+      __pyx_v_denominator = __pyx_t_6;
+      __pyx_t_6 = 0;
+
+      /* "pplite/integer_conversions.pyx":57
+ *     cdef FLINT_Integer num
+ *     cdef FLINT_Integer den
+ *     try:             # <<<<<<<<<<<<<<
+ *         numerator, denominator = rational.as_integer_ratio()
+ *     except ValueError:
+ */
+    }
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    goto __pyx_L8_try_end;
+    __pyx_L3_error:;
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+    /* "pplite/integer_conversions.pyx":59
+ *     try:
+ *         numerator, denominator = rational.as_integer_ratio()
+ *     except ValueError:             # <<<<<<<<<<<<<<
+ *         raise ValueError("Rational Conversion Failed.")
+ *     num = Python_int_to_FLINT_Integer(numerator)
+ */
+    __pyx_t_10 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_ValueError);
+    if (__pyx_t_10) {
+      __Pyx_AddTraceback("pplite.integer_conversions.Python_float_to_FLINT_Rational", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_6, &__pyx_t_5) < 0) __PYX_ERR(0, 59, __pyx_L5_except_error)
+      __Pyx_XGOTREF(__pyx_t_4);
+      __Pyx_XGOTREF(__pyx_t_6);
+      __Pyx_XGOTREF(__pyx_t_5);
+
+      /* "pplite/integer_conversions.pyx":60
+ *         numerator, denominator = rational.as_integer_ratio()
+ *     except ValueError:
+ *         raise ValueError("Rational Conversion Failed.")             # <<<<<<<<<<<<<<
+ *     num = Python_int_to_FLINT_Integer(numerator)
+ *     dem = Python_int_to_FLINT_Integer(denominator)
+ */
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 60, __pyx_L5_except_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_Raise(__pyx_t_8, 0, 0, 0);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __PYX_ERR(0, 60, __pyx_L5_except_error)
+    }
+    goto __pyx_L5_except_error;
+
+    /* "pplite/integer_conversions.pyx":57
+ *     cdef FLINT_Integer num
+ *     cdef FLINT_Integer den
+ *     try:             # <<<<<<<<<<<<<<
+ *         numerator, denominator = rational.as_integer_ratio()
+ *     except ValueError:
+ */
+    __pyx_L5_except_error:;
+    __Pyx_XGIVEREF(__pyx_t_1);
+    __Pyx_XGIVEREF(__pyx_t_2);
+    __Pyx_XGIVEREF(__pyx_t_3);
+    __Pyx_ExceptionReset(__pyx_t_1, __pyx_t_2, __pyx_t_3);
+    goto __pyx_L1_error;
+    __pyx_L8_try_end:;
+  }
 
   /* "pplite/integer_conversions.pyx":61
- *     cdef FLINT_Integer num
- *     cdef FLINT_Integer den
- *     if not isinstance(rational, Rational):             # <<<<<<<<<<<<<<
- *         rational = Rational(rational) #  try to make the type to a rational if possible.
- *     if isinstance(rational, Rational):
+ *     except ValueError:
+ *         raise ValueError("Rational Conversion Failed.")
+ *     num = Python_int_to_FLINT_Integer(numerator)             # <<<<<<<<<<<<<<
+ *     dem = Python_int_to_FLINT_Integer(denominator)
+ *     return FLINT_Rational(num, dem)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_Rational); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_IsInstance(__pyx_v_rational, __pyx_t_1); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = (!__pyx_t_2);
-  if (__pyx_t_3) {
+  __pyx_t_11 = __pyx_f_6pplite_19integer_conversions_Python_int_to_FLINT_Integer(__pyx_v_numerator); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_v_num = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_11);
 
-    /* "pplite/integer_conversions.pyx":62
- *     cdef FLINT_Integer den
- *     if not isinstance(rational, Rational):
- *         rational = Rational(rational) #  try to make the type to a rational if possible.             # <<<<<<<<<<<<<<
- *     if isinstance(rational, Rational):
- *         num = Python_int_to_FLINT_Integer(rational.numerator)
+  /* "pplite/integer_conversions.pyx":62
+ *         raise ValueError("Rational Conversion Failed.")
+ *     num = Python_int_to_FLINT_Integer(numerator)
+ *     dem = Python_int_to_FLINT_Integer(denominator)             # <<<<<<<<<<<<<<
+ *     return FLINT_Rational(num, dem)
+ * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_Rational); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = NULL;
-    __pyx_t_6 = 0;
-    #if CYTHON_UNPACK_METHODS
-    if (unlikely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_4, function);
-        __pyx_t_6 = 1;
-      }
-    }
-    #endif
-    {
-      PyObject *__pyx_callargs[2] = {__pyx_t_5, __pyx_v_rational};
-      __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    }
-    __Pyx_DECREF_SET(__pyx_v_rational, __pyx_t_1);
-    __pyx_t_1 = 0;
-
-    /* "pplite/integer_conversions.pyx":61
- *     cdef FLINT_Integer num
- *     cdef FLINT_Integer den
- *     if not isinstance(rational, Rational):             # <<<<<<<<<<<<<<
- *         rational = Rational(rational) #  try to make the type to a rational if possible.
- *     if isinstance(rational, Rational):
- */
-  }
+  __pyx_t_11 = __pyx_f_6pplite_19integer_conversions_Python_int_to_FLINT_Integer(__pyx_v_denominator); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_v_dem = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_11);
 
   /* "pplite/integer_conversions.pyx":63
- *     if not isinstance(rational, Rational):
- *         rational = Rational(rational) #  try to make the type to a rational if possible.
- *     if isinstance(rational, Rational):             # <<<<<<<<<<<<<<
- *         num = Python_int_to_FLINT_Integer(rational.numerator)
- *         dem = Python_int_to_FLINT_Integer(rational.denominator)
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_Rational); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyObject_IsInstance(__pyx_v_rational, __pyx_t_1); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__pyx_t_3) {
-
-    /* "pplite/integer_conversions.pyx":64
- *         rational = Rational(rational) #  try to make the type to a rational if possible.
- *     if isinstance(rational, Rational):
- *         num = Python_int_to_FLINT_Integer(rational.numerator)             # <<<<<<<<<<<<<<
- *         dem = Python_int_to_FLINT_Integer(rational.denominator)
- *         return FLINT_Rational(num, dem)
- */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_rational, __pyx_n_s_numerator); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __pyx_f_6pplite_19integer_conversions_Python_int_to_FLINT_Integer(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_v_num = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_7);
-
-    /* "pplite/integer_conversions.pyx":65
- *     if isinstance(rational, Rational):
- *         num = Python_int_to_FLINT_Integer(rational.numerator)
- *         dem = Python_int_to_FLINT_Integer(rational.denominator)             # <<<<<<<<<<<<<<
- *         return FLINT_Rational(num, dem)
- *     raise ValueError("Rational Conversion Failed.")
- */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_rational, __pyx_n_s_denominator); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __pyx_f_6pplite_19integer_conversions_Python_int_to_FLINT_Integer(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_v_dem = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_7);
-
-    /* "pplite/integer_conversions.pyx":66
- *         num = Python_int_to_FLINT_Integer(rational.numerator)
- *         dem = Python_int_to_FLINT_Integer(rational.denominator)
- *         return FLINT_Rational(num, dem)             # <<<<<<<<<<<<<<
- *     raise ValueError("Rational Conversion Failed.")
- * 
- */
-    __pyx_r = pplite::FLINT_Rational(__pyx_v_num, __pyx_v_dem);
-    goto __pyx_L0;
-
-    /* "pplite/integer_conversions.pyx":63
- *     if not isinstance(rational, Rational):
- *         rational = Rational(rational) #  try to make the type to a rational if possible.
- *     if isinstance(rational, Rational):             # <<<<<<<<<<<<<<
- *         num = Python_int_to_FLINT_Integer(rational.numerator)
- *         dem = Python_int_to_FLINT_Integer(rational.denominator)
- */
-  }
-
-  /* "pplite/integer_conversions.pyx":67
- *         dem = Python_int_to_FLINT_Integer(rational.denominator)
- *         return FLINT_Rational(num, dem)
- *     raise ValueError("Rational Conversion Failed.")             # <<<<<<<<<<<<<<
+ *     num = Python_int_to_FLINT_Integer(numerator)
+ *     dem = Python_int_to_FLINT_Integer(denominator)
+ *     return FLINT_Rational(num, dem)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_r = pplite::FLINT_Rational(__pyx_v_num, __pyx_v_dem);
+  goto __pyx_L0;
 
-  /* "pplite/integer_conversions.pyx":52
- *     return mpq(num/den)
+  /* "pplite/integer_conversions.pyx":53
+ *     return frac
  * 
  * cdef FLINT_Rational Python_float_to_FLINT_Rational(rational):             # <<<<<<<<<<<<<<
  *     """ Converts python float or fraction """
- *     # I'm unsure of how to handle this in terms of expected input. I'm going to
+ *     cdef FLINT_Integer num
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("pplite.integer_conversions.Python_float_to_FLINT_Rational", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_pretend_to_initialize(&__pyx_r);
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_rational);
+  __Pyx_XDECREF(__pyx_v_numerator);
+  __Pyx_XDECREF(__pyx_v_denominator);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "pplite/integer_conversions.pyx":71
+/* "pplite/integer_conversions.pyx":68
  * 
  * 
  * def FLINT_Integer_Conversion_Check(possible_integer):             # <<<<<<<<<<<<<<
@@ -3462,12 +3493,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 71, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "FLINT_Integer_Conversion_Check") < 0)) __PYX_ERR(0, 71, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "FLINT_Integer_Conversion_Check") < 0)) __PYX_ERR(0, 68, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -3478,7 +3509,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("FLINT_Integer_Conversion_Check", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 71, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("FLINT_Integer_Conversion_Check", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 68, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3512,7 +3543,7 @@ static PyObject *__pyx_pf_6pplite_19integer_conversions_FLINT_Integer_Conversion
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("FLINT_Integer_Conversion_Check", 1);
 
-  /* "pplite/integer_conversions.pyx":79
+  /* "pplite/integer_conversions.pyx":76
  *     Output: Bool
  *     """
  *     if isinstance(possible_integer, (int, str)):             # <<<<<<<<<<<<<<
@@ -3530,7 +3561,7 @@ static PyObject *__pyx_pf_6pplite_19integer_conversions_FLINT_Integer_Conversion
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "pplite/integer_conversions.pyx":80
+    /* "pplite/integer_conversions.pyx":77
  *     """
  *     if isinstance(possible_integer, (int, str)):
  *         return True             # <<<<<<<<<<<<<<
@@ -3542,7 +3573,7 @@ static PyObject *__pyx_pf_6pplite_19integer_conversions_FLINT_Integer_Conversion
     __pyx_r = Py_True;
     goto __pyx_L0;
 
-    /* "pplite/integer_conversions.pyx":79
+    /* "pplite/integer_conversions.pyx":76
  *     Output: Bool
  *     """
  *     if isinstance(possible_integer, (int, str)):             # <<<<<<<<<<<<<<
@@ -3551,7 +3582,7 @@ static PyObject *__pyx_pf_6pplite_19integer_conversions_FLINT_Integer_Conversion
  */
   }
 
-  /* "pplite/integer_conversions.pyx":81
+  /* "pplite/integer_conversions.pyx":78
  *     if isinstance(possible_integer, (int, str)):
  *         return True
  *     if MPZ_Check(possible_integer):             # <<<<<<<<<<<<<<
@@ -3561,7 +3592,7 @@ static PyObject *__pyx_pf_6pplite_19integer_conversions_FLINT_Integer_Conversion
   __pyx_t_1 = MPZ_Check(__pyx_v_possible_integer);
   if (__pyx_t_1) {
 
-    /* "pplite/integer_conversions.pyx":82
+    /* "pplite/integer_conversions.pyx":79
  *         return True
  *     if MPZ_Check(possible_integer):
  *         return True             # <<<<<<<<<<<<<<
@@ -3572,7 +3603,7 @@ static PyObject *__pyx_pf_6pplite_19integer_conversions_FLINT_Integer_Conversion
     __pyx_r = Py_True;
     goto __pyx_L0;
 
-    /* "pplite/integer_conversions.pyx":81
+    /* "pplite/integer_conversions.pyx":78
  *     if isinstance(possible_integer, (int, str)):
  *         return True
  *     if MPZ_Check(possible_integer):             # <<<<<<<<<<<<<<
@@ -3581,7 +3612,7 @@ static PyObject *__pyx_pf_6pplite_19integer_conversions_FLINT_Integer_Conversion
  */
   }
 
-  /* "pplite/integer_conversions.pyx":83
+  /* "pplite/integer_conversions.pyx":80
  *     if MPZ_Check(possible_integer):
  *         return True
  *     return False             # <<<<<<<<<<<<<<
@@ -3591,7 +3622,7 @@ static PyObject *__pyx_pf_6pplite_19integer_conversions_FLINT_Integer_Conversion
   __pyx_r = Py_False;
   goto __pyx_L0;
 
-  /* "pplite/integer_conversions.pyx":71
+  /* "pplite/integer_conversions.pyx":68
  * 
  * 
  * def FLINT_Integer_Conversion_Check(possible_integer):             # <<<<<<<<<<<<<<
@@ -3623,20 +3654,15 @@ static PyMethodDef __pyx_methods[] = {
 static int __Pyx_CreateStringTabAndInitStrings(void) {
   __Pyx_StringTabEntry __pyx_string_tab[] = {
     {&__pyx_n_s_FLINT_Integer_Conversion_Check, __pyx_k_FLINT_Integer_Conversion_Check, sizeof(__pyx_k_FLINT_Integer_Conversion_Check), 0, 0, 1, 1},
-    {&__pyx_n_s_Rational, __pyx_k_Rational, sizeof(__pyx_k_Rational), 0, 0, 1, 1},
     {&__pyx_kp_u_Rational_Conversion_Failed, __pyx_k_Rational_Conversion_Failed, sizeof(__pyx_k_Rational_Conversion_Failed), 0, 1, 0, 0},
     {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
-    {&__pyx_kp_u__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 1, 0, 0},
-    {&__pyx_n_s__5, __pyx_k__5, sizeof(__pyx_k__5), 0, 0, 1, 1},
+    {&__pyx_n_s__4, __pyx_k__4, sizeof(__pyx_k__4), 0, 0, 1, 1},
+    {&__pyx_n_s_as_integer_ratio, __pyx_k_as_integer_ratio, sizeof(__pyx_k_as_integer_ratio), 0, 0, 1, 1},
     {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
     {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-    {&__pyx_n_s_denominator, __pyx_k_denominator, sizeof(__pyx_k_denominator), 0, 0, 1, 1},
-    {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
     {&__pyx_n_s_is_coroutine, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-    {&__pyx_n_s_numbers, __pyx_k_numbers, sizeof(__pyx_k_numbers), 0, 0, 1, 1},
-    {&__pyx_n_s_numerator, __pyx_k_numerator, sizeof(__pyx_k_numerator), 0, 0, 1, 1},
     {&__pyx_n_s_possible_integer, __pyx_k_possible_integer, sizeof(__pyx_k_possible_integer), 0, 0, 1, 1},
     {&__pyx_n_s_pplite_integer_conversions, __pyx_k_pplite_integer_conversions, sizeof(__pyx_k_pplite_integer_conversions), 0, 0, 1, 1},
     {&__pyx_kp_s_pplite_integer_conversions_pyx, __pyx_k_pplite_integer_conversions_pyx, sizeof(__pyx_k_pplite_integer_conversions_pyx), 0, 0, 1, 0},
@@ -3647,7 +3673,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 }
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 59, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3658,28 +3684,28 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "pplite/integer_conversions.pyx":67
- *         dem = Python_int_to_FLINT_Integer(rational.denominator)
- *         return FLINT_Rational(num, dem)
- *     raise ValueError("Rational Conversion Failed.")             # <<<<<<<<<<<<<<
- * 
- * 
+  /* "pplite/integer_conversions.pyx":60
+ *         numerator, denominator = rational.as_integer_ratio()
+ *     except ValueError:
+ *         raise ValueError("Rational Conversion Failed.")             # <<<<<<<<<<<<<<
+ *     num = Python_int_to_FLINT_Integer(numerator)
+ *     dem = Python_int_to_FLINT_Integer(denominator)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Rational_Conversion_Failed); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Rational_Conversion_Failed); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "pplite/integer_conversions.pyx":71
+  /* "pplite/integer_conversions.pyx":68
  * 
  * 
  * def FLINT_Integer_Conversion_Check(possible_integer):             # <<<<<<<<<<<<<<
  *     """
  *     Checks a python object is convertible to a FLINT_Integer.
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_n_s_possible_integer); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_integer_conversions_pyx, __pyx_n_s_FLINT_Integer_Conversion_Check, 71, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_n_s_possible_integer); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_integer_conversions_pyx, __pyx_n_s_FLINT_Integer_Conversion_Check, 68, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3952,9 +3978,8 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_integer_conversions(PyObject *__py
   int pystate_addmodule_run = 0;
   #endif
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
+  int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  int __pyx_t_4;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4070,46 +4095,25 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "pplite/integer_conversions.pyx":9
- * from libcpp.vector cimport vector as cppvector
- * 
- * from numbers import Rational             # <<<<<<<<<<<<<<
- * 
- * import_gmpy2()
- */
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(__pyx_n_s_Rational);
-  __Pyx_GIVEREF(__pyx_n_s_Rational);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_Rational)) __PYX_ERR(0, 9, __pyx_L1_error);
-  __pyx_t_3 = __Pyx_Import(__pyx_n_s_numbers, __pyx_t_2, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 9, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_3, __pyx_n_s_Rational); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Rational, __pyx_t_2) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "pplite/integer_conversions.pyx":11
- * from numbers import Rational
+  /* "pplite/integer_conversions.pyx":13
+ * #  about inclusion of types. concrete type to handle is faraciton.
  * 
  * import_gmpy2()             # <<<<<<<<<<<<<<
  * 
  * cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
  */
-  __pyx_t_4 = import_gmpy2(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_2 = import_gmpy2(); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 13, __pyx_L1_error)
 
-  /* "pplite/integer_conversions.pyx":71
+  /* "pplite/integer_conversions.pyx":68
  * 
  * 
  * def FLINT_Integer_Conversion_Check(possible_integer):             # <<<<<<<<<<<<<<
  *     """
  *     Checks a python object is convertible to a FLINT_Integer.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_19integer_conversions_1FLINT_Integer_Conversion_Check, 0, __pyx_n_s_FLINT_Integer_Conversion_Check, NULL, __pyx_n_s_pplite_integer_conversions, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_19integer_conversions_1FLINT_Integer_Conversion_Check, 0, __pyx_n_s_FLINT_Integer_Conversion_Check, NULL, __pyx_n_s_pplite_integer_conversions, __pyx_d, ((PyObject *)__pyx_codeobj__3)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FLINT_Integer_Conversion_Check, __pyx_t_3) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FLINT_Integer_Conversion_Check, __pyx_t_3) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "pplite/integer_conversions.pyx":1
@@ -4126,7 +4130,6 @@ if (!__Pyx_RefNanny) {
 
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
@@ -4601,79 +4604,219 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_FastCallDict(PyObject *func, PyObj
     #endif
 }
 
-/* PyObjectCallOneArg */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *args[2] = {NULL, arg};
-    return __Pyx_PyObject_FastCall(func, args+1, 1 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
+/* RaiseTooManyValuesToUnpack */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
+    PyErr_Format(PyExc_ValueError,
+                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
 }
 
-/* PyDictVersioning */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
+/* RaiseNeedMoreValuesToUnpack */
+static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
+    PyErr_Format(PyExc_ValueError,
+                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
+                 index, (index == 1) ? "" : "s");
 }
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
-    PyObject **dictptr = NULL;
-    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
-    if (offset) {
-#if CYTHON_COMPILING_IN_CPYTHON
-        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
-#else
-        dictptr = _PyObject_GetDictPtr(obj);
-#endif
-    }
-    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
-}
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
+
+/* IterFinish */
+static CYTHON_INLINE int __Pyx_IterFinish(void) {
+    PyObject* exc_type;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    exc_type = __Pyx_PyErr_CurrentExceptionType();
+    if (unlikely(exc_type)) {
+        if (unlikely(!__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration)))
+            return -1;
+        __Pyx_PyErr_Clear();
         return 0;
-    return obj_dict_version == __Pyx_get_object_dict_version(obj);
+    }
+    return 0;
+}
+
+/* UnpackItemEndCheck */
+static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
+    if (unlikely(retval)) {
+        Py_DECREF(retval);
+        __Pyx_RaiseTooManyValuesError(expected);
+        return -1;
+    }
+    return __Pyx_IterFinish();
+}
+
+/* GetTopmostException */
+#if CYTHON_USE_EXC_INFO_STACK && CYTHON_FAST_THREAD_STATE
+static _PyErr_StackItem *
+__Pyx_PyErr_GetTopmostException(PyThreadState *tstate)
+{
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    while ((exc_info->exc_value == NULL || exc_info->exc_value == Py_None) &&
+           exc_info->previous_item != NULL)
+    {
+        exc_info = exc_info->previous_item;
+    }
+    return exc_info;
 }
 #endif
 
-/* GetModuleGlobalName */
-#if CYTHON_USE_DICT_VERSIONS
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
+/* SaveResetException */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+  #if CYTHON_USE_EXC_INFO_STACK && PY_VERSION_HEX >= 0x030B00a4
+    _PyErr_StackItem *exc_info = __Pyx_PyErr_GetTopmostException(tstate);
+    PyObject *exc_value = exc_info->exc_value;
+    if (exc_value == NULL || exc_value == Py_None) {
+        *value = NULL;
+        *type = NULL;
+        *tb = NULL;
+    } else {
+        *value = exc_value;
+        Py_INCREF(*value);
+        *type = (PyObject*) Py_TYPE(exc_value);
+        Py_INCREF(*type);
+        *tb = PyException_GetTraceback(exc_value);
+    }
+  #elif CYTHON_USE_EXC_INFO_STACK
+    _PyErr_StackItem *exc_info = __Pyx_PyErr_GetTopmostException(tstate);
+    *type = exc_info->exc_type;
+    *value = exc_info->exc_value;
+    *tb = exc_info->exc_traceback;
+    Py_XINCREF(*type);
+    Py_XINCREF(*value);
+    Py_XINCREF(*tb);
+  #else
+    *type = tstate->exc_type;
+    *value = tstate->exc_value;
+    *tb = tstate->exc_traceback;
+    Py_XINCREF(*type);
+    Py_XINCREF(*value);
+    Py_XINCREF(*tb);
+  #endif
+}
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+  #if CYTHON_USE_EXC_INFO_STACK && PY_VERSION_HEX >= 0x030B00a4
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    PyObject *tmp_value = exc_info->exc_value;
+    exc_info->exc_value = value;
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(type);
+    Py_XDECREF(tb);
+  #else
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    #if CYTHON_USE_EXC_INFO_STACK
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    tmp_type = exc_info->exc_type;
+    tmp_value = exc_info->exc_value;
+    tmp_tb = exc_info->exc_traceback;
+    exc_info->exc_type = type;
+    exc_info->exc_value = value;
+    exc_info->exc_traceback = tb;
+    #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = type;
+    tstate->exc_value = value;
+    tstate->exc_traceback = tb;
+    #endif
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+  #endif
+}
+#endif
+
+/* GetException */
+#if CYTHON_FAST_THREAD_STATE
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb)
 #else
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb)
 #endif
 {
-    PyObject *result;
-#if !CYTHON_AVOID_BORROWED_REFS
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1 && PY_VERSION_HEX < 0x030d0000
-    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    } else if (unlikely(PyErr_Occurred())) {
-        return NULL;
+    PyObject *local_type = NULL, *local_value, *local_tb = NULL;
+#if CYTHON_FAST_THREAD_STATE
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+  #if PY_VERSION_HEX >= 0x030C00A6
+    local_value = tstate->current_exception;
+    tstate->current_exception = 0;
+    if (likely(local_value)) {
+        local_type = (PyObject*) Py_TYPE(local_value);
+        Py_INCREF(local_type);
+        local_tb = PyException_GetTraceback(local_value);
     }
-#elif CYTHON_COMPILING_IN_LIMITED_API
-    if (unlikely(!__pyx_m)) {
-        return NULL;
-    }
-    result = PyObject_GetAttr(__pyx_m, name);
-    if (likely(result)) {
-        return result;
-    }
+  #else
+    local_type = tstate->curexc_type;
+    local_value = tstate->curexc_value;
+    local_tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+  #endif
 #else
-    result = PyDict_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
+    PyErr_Fetch(&local_type, &local_value, &local_tb);
 #endif
+    PyErr_NormalizeException(&local_type, &local_value, &local_tb);
+#if CYTHON_FAST_THREAD_STATE && PY_VERSION_HEX >= 0x030C00A6
+    if (unlikely(tstate->current_exception))
+#elif CYTHON_FAST_THREAD_STATE
+    if (unlikely(tstate->curexc_type))
 #else
-    result = PyObject_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-    PyErr_Clear();
+    if (unlikely(PyErr_Occurred()))
 #endif
-    return __Pyx_GetBuiltinName(name);
+        goto bad;
+    #if PY_MAJOR_VERSION >= 3
+    if (local_tb) {
+        if (unlikely(PyException_SetTraceback(local_value, local_tb) < 0))
+            goto bad;
+    }
+    #endif
+    Py_XINCREF(local_tb);
+    Py_XINCREF(local_type);
+    Py_XINCREF(local_value);
+    *type = local_type;
+    *value = local_value;
+    *tb = local_tb;
+#if CYTHON_FAST_THREAD_STATE
+    #if CYTHON_USE_EXC_INFO_STACK
+    {
+        _PyErr_StackItem *exc_info = tstate->exc_info;
+      #if PY_VERSION_HEX >= 0x030B00a4
+        tmp_value = exc_info->exc_value;
+        exc_info->exc_value = local_value;
+        tmp_type = NULL;
+        tmp_tb = NULL;
+        Py_XDECREF(local_type);
+        Py_XDECREF(local_tb);
+      #else
+        tmp_type = exc_info->exc_type;
+        tmp_value = exc_info->exc_value;
+        tmp_tb = exc_info->exc_traceback;
+        exc_info->exc_type = local_type;
+        exc_info->exc_value = local_value;
+        exc_info->exc_traceback = local_tb;
+      #endif
+    }
+    #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = local_type;
+    tstate->exc_value = local_value;
+    tstate->exc_traceback = local_tb;
+    #endif
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+#else
+    PyErr_SetExcInfo(local_type, local_value, local_tb);
+#endif
+    return 0;
+bad:
+    *type = 0;
+    *value = 0;
+    *tb = 0;
+    Py_XDECREF(local_type);
+    Py_XDECREF(local_value);
+    Py_XDECREF(local_tb);
+    return -1;
 }
 
 /* RaiseException */
@@ -5337,107 +5480,6 @@ bad:
     return NULL;
 }
 #endif
-
-/* Import */
-static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
-    PyObject *module = 0;
-    PyObject *empty_dict = 0;
-    PyObject *empty_list = 0;
-    #if PY_MAJOR_VERSION < 3
-    PyObject *py_import;
-    py_import = __Pyx_PyObject_GetAttrStr(__pyx_b, __pyx_n_s_import);
-    if (unlikely(!py_import))
-        goto bad;
-    if (!from_list) {
-        empty_list = PyList_New(0);
-        if (unlikely(!empty_list))
-            goto bad;
-        from_list = empty_list;
-    }
-    #endif
-    empty_dict = PyDict_New();
-    if (unlikely(!empty_dict))
-        goto bad;
-    {
-        #if PY_MAJOR_VERSION >= 3
-        if (level == -1) {
-            if (strchr(__Pyx_MODULE_NAME, '.') != NULL) {
-                module = PyImport_ImportModuleLevelObject(
-                    name, __pyx_d, empty_dict, from_list, 1);
-                if (unlikely(!module)) {
-                    if (unlikely(!PyErr_ExceptionMatches(PyExc_ImportError)))
-                        goto bad;
-                    PyErr_Clear();
-                }
-            }
-            level = 0;
-        }
-        #endif
-        if (!module) {
-            #if PY_MAJOR_VERSION < 3
-            PyObject *py_level = PyInt_FromLong(level);
-            if (unlikely(!py_level))
-                goto bad;
-            module = PyObject_CallFunctionObjArgs(py_import,
-                name, __pyx_d, empty_dict, from_list, py_level, (PyObject *)NULL);
-            Py_DECREF(py_level);
-            #else
-            module = PyImport_ImportModuleLevelObject(
-                name, __pyx_d, empty_dict, from_list, level);
-            #endif
-        }
-    }
-bad:
-    Py_XDECREF(empty_dict);
-    Py_XDECREF(empty_list);
-    #if PY_MAJOR_VERSION < 3
-    Py_XDECREF(py_import);
-    #endif
-    return module;
-}
-
-/* ImportFrom */
-static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
-    PyObject* value = __Pyx_PyObject_GetAttrStr(module, name);
-    if (unlikely(!value) && PyErr_ExceptionMatches(PyExc_AttributeError)) {
-        const char* module_name_str = 0;
-        PyObject* module_name = 0;
-        PyObject* module_dot = 0;
-        PyObject* full_name = 0;
-        PyErr_Clear();
-        module_name_str = PyModule_GetName(module);
-        if (unlikely(!module_name_str)) { goto modbad; }
-        module_name = PyUnicode_FromString(module_name_str);
-        if (unlikely(!module_name)) { goto modbad; }
-        module_dot = PyUnicode_Concat(module_name, __pyx_kp_u__2);
-        if (unlikely(!module_dot)) { goto modbad; }
-        full_name = PyUnicode_Concat(module_dot, name);
-        if (unlikely(!full_name)) { goto modbad; }
-        #if PY_VERSION_HEX < 0x030700A1 || (CYTHON_COMPILING_IN_PYPY && PYPY_VERSION_NUM  < 0x07030400)
-        {
-            PyObject *modules = PyImport_GetModuleDict();
-            if (unlikely(!modules))
-                goto modbad;
-            value = PyObject_GetItem(modules, full_name);
-        }
-        #else
-        value = PyImport_GetModule(full_name);
-        #endif
-      modbad:
-        Py_XDECREF(full_name);
-        Py_XDECREF(module_dot);
-        Py_XDECREF(module_name);
-    }
-    if (unlikely(!value)) {
-        PyErr_Format(PyExc_ImportError,
-        #if PY_MAJOR_VERSION < 3
-            "cannot import name %.230s", PyString_AS_STRING(name));
-        #else
-            "cannot import name %S", name);
-        #endif
-    }
-    return value;
-}
 
 /* FixUpExtensionType */
 #if CYTHON_USE_TYPE_SPECS
@@ -6692,6 +6734,32 @@ static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml, int flags, PyObject* qual
     return op;
 }
 
+/* PyDictVersioning */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
+    PyObject **dictptr = NULL;
+    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
+    if (offset) {
+#if CYTHON_COMPILING_IN_CPYTHON
+        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
+#else
+        dictptr = _PyObject_GetDictPtr(obj);
+#endif
+    }
+    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
+}
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
+        return 0;
+    return obj_dict_version == __Pyx_get_object_dict_version(obj);
+}
+#endif
+
 /* CLineInTraceback */
 #ifndef CYTHON_CLINE_IN_TRACEBACK
 static int __Pyx_CLineForTraceback(PyThreadState *tstate, int c_line) {
@@ -7308,7 +7376,7 @@ __Pyx_PyType_GetName(PyTypeObject* tp)
     if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
         PyErr_Clear();
         Py_XDECREF(name);
-        name = __Pyx_NewRef(__pyx_n_s__5);
+        name = __Pyx_NewRef(__pyx_n_s__4);
     }
     return name;
 }

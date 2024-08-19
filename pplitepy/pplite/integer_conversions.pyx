@@ -6,7 +6,9 @@ cimport cython
 from gmpy2 cimport import_gmpy2, mpz, mpz_t, GMPy_MPZ_From_mpz, MPZ_Check, mpq, MPQ_Check, GMPy_MPQ_From_mpz
 from libcpp.vector cimport vector as cppvector
 
-from numbers import Rational
+# from numbers import Rational
+
+#  about inclusion of types. concrete type to handle is faraciton. 
 
 import_gmpy2()
 
@@ -43,28 +45,23 @@ cdef FLINT_Rational_to_Python(FLINT_Rational& rational):
     mpz_init(a)
     mpz_init(b)
     fmpq_get_mpz_frac(a , b, rational.impl())
-    num = GMPy_MPZ_From_mpz(a)
-    den = GMPy_MPZ_From_mpz(b)
+    frac = GMPy_MPQ_From_mpz(a, b)
     mpz_clear(a)
     mpz_clear(b)
-    return mpq(num/den)
+    return frac
 
 cdef FLINT_Rational Python_float_to_FLINT_Rational(rational):
     """ Converts python float or fraction """
-    # I'm unsure of how to handle this in terms of expected input. I'm going to
-    # assume I should only use python libs.  
-    # For writing , I'm going to require the input be python Rational
-    # I think I also need to make this work for MPQ but that is a later date. 
-
     cdef FLINT_Integer num
     cdef FLINT_Integer den
-    if not isinstance(rational, Rational):
-        rational = Rational(rational) #  try to make the type to a rational if possible.
-    if isinstance(rational, Rational):
-        num = Python_int_to_FLINT_Integer(rational.numerator)
-        dem = Python_int_to_FLINT_Integer(rational.denominator)
-        return FLINT_Rational(num, dem)
-    raise ValueError("Rational Conversion Failed.")
+    try:
+        numerator, denominator = rational.as_integer_ratio()
+    except ValueError:
+        raise ValueError("Rational Conversion Failed.")
+    num = Python_int_to_FLINT_Integer(numerator)
+    dem = Python_int_to_FLINT_Integer(denominator)
+    return FLINT_Rational(num, dem)
+
 
 
 
