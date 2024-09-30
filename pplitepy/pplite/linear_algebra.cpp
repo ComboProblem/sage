@@ -4,13 +4,13 @@
 {
     "distutils": {
         "depends": [
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
         ],
         "include_dirs": [
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2"
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2"
         ],
         "language": "c++",
         "libraries": [
@@ -1265,6 +1265,19 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <vector>
+#include <utility>
+
+    #if __cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1600)
+    // move should be defined for these versions of MSVC, but __cplusplus isn't set usefully
+    #include <type_traits>
+
+    namespace cython_std {
+    template <typename T> typename std::remove_reference<T>::type&& move(T& t) noexcept { return std::move(t); }
+    template <typename T> typename std::remove_reference<T>::type&& move(T&& t) noexcept { return std::move(t); }
+    }
+
+    #endif
+    
 #include "gmp.h"
 #include "mpfr.h"
 #include "mpc.h"
@@ -1545,7 +1558,7 @@ static const char *__pyx_f[] = {
 
 /* #### Code section: numeric_typedefs ### */
 
-/* "pplite_decl.pxd":28
+/* "pplite_decl.pxd":29
  *         mpz_class operator%(mpz_class, mpz_class)
  * 
  * ctypedef mp_limb_t ulong             # <<<<<<<<<<<<<<
@@ -1554,7 +1567,7 @@ static const char *__pyx_f[] = {
  */
 typedef mp_limb_t __pyx_t_6pplite_11pplite_decl_ulong;
 
-/* "pplite_decl.pxd":29
+/* "pplite_decl.pxd":30
  * 
  * ctypedef mp_limb_t ulong
  * ctypedef mp_limb_signed_t slong             # <<<<<<<<<<<<<<
@@ -2314,6 +2327,8 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from "libcpp.vector" */
 
+/* Module declarations from "libcpp.utility" */
+
 /* Module declarations from "gmpy2" */
 
 /* Module declarations from "gmpy2.gmpy2" */
@@ -2450,12 +2465,12 @@ static const char __pyx_k_Returns_the_linear_form_of_the[] = "\n        Returns 
 static const char __pyx_k_Shift_by_n_the_coefficients_of[] = "\n        Shift by ``n`` the coefficients of variables starting from the\n        coefficient of ``v``.\n\n        This increases the space dimension by ``n``.\n\n        Examples:\n\n        >>> from pplite import Variable\n        >>> L = Variable(0) + 13 * Variable(2) + 5 * Variable(7)\n        >>> L\n        x0+13*x2+5*x7\n        >>> L.shift_space_dimensions(Variable(2), 2)\n        >>> L\n        x0+13*x4+5*x9\n        >>> L.shift_space_dimensions(Variable(7), 3)\n        >>> L\n        x0+13*x4+5*x12\n        ";
 static const char __pyx_k_all_homogeneous_terms_are_zero[] = "all_homogeneous_terms_are_zero";
 static const char __pyx_k_Add_self_and_other_INPUT_self_o[] = "\n        Add ``self`` and ``other``.\n\n        INPUT:\n\n        - ``self``, ``other`` -- anything that can be used to\n          construct a :class:`Linear_Expression` or :class:`Affine_Expression`. One of them, not\n          necessarily ``self``, is guaranteed to be a\n          :class:``Linear_Expression``, otherwise Python would not\n          have called this method.\n\n        OUTPUT:\n\n        The sum as a :class:`Linear_Expression` or :class:`Affine_Expression` depending on input.\n\n        Examples:\n\n        >>> from pplite import Affine_Expression, Linear_Expression, Variable\n        >>> x = Variable(0)\n        >>> y = Variable(1)\n        >>> x + y + y + y\n        x0+3*x1\n        >>> e = x + y + x\n        >>> isinstance(e, Linear_Expression)\n        True\n        >>> e2 = 7 + e; e2\n        2*x0+x1+7\n        >>> isinstance(e2, Linear_Expression)\n        False\n        >>> isinstance(e2, Affine_Expression)\n        True\n        >>> e + 7\n        2*x0+x1+7\n        >>> e + Variable(0)\n        3*x0+x1\n        >>> Variable(1) + e\n        2*x0+2*x1\n        >>> e3 = e + e2; e3\n        4*x0+2*x1+7\n        >>> isinstance(e3, Affine_Expression)\n        True\n        ";
-static const char __pyx_k_Affine_Expression___hash___line[] = "Affine_Expression.__hash__ (line 1103)";
-static const char __pyx_k_Affine_Expression___repr___line[] = "Affine_Expression.__repr__ (line 1197)";
+static const char __pyx_k_Affine_Expression___hash___line[] = "Affine_Expression.__hash__ (line 1102)";
+static const char __pyx_k_Affine_Expression___repr___line[] = "Affine_Expression.__repr__ (line 1196)";
 static const char __pyx_k_Affine_Expression_all_terms_are[] = "Affine_Expression.all_terms_are_zero";
 static const char __pyx_k_Affine_Expression_inhomogeneous[] = "Affine_Expression.inhomogeneous_term";
 static const char __pyx_k_Linear_Expression___hash___line[] = "Linear_Expression.__hash__ (line 486)";
-static const char __pyx_k_Linear_Expression___repr___line[] = "Linear_Expression.__repr__ (line 588)";
+static const char __pyx_k_Linear_Expression___repr___line[] = "Linear_Expression.__repr__ (line 587)";
 static const char __pyx_k_Return_self_as_class_Linear_Exp[] = "\n        Return ``self`` as :class:`Linear_Expression`\n\n        OUTPUT:\n\n        The :class:`Linear_Expression` ``+self``\n\n        Examples:\n\n        >>> from pplite import Variable\n        >>> x = Variable(0); x\n        x0\n        >>> +x\n        x0\n        ";
 static const char __pyx_k_Return_the_coefficient_of_the_v[] = "\n        Return the coefficient of the variable ``v``.\n\n        INPUT:\n\n        - ``v`` -- a :class:`Variable`.\n\n        OUTPUT:\n\n        An (Python) Integer. \n\n        Examples:\n\n        >>> from pplite import Variable\n        >>> x = Variable(0)\n        >>> e = 3*x\n        >>> e.coefficient(x)\n        mpz(3)\n        ";
 static const char __pyx_k_Return_the_difference_self_othe[] = "\n        Return the difference ``self`` - ``other``.\n\n        INPUT:\n\n        - ``self``, ``other`` -- anything convertible to\n          ``Linear_Expression``: An integer, a :class:`Variable`, or a\n          :class:`Linear_Expression`.\n\n        OUTPUT:\n\n        A :class:`Linear_Expression` representing ``self`` - ``other``.\n\n        Examples:\n\n        >>> from pplite import Variable\n        >>> x = Variable(0); y = Variable(1)\n        >>> x - y\n        x0-x1\n        ";
@@ -2470,24 +2485,24 @@ static const char __pyx_k_Swaps_the_coefficients_of_v1_an[] = "\n        Swaps t
 static const char __pyx_k_Test_equality_with_another_line[] = "\n        Test equality with another linear expression.\n\n        OUTPUT: boolean\n\n        Examples:\n\n        >>> from pplite import Variable\n        >>> L1 = Variable(0) + 2 * Variable(3)\n        >>> L2 = Variable(0) + 2 * Variable(3)\n        >>> L3 = Variable(0) - Variable(2)\n        >>> L1.is_equal_to(L2)\n        True\n        >>> L1.is_equal_to(L3)\n        False\n        ";
 static const char __pyx_k_Test_if_self_is_a_constant_line[] = "\n        Test if ``self`` is a constant linear expression.\n\n        OUTPUT:\n\n        Boolean.\n\n        Examples:\n\n        >>> from pplite import Variable, Linear_Expression\n        >>> x = Variable(1)\n        >>> (x-x).all_homogeneous_terms_are_zero()\n        True\n        ";
 static const char __pyx_k_Tests_import_pplite_hash_pplite[] = "\n        Tests:\n\n        >>> import pplite\n        >>> hash(pplite.Variable(12))\n        Traceback (most recent call last):\n        ...\n        TypeError: Variable unhashable\n        ";
-static const char __pyx_k_Affine_Expression___add___line_1[] = "Affine_Expression.__add__ (line 1288)";
+static const char __pyx_k_Affine_Expression___add___line_1[] = "Affine_Expression.__add__ (line 1287)";
 static const char __pyx_k_Affine_Expression___reduce_cytho[] = "Affine_Expression.__reduce_cython__";
 static const char __pyx_k_Affine_Expression___setstate_cyt[] = "Affine_Expression.__setstate_cython__";
-static const char __pyx_k_Affine_Expression___sub___line_1[] = "Affine_Expression.__sub__ (line 1365)";
-static const char __pyx_k_Affine_Expression_coefficient_li[] = "Affine_Expression.coefficient (line 1175)";
-static const char __pyx_k_Affine_Expression_linear_form_li[] = "Affine_Expression.linear_form (line 1132)";
+static const char __pyx_k_Affine_Expression___sub___line_1[] = "Affine_Expression.__sub__ (line 1364)";
+static const char __pyx_k_Affine_Expression_coefficient_li[] = "Affine_Expression.coefficient (line 1174)";
+static const char __pyx_k_Affine_Expression_linear_form_li[] = "Affine_Expression.linear_form (line 1131)";
 static const char __pyx_k_Affine_Expression_sign_normalize[] = "Affine_Expression.sign_normalize";
 static const char __pyx_k_Affine_Expression_space_dimensio[] = "Affine_Expression.space_dimension";
 static const char __pyx_k_Cannot_initialize_with_more_than[] = "Cannot initialize with more than 2 arguments.";
 static const char __pyx_k_Initalizing_with_one_argument_re[] = "Initalizing with one argument requires either a linear expression, variable, or integer to be passed in.";
-static const char __pyx_k_Linear_Expression___add___line_7[] = "Linear_Expression.__add__ (line 749)";
-static const char __pyx_k_Linear_Expression___mul___line_9[] = "Linear_Expression.__mul__ (line 918)";
+static const char __pyx_k_Linear_Expression___add___line_7[] = "Linear_Expression.__add__ (line 748)";
+static const char __pyx_k_Linear_Expression___mul___line_9[] = "Linear_Expression.__mul__ (line 917)";
 static const char __pyx_k_Linear_Expression___reduce_cytho[] = "Linear_Expression.__reduce_cython__";
 static const char __pyx_k_Linear_Expression___setstate_cyt[] = "Linear_Expression.__setstate_cython__";
-static const char __pyx_k_Linear_Expression___sub___line_8[] = "Linear_Expression.__sub__ (line 824)";
+static const char __pyx_k_Linear_Expression___sub___line_8[] = "Linear_Expression.__sub__ (line 823)";
 static const char __pyx_k_Linear_Expression_all_homogeneou[] = "Linear_Expression.all_homogeneous_terms_are_zero";
 static const char __pyx_k_Linear_Expression_coefficient_li[] = "Linear_Expression.coefficient (line 528)";
-static const char __pyx_k_Linear_Expression_is_equal_to_li[] = "Linear_Expression.is_equal_to (line 730)";
+static const char __pyx_k_Linear_Expression_is_equal_to_li[] = "Linear_Expression.is_equal_to (line 729)";
 static const char __pyx_k_Linear_Expression_set_coefficien[] = "Linear_Expression.set_coefficient";
 static const char __pyx_k_Linear_Expression_set_space_dime[] = "Linear_Expression.set_space_dimension";
 static const char __pyx_k_Linear_Expression_shift_space_di[] = "Linear_Expression.shift_space_dimensions";
@@ -2499,7 +2514,7 @@ static const char __pyx_k_We_done_goofed_no_acceptable_inp[] = "We done goofed, 
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static const char __pyx_k_self_thisptr_cannot_be_converted[] = "self.thisptr cannot be converted to a Python object for pickling";
 static const char __pyx_k_Add_self_and_other_INPUT_self_o_2[] = "\n        Add ``self`` and ``other``.\n\n        INPUT:\n\n        - ``self``, ``other`` -- anything that can be used to\n          construct a :class:`Affine_Expression`. One of them, not\n          necessarily ``self``, is guaranteed to be a\n          :class:``Affine_Expression``, otherwise Python would not\n          have called this method.\n\n        OUTPUT:\n\n        The sum as a :class:`Affine_Expression`\n\n        Examples:\n\n        >>> from pplite import Affine_Expression, Variable\n        >>> x = Variable(0)\n        >>> y = Variable(1)\n        >>> a = x + y + y + y + 1; a\n        x0+3*x1+1\n        >>> a.inhomogeneous_term()\n        mpz(1)\n        >>> a + a\n        2*x0+6*x1+2         \n        >>> 12 + a\n        x0+3*x1+13\n        >>> a + Variable(2)\n        x0+3*x1+x2+1\n        >>> a.linear_form()\n        x0+3*x1\n        >>> a.linear_form()+ a.inhomogeneous_term()\n        x0+3*x1+1\n        ";
-static const char __pyx_k_Affine_Expression_inhomogeneous_2[] = "Affine_Expression.inhomogeneous_term (line 1154)";
+static const char __pyx_k_Affine_Expression_inhomogeneous_2[] = "Affine_Expression.inhomogeneous_term (line 1153)";
 static const char __pyx_k_Return_self_as_class_Linear_Exp_2[] = "\n        Return -``self`` as :class:`Linear_Expression`\n\n        OUTPUT:\n\n        The :class:`Linear_Expression` ``-self``\n\n        Examples:\n\n        >>> from pplite import Variable\n        >>> x = Variable(0); x\n        x0\n        >>> -x\n        -x0\n        ";
 static const char __pyx_k_Return_the_coefficient_of_the_v_2[] = "\n        Return the coefficient of the variable ``v``.\n\n        INPUT:\n\n        - ``v`` -- a :class:`Variable`.\n\n        OUTPUT:\n\n        An Integer. \n\n        Examples:\n\n        >>> from pplite import Variable, Affine_Expression\n        >>> e = Variable(2) - 3*Variable(4)\n        >>> a = Affine_Expression(e, 7)\n        >>> a.coefficient(Variable(2))\n        mpz(1)\n        ";
 static const char __pyx_k_Return_the_dimension_of_the_vec_2[] = "\n        Return the dimension of the vector space necessary for the\n        linear expression.\n\n        OUTPUT:\n\n        Integer.\n\n        Examples:\n\n        >>> from pplite import Variable\n        >>> x = Variable(0)\n        >>> y = Variable(1)\n        >>> (x+y).space_dimension()\n        2\n        >>> (x+y).space_dimension()\n        2\n        >>> (y).space_dimension()\n        2\n        >>> (x).space_dimension()\n        1\n        >>> (y-y).space_dimension()\n        2\n        ";
@@ -2507,13 +2522,13 @@ static const char __pyx_k_Return_the_dimension_of_the_vec_3[] = "\n        Retur
 static const char __pyx_k_Subtract_self_and_other_INPUT_s_2[] = "\n        Subtract ``self`` and ``other``.\n\n        INPUT:\n\n        - ``self``, ``other`` -- anything that can be used to\n          construct a :class:`Affine_Expression`. One of them, not\n          necessarily ``self``, is guaranteed to be a\n          :class:``Affine_Expression``, otherwise Python would not\n          have called this method.\n\n        OUTPUT:\n\n        The sum as a :class:`Affine_Expression`\n\n        Examples:\n\n        >>> from pplite import Affine_Expression, Linear_Expression, Variable\n        >>> x = Variable(0)\n        >>> y = Variable(1)\n        >>> e = x + y + y + y + 1; e\n        x0+3*x1+1\n        >>> e - e\n        0\n        >>> isinstance(e, Affine_Expression)\n        True\n        >>> 12 - e\n        -x0-3*x1+11\n        >>> e - 3 * Variable(3) - 3 * y\n        x0-3*x3+1\n        ";
 static const char __pyx_k_Tests_import_pplite_hash_pplite_2[] = "\n        Tests:\n\n        >>> import pplite\n        >>> hash(pplite.Linear_Expression(10))\n        Traceback (most recent call last):\n        ...\n        TypeError: Linear_Expression unhashable\n        ";
 static const char __pyx_k_Tests_import_pplite_hash_pplite_3[] = "\n        Tests:\n\n        >>> import pplite\n        >>> hash(pplite.Affine_Expression(10))\n        Traceback (most recent call last):\n        TypeError: Affine_Expression unhashable\n        ";
-static const char __pyx_k_Affine_Expression_space_dimensio_2[] = "Affine_Expression.space_dimension (line 1114)";
+static const char __pyx_k_Affine_Expression_space_dimensio_2[] = "Affine_Expression.space_dimension (line 1113)";
 static const char __pyx_k_Initalizing_with_one_argument_re_2[] = "Initalizing with one argument requires either a affine expression or an integer to be passed in.";
-static const char __pyx_k_Linear_Expression_all_homogeneou_2[] = "Linear_Expression.all_homogeneous_terms_are_zero (line 713)";
-static const char __pyx_k_Linear_Expression_set_coefficien_2[] = "Linear_Expression.set_coefficient (line 558)";
-static const char __pyx_k_Linear_Expression_shift_space_di_2[] = "Linear_Expression.shift_space_dimensions (line 668)";
+static const char __pyx_k_Linear_Expression_all_homogeneou_2[] = "Linear_Expression.all_homogeneous_terms_are_zero (line 712)";
+static const char __pyx_k_Linear_Expression_set_coefficien_2[] = "Linear_Expression.set_coefficient (line 557)";
+static const char __pyx_k_Linear_Expression_shift_space_di_2[] = "Linear_Expression.shift_space_dimensions (line 667)";
 static const char __pyx_k_Linear_Expression_space_dimensio_2[] = "Linear_Expression.space_dimension (line 498)";
-static const char __pyx_k_Linear_Expression_swap_space_dim_2[] = "Linear_Expression.swap_space_dimensions (line 634)";
+static const char __pyx_k_Linear_Expression_swap_space_dim_2[] = "Linear_Expression.swap_space_dimensions (line 633)";
 /* #### Code section: decls ### */
 static int __pyx_pf_6pplite_14linear_algebra_8Variable___cinit__(struct __pyx_obj_6pplite_14linear_algebra_Variable *__pyx_v_self, pplite::dim_type __pyx_v_i); /* proto */
 static void __pyx_pf_6pplite_14linear_algebra_8Variable_2__dealloc__(struct __pyx_obj_6pplite_14linear_algebra_Variable *__pyx_v_self); /* proto */
@@ -2609,6 +2624,8 @@ typedef struct {
   #endif
   #ifdef __Pyx_Coroutine_USED
   PyTypeObject *__pyx_CoroutineType;
+  #endif
+  #if CYTHON_USE_MODULE_STATE
   #endif
   #if CYTHON_USE_MODULE_STATE
   #endif
@@ -3410,6 +3427,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 #ifdef __Pyx_Coroutine_USED
 #define __pyx_CoroutineType __pyx_mstate_global->__pyx_CoroutineType
+#endif
+#if CYTHON_USE_MODULE_STATE
 #endif
 #if CYTHON_USE_MODULE_STATE
 #endif
@@ -7231,9 +7250,9 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_10coeffic
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("coefficient", 1);
 
-  /* "pplite/linear_algebra.pyx":552
- *         cdef Variable vv # rewrite this method to read coeffs correctly
- * 
+  /* "pplite/linear_algebra.pyx":551
+ *         # mpz(0)
+ *         cdef Variable vv # rewrite
  *         if type(v) is Variable:             # <<<<<<<<<<<<<<
  *             vv = <Variable> v
  *         else:
@@ -7241,8 +7260,8 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_10coeffic
   __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_v)) == ((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable));
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":553
- * 
+    /* "pplite/linear_algebra.pyx":552
+ *         cdef Variable vv # rewrite
  *         if type(v) is Variable:
  *             vv = <Variable> v             # <<<<<<<<<<<<<<
  *         else:
@@ -7253,9 +7272,9 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_10coeffic
     __pyx_v_vv = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":552
- *         cdef Variable vv # rewrite this method to read coeffs correctly
- * 
+    /* "pplite/linear_algebra.pyx":551
+ *         # mpz(0)
+ *         cdef Variable vv # rewrite
  *         if type(v) is Variable:             # <<<<<<<<<<<<<<
  *             vv = <Variable> v
  *         else:
@@ -7263,7 +7282,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_10coeffic
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":555
+  /* "pplite/linear_algebra.pyx":554
  *             vv = <Variable> v
  *         else:
  *             vv = Variable(v)             # <<<<<<<<<<<<<<
@@ -7271,14 +7290,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_10coeffic
  * 
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 555, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 554, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_vv = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_2);
     __pyx_t_2 = 0;
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":556
+  /* "pplite/linear_algebra.pyx":555
  *         else:
  *             vv = Variable(v)
  *         return FLINT_Integer_to_Python(self.thisptr.impl()[vv.id()])             # <<<<<<<<<<<<<<
@@ -7286,7 +7305,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_10coeffic
  *     def set_coefficient(self, i, n):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_vv), __pyx_n_s_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 556, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_vv), __pyx_n_s_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 555, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -7306,13 +7325,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_10coeffic
     PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 556, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 555, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_6 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 556, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_6 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 555, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_f_6pplite_14linear_algebra_FLINT_Integer_to_Python((__pyx_v_self->thisptr->impl()[__pyx_t_6])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 556, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_6pplite_14linear_algebra_FLINT_Integer_to_Python((__pyx_v_self->thisptr->impl()[__pyx_t_6])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 555, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -7340,7 +7359,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_10coeffic
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":558
+/* "pplite/linear_algebra.pyx":557
  *         return FLINT_Integer_to_Python(self.thisptr.impl()[vv.id()])
  * 
  *     def set_coefficient(self, i, n):             # <<<<<<<<<<<<<<
@@ -7405,7 +7424,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 558, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 557, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -7413,14 +7432,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 558, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 557, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("set_coefficient", 1, 2, 2, 1); __PYX_ERR(0, 558, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("set_coefficient", 1, 2, 2, 1); __PYX_ERR(0, 557, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "set_coefficient") < 0)) __PYX_ERR(0, 558, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "set_coefficient") < 0)) __PYX_ERR(0, 557, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -7433,7 +7452,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("set_coefficient", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 558, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("set_coefficient", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 557, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7474,7 +7493,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_12set_coe
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("set_coefficient", 1);
 
-  /* "pplite/linear_algebra.pyx":580
+  /* "pplite/linear_algebra.pyx":579
  *         """
  *         cdef FLINT_Integer nn
  *         if isinstance(i, Variable):             # <<<<<<<<<<<<<<
@@ -7484,7 +7503,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_12set_coe
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_i, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":581
+    /* "pplite/linear_algebra.pyx":580
  *         cdef FLINT_Integer nn
  *         if isinstance(i, Variable):
  *             ii = <Variable> i             # <<<<<<<<<<<<<<
@@ -7496,7 +7515,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_12set_coe
     __pyx_v_ii = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":580
+    /* "pplite/linear_algebra.pyx":579
  *         """
  *         cdef FLINT_Integer nn
  *         if isinstance(i, Variable):             # <<<<<<<<<<<<<<
@@ -7506,7 +7525,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_12set_coe
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":583
+  /* "pplite/linear_algebra.pyx":582
  *             ii = <Variable> i
  *         else:
  *             var_i = Variable(i)             # <<<<<<<<<<<<<<
@@ -7514,12 +7533,12 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_12set_coe
  *         nn = Python_int_to_FLINT_Integer(n)
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 583, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 582, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_var_i = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":584
+    /* "pplite/linear_algebra.pyx":583
  *         else:
  *             var_i = Variable(i)
  *             ii = <Variable> var_i             # <<<<<<<<<<<<<<
@@ -7533,17 +7552,17 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_12set_coe
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":585
+  /* "pplite/linear_algebra.pyx":584
  *             var_i = Variable(i)
  *             ii = <Variable> var_i
  *         nn = Python_int_to_FLINT_Integer(n)             # <<<<<<<<<<<<<<
  *         (<Linear_Expression> self).thisptr[0].set(ii.thisptr[0], nn)
  *         # raise NotImplementedError
  */
-  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_n); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 585, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_n); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 584, __pyx_L1_error)
   __pyx_v_nn = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_3);
 
-  /* "pplite/linear_algebra.pyx":586
+  /* "pplite/linear_algebra.pyx":585
  *             ii = <Variable> var_i
  *         nn = Python_int_to_FLINT_Integer(n)
  *         (<Linear_Expression> self).thisptr[0].set(ii.thisptr[0], nn)             # <<<<<<<<<<<<<<
@@ -7552,7 +7571,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_12set_coe
  */
   (__pyx_v_self->thisptr[0]).set((__pyx_v_ii->thisptr[0]), __pyx_v_nn);
 
-  /* "pplite/linear_algebra.pyx":558
+  /* "pplite/linear_algebra.pyx":557
  *         return FLINT_Integer_to_Python(self.thisptr.impl()[vv.id()])
  * 
  *     def set_coefficient(self, i, n):             # <<<<<<<<<<<<<<
@@ -7575,7 +7594,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_12set_coe
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":588
+/* "pplite/linear_algebra.pyx":587
  *         (<Linear_Expression> self).thisptr[0].set(ii.thisptr[0], nn)
  *         # raise NotImplementedError
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -7626,7 +7645,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 1);
 
-  /* "pplite/linear_algebra.pyx":608
+  /* "pplite/linear_algebra.pyx":607
  *         2*x0
  *         """
  *         s = ''             # <<<<<<<<<<<<<<
@@ -7636,7 +7655,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
   __Pyx_INCREF(__pyx_kp_u__6);
   __pyx_v_s = __pyx_kp_u__6;
 
-  /* "pplite/linear_algebra.pyx":609
+  /* "pplite/linear_algebra.pyx":608
  *         """
  *         s = ''
  *         first = True             # <<<<<<<<<<<<<<
@@ -7645,14 +7664,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  */
   __pyx_v_first = 1;
 
-  /* "pplite/linear_algebra.pyx":610
+  /* "pplite/linear_algebra.pyx":609
  *         s = ''
  *         first = True
  *         for i in range(self.space_dimension()):             # <<<<<<<<<<<<<<
  *             x = Variable(i)
  *             coeff = self.coefficient(x)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_space_dimension); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 610, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_space_dimension); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 609, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -7672,11 +7691,11 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 610, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 609, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 610, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 609, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
@@ -7684,9 +7703,9 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
     __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 610, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 609, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 610, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 609, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
@@ -7695,28 +7714,28 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
         {
           Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_1);
           #if !CYTHON_ASSUME_SAFE_MACROS
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 610, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 609, __pyx_L1_error)
           #endif
           if (__pyx_t_5 >= __pyx_temp) break;
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 610, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 609, __pyx_L1_error)
         #else
-        __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 610, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 609, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       } else {
         {
           Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_1);
           #if !CYTHON_ASSUME_SAFE_MACROS
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 610, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 609, __pyx_L1_error)
           #endif
           if (__pyx_t_5 >= __pyx_temp) break;
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 610, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 609, __pyx_L1_error)
         #else
-        __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 610, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 609, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       }
@@ -7726,7 +7745,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 610, __pyx_L1_error)
+          else __PYX_ERR(0, 609, __pyx_L1_error)
         }
         break;
       }
@@ -7735,26 +7754,26 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
     __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":611
+    /* "pplite/linear_algebra.pyx":610
  *         first = True
  *         for i in range(self.space_dimension()):
  *             x = Variable(i)             # <<<<<<<<<<<<<<
  *             coeff = self.coefficient(x)
  *             if coeff == 0:
  */
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 611, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 610, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_XDECREF_SET(__pyx_v_x, ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":612
+    /* "pplite/linear_algebra.pyx":611
  *         for i in range(self.space_dimension()):
  *             x = Variable(i)
  *             coeff = self.coefficient(x)             # <<<<<<<<<<<<<<
  *             if coeff == 0:
  *                 continue
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_coefficient); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 612, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_coefficient); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 611, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_7 = NULL;
     __pyx_t_4 = 0;
@@ -7774,24 +7793,24 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       PyObject *__pyx_callargs[2] = {__pyx_t_7, ((PyObject *)__pyx_v_x)};
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 612, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 611, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __Pyx_XDECREF_SET(__pyx_v_coeff, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":613
+    /* "pplite/linear_algebra.pyx":612
  *             x = Variable(i)
  *             coeff = self.coefficient(x)
  *             if coeff == 0:             # <<<<<<<<<<<<<<
  *                 continue
  *             if first and coeff == 1:
  */
-    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_0, 0, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 613, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_0, 0, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 612, __pyx_L1_error)
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":614
+      /* "pplite/linear_algebra.pyx":613
  *             coeff = self.coefficient(x)
  *             if coeff == 0:
  *                 continue             # <<<<<<<<<<<<<<
@@ -7800,7 +7819,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  */
       goto __pyx_L3_continue;
 
-      /* "pplite/linear_algebra.pyx":613
+      /* "pplite/linear_algebra.pyx":612
  *             x = Variable(i)
  *             coeff = self.coefficient(x)
  *             if coeff == 0:             # <<<<<<<<<<<<<<
@@ -7809,7 +7828,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  */
     }
 
-    /* "pplite/linear_algebra.pyx":615
+    /* "pplite/linear_algebra.pyx":614
  *             if coeff == 0:
  *                 continue
  *             if first and coeff == 1:             # <<<<<<<<<<<<<<
@@ -7821,27 +7840,27 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       __pyx_t_8 = __pyx_v_first;
       goto __pyx_L7_bool_binop_done;
     }
-    __pyx_t_9 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 615, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 614, __pyx_L1_error)
     __pyx_t_8 = __pyx_t_9;
     __pyx_L7_bool_binop_done:;
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":616
+      /* "pplite/linear_algebra.pyx":615
  *                 continue
  *             if first and coeff == 1:
  *                 s += '%r' % x             # <<<<<<<<<<<<<<
  *                 first = False
  *             elif first and coeff == -1:
  */
-      __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_r, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 616, __pyx_L1_error)
+      __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_r, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 615, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 616, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 615, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_3));
       __pyx_t_3 = 0;
 
-      /* "pplite/linear_algebra.pyx":617
+      /* "pplite/linear_algebra.pyx":616
  *             if first and coeff == 1:
  *                 s += '%r' % x
  *                 first = False             # <<<<<<<<<<<<<<
@@ -7850,7 +7869,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  */
       __pyx_v_first = 0;
 
-      /* "pplite/linear_algebra.pyx":615
+      /* "pplite/linear_algebra.pyx":614
  *             if coeff == 0:
  *                 continue
  *             if first and coeff == 1:             # <<<<<<<<<<<<<<
@@ -7860,7 +7879,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":618
+    /* "pplite/linear_algebra.pyx":617
  *                 s += '%r' % x
  *                 first = False
  *             elif first and coeff == -1:             # <<<<<<<<<<<<<<
@@ -7872,27 +7891,27 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       __pyx_t_8 = __pyx_v_first;
       goto __pyx_L9_bool_binop_done;
     }
-    __pyx_t_9 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 618, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 617, __pyx_L1_error)
     __pyx_t_8 = __pyx_t_9;
     __pyx_L9_bool_binop_done:;
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":619
+      /* "pplite/linear_algebra.pyx":618
  *                 first = False
  *             elif first and coeff == -1:
  *                 s += '-%r' % x             # <<<<<<<<<<<<<<
  *                 first = False
  *             elif first and coeff != 1:
  */
-      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_r_2, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 619, __pyx_L1_error)
+      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_r_2, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 618, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 619, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 618, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "pplite/linear_algebra.pyx":620
+      /* "pplite/linear_algebra.pyx":619
  *             elif first and coeff == -1:
  *                 s += '-%r' % x
  *                 first = False             # <<<<<<<<<<<<<<
@@ -7901,7 +7920,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  */
       __pyx_v_first = 0;
 
-      /* "pplite/linear_algebra.pyx":618
+      /* "pplite/linear_algebra.pyx":617
  *                 s += '%r' % x
  *                 first = False
  *             elif first and coeff == -1:             # <<<<<<<<<<<<<<
@@ -7911,7 +7930,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":621
+    /* "pplite/linear_algebra.pyx":620
  *                 s += '-%r' % x
  *                 first = False
  *             elif first and coeff != 1:             # <<<<<<<<<<<<<<
@@ -7923,23 +7942,23 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       __pyx_t_8 = __pyx_v_first;
       goto __pyx_L11_bool_binop_done;
     }
-    __pyx_t_9 = (__Pyx_PyInt_BoolNeObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 621, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyInt_BoolNeObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 620, __pyx_L1_error)
     __pyx_t_8 = __pyx_t_9;
     __pyx_L11_bool_binop_done:;
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":622
+      /* "pplite/linear_algebra.pyx":621
  *                 first = False
  *             elif first and coeff != 1:
  *                 s += '%d*%r' % (coeff, x)             # <<<<<<<<<<<<<<
  *                 first = False
  *             elif coeff == 1:
  */
-      __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 622, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 621, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_10 = 0;
       __pyx_t_11 = 127;
-      __pyx_t_3 = __Pyx_PyObject_FormatAndDecref(__Pyx_PyNumber_IntOrLong(__pyx_v_coeff), __pyx_n_u_d); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 622, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_FormatAndDecref(__Pyx_PyNumber_IntOrLong(__pyx_v_coeff), __pyx_n_u_d); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 621, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_11;
       __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3);
@@ -7950,23 +7969,23 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       __pyx_t_10 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__7);
       PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_kp_u__7);
-      __pyx_t_3 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Repr(((PyObject *)__pyx_v_x)), __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 622, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Repr(((PyObject *)__pyx_v_x)), __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 621, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_11;
       __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_2, 3, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 622, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_2, 3, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 621, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 622, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 621, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "pplite/linear_algebra.pyx":623
+      /* "pplite/linear_algebra.pyx":622
  *             elif first and coeff != 1:
  *                 s += '%d*%r' % (coeff, x)
  *                 first = False             # <<<<<<<<<<<<<<
@@ -7975,7 +7994,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  */
       __pyx_v_first = 0;
 
-      /* "pplite/linear_algebra.pyx":621
+      /* "pplite/linear_algebra.pyx":620
  *                 s += '-%r' % x
  *                 first = False
  *             elif first and coeff != 1:             # <<<<<<<<<<<<<<
@@ -7985,32 +8004,32 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":624
+    /* "pplite/linear_algebra.pyx":623
  *                 s += '%d*%r' % (coeff, x)
  *                 first = False
  *             elif coeff == 1:             # <<<<<<<<<<<<<<
  *                 s += '+%r' % x
  *             elif coeff == -1:
  */
-    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 624, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 623, __pyx_L1_error)
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":625
+      /* "pplite/linear_algebra.pyx":624
  *                 first = False
  *             elif coeff == 1:
  *                 s += '+%r' % x             # <<<<<<<<<<<<<<
  *             elif coeff == -1:
  *                 s += '-%r' % x
  */
-      __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_r_3, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 625, __pyx_L1_error)
+      __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_r_3, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 624, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 625, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 624, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_3));
       __pyx_t_3 = 0;
 
-      /* "pplite/linear_algebra.pyx":624
+      /* "pplite/linear_algebra.pyx":623
  *                 s += '%d*%r' % (coeff, x)
  *                 first = False
  *             elif coeff == 1:             # <<<<<<<<<<<<<<
@@ -8020,32 +8039,32 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":626
+    /* "pplite/linear_algebra.pyx":625
  *             elif coeff == 1:
  *                 s += '+%r' % x
  *             elif coeff == -1:             # <<<<<<<<<<<<<<
  *                 s += '-%r' % x
  *             else:
  */
-    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 626, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 625, __pyx_L1_error)
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":627
+      /* "pplite/linear_algebra.pyx":626
  *                 s += '+%r' % x
  *             elif coeff == -1:
  *                 s += '-%r' % x             # <<<<<<<<<<<<<<
  *             else:
  *                 s += '%+d*%r' % (coeff, x)
  */
-      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_r_2, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 627, __pyx_L1_error)
+      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_r_2, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 626, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 627, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 626, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "pplite/linear_algebra.pyx":626
+      /* "pplite/linear_algebra.pyx":625
  *             elif coeff == 1:
  *                 s += '+%r' % x
  *             elif coeff == -1:             # <<<<<<<<<<<<<<
@@ -8055,7 +8074,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":629
+    /* "pplite/linear_algebra.pyx":628
  *                 s += '-%r' % x
  *             else:
  *                 s += '%+d*%r' % (coeff, x)             # <<<<<<<<<<<<<<
@@ -8063,18 +8082,18 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  *             s = '0'
  */
     /*else*/ {
-      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 629, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 628, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_INCREF(__pyx_v_coeff);
       __Pyx_GIVEREF(__pyx_v_coeff);
-      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_coeff)) __PYX_ERR(0, 629, __pyx_L1_error);
+      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_coeff)) __PYX_ERR(0, 628, __pyx_L1_error);
       __Pyx_INCREF((PyObject *)__pyx_v_x);
       __Pyx_GIVEREF((PyObject *)__pyx_v_x);
-      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_x))) __PYX_ERR(0, 629, __pyx_L1_error);
-      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_d_r, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 629, __pyx_L1_error)
+      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_x))) __PYX_ERR(0, 628, __pyx_L1_error);
+      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_d_r, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 628, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 629, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 628, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
@@ -8082,7 +8101,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
     }
     __pyx_L6:;
 
-    /* "pplite/linear_algebra.pyx":610
+    /* "pplite/linear_algebra.pyx":609
  *         s = ''
  *         first = True
  *         for i in range(self.space_dimension()):             # <<<<<<<<<<<<<<
@@ -8093,7 +8112,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pplite/linear_algebra.pyx":630
+  /* "pplite/linear_algebra.pyx":629
  *             else:
  *                 s += '%+d*%r' % (coeff, x)
  *         if first:             # <<<<<<<<<<<<<<
@@ -8102,7 +8121,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  */
   if (__pyx_v_first) {
 
-    /* "pplite/linear_algebra.pyx":631
+    /* "pplite/linear_algebra.pyx":630
  *                 s += '%+d*%r' % (coeff, x)
  *         if first:
  *             s = '0'             # <<<<<<<<<<<<<<
@@ -8112,7 +8131,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
     __Pyx_INCREF(__pyx_kp_u_0);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_u_0);
 
-    /* "pplite/linear_algebra.pyx":630
+    /* "pplite/linear_algebra.pyx":629
  *             else:
  *                 s += '%+d*%r' % (coeff, x)
  *         if first:             # <<<<<<<<<<<<<<
@@ -8121,7 +8140,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
  */
   }
 
-  /* "pplite/linear_algebra.pyx":632
+  /* "pplite/linear_algebra.pyx":631
  *         if first:
  *             s = '0'
  *         return s             # <<<<<<<<<<<<<<
@@ -8133,7 +8152,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
   __pyx_r = __pyx_v_s;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":588
+  /* "pplite/linear_algebra.pyx":587
  *         (<Linear_Expression> self).thisptr[0].set(ii.thisptr[0], nn)
  *         # raise NotImplementedError
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -8159,7 +8178,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_14__repr_
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":634
+/* "pplite/linear_algebra.pyx":633
  *         return s
  * 
  *     def swap_space_dimensions(self, v1, v2):             # <<<<<<<<<<<<<<
@@ -8224,7 +8243,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 634, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 633, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -8232,14 +8251,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 634, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 633, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("swap_space_dimensions", 1, 2, 2, 1); __PYX_ERR(0, 634, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("swap_space_dimensions", 1, 2, 2, 1); __PYX_ERR(0, 633, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "swap_space_dimensions") < 0)) __PYX_ERR(0, 634, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "swap_space_dimensions") < 0)) __PYX_ERR(0, 633, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -8252,7 +8271,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("swap_space_dimensions", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 634, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("swap_space_dimensions", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 633, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8297,7 +8316,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("swap_space_dimensions", 1);
 
-  /* "pplite/linear_algebra.pyx":656
+  /* "pplite/linear_algebra.pyx":655
  *         """
  *         cdef dim_type var_1, var_2
  *         if isinstance(v1, Variable):             # <<<<<<<<<<<<<<
@@ -8307,14 +8326,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_v1, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":657
+    /* "pplite/linear_algebra.pyx":656
  *         cdef dim_type var_1, var_2
  *         if isinstance(v1, Variable):
  *             var_1 = v1.id()             # <<<<<<<<<<<<<<
  *         else:
  *             vv1 = new Var(v1)
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_v1, __pyx_n_s_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 657, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_v1, __pyx_n_s_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 656, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
     __pyx_t_5 = 0;
@@ -8334,15 +8353,15 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
       PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 657, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 656, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
-    __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 657, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 656, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_var_1 = __pyx_t_6;
 
-    /* "pplite/linear_algebra.pyx":656
+    /* "pplite/linear_algebra.pyx":655
  *         """
  *         cdef dim_type var_1, var_2
  *         if isinstance(v1, Variable):             # <<<<<<<<<<<<<<
@@ -8352,7 +8371,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":659
+  /* "pplite/linear_algebra.pyx":658
  *             var_1 = v1.id()
  *         else:
  *             vv1 = new Var(v1)             # <<<<<<<<<<<<<<
@@ -8360,10 +8379,10 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
  *         if isinstance(v2, Variable):
  */
   /*else*/ {
-    __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_v_v1); if (unlikely((__pyx_t_6 == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 659, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_v_v1); if (unlikely((__pyx_t_6 == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 658, __pyx_L1_error)
     __pyx_v_vv1 = new pplite::Var(__pyx_t_6);
 
-    /* "pplite/linear_algebra.pyx":660
+    /* "pplite/linear_algebra.pyx":659
  *         else:
  *             vv1 = new Var(v1)
  *             var_1 = vv1.id()             # <<<<<<<<<<<<<<
@@ -8374,7 +8393,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":661
+  /* "pplite/linear_algebra.pyx":660
  *             vv1 = new Var(v1)
  *             var_1 = vv1.id()
  *         if isinstance(v2, Variable):             # <<<<<<<<<<<<<<
@@ -8384,14 +8403,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_v2, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":662
+    /* "pplite/linear_algebra.pyx":661
  *             var_1 = vv1.id()
  *         if isinstance(v2, Variable):
  *             var_2 = v2.id()             # <<<<<<<<<<<<<<
  *         else:
  *             vv2 = new Var(v2)
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_v2, __pyx_n_s_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 662, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_v2, __pyx_n_s_id); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 661, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
     __pyx_t_5 = 0;
@@ -8411,15 +8430,15 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
       PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 662, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 661, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
-    __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 662, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 661, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_var_2 = __pyx_t_6;
 
-    /* "pplite/linear_algebra.pyx":661
+    /* "pplite/linear_algebra.pyx":660
  *             vv1 = new Var(v1)
  *             var_1 = vv1.id()
  *         if isinstance(v2, Variable):             # <<<<<<<<<<<<<<
@@ -8429,7 +8448,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
     goto __pyx_L4;
   }
 
-  /* "pplite/linear_algebra.pyx":664
+  /* "pplite/linear_algebra.pyx":663
  *             var_2 = v2.id()
  *         else:
  *             vv2 = new Var(v2)             # <<<<<<<<<<<<<<
@@ -8437,10 +8456,10 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
  *         self.thisptr.swap_space_dims(var_1, var_2)
  */
   /*else*/ {
-    __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_v_v2); if (unlikely((__pyx_t_6 == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 664, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_v_v2); if (unlikely((__pyx_t_6 == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 663, __pyx_L1_error)
     __pyx_v_vv2 = new pplite::Var(__pyx_t_6);
 
-    /* "pplite/linear_algebra.pyx":665
+    /* "pplite/linear_algebra.pyx":664
  *         else:
  *             vv2 = new Var(v2)
  *             var_2 = vv2.id()             # <<<<<<<<<<<<<<
@@ -8451,7 +8470,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
   }
   __pyx_L4:;
 
-  /* "pplite/linear_algebra.pyx":666
+  /* "pplite/linear_algebra.pyx":665
  *             vv2 = new Var(v2)
  *             var_2 = vv2.id()
  *         self.thisptr.swap_space_dims(var_1, var_2)             # <<<<<<<<<<<<<<
@@ -8460,7 +8479,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
  */
   __pyx_v_self->thisptr->swap_space_dims(__pyx_v_var_1, __pyx_v_var_2);
 
-  /* "pplite/linear_algebra.pyx":634
+  /* "pplite/linear_algebra.pyx":633
  *         return s
  * 
  *     def swap_space_dimensions(self, v1, v2):             # <<<<<<<<<<<<<<
@@ -8483,7 +8502,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_16swap_sp
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":668
+/* "pplite/linear_algebra.pyx":667
  *         self.thisptr.swap_space_dims(var_1, var_2)
  * 
  *     def shift_space_dimensions(self, v, dim_type n):             # <<<<<<<<<<<<<<
@@ -8548,7 +8567,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 668, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 667, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -8556,14 +8575,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 668, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 667, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("shift_space_dimensions", 1, 2, 2, 1); __PYX_ERR(0, 668, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("shift_space_dimensions", 1, 2, 2, 1); __PYX_ERR(0, 667, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "shift_space_dimensions") < 0)) __PYX_ERR(0, 668, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "shift_space_dimensions") < 0)) __PYX_ERR(0, 667, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -8572,11 +8591,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
     }
     __pyx_v_v = values[0];
-    __pyx_v_n = __Pyx_PyInt_As_size_t(values[1]); if (unlikely((__pyx_v_n == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 668, __pyx_L3_error)
+    __pyx_v_n = __Pyx_PyInt_As_size_t(values[1]); if (unlikely((__pyx_v_n == ((pplite::dim_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 667, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("shift_space_dimensions", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 668, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("shift_space_dimensions", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 667, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8614,7 +8633,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_18shift_s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("shift_space_dimensions", 1);
 
-  /* "pplite/linear_algebra.pyx":689
+  /* "pplite/linear_algebra.pyx":688
  *         """
  *         cdef Variable vv
  *         if type(v) is Variable:             # <<<<<<<<<<<<<<
@@ -8624,7 +8643,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_18shift_s
   __pyx_t_1 = (((PyObject *)Py_TYPE(__pyx_v_v)) == ((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable));
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":690
+    /* "pplite/linear_algebra.pyx":689
  *         cdef Variable vv
  *         if type(v) is Variable:
  *             vv = <Variable> v             # <<<<<<<<<<<<<<
@@ -8636,7 +8655,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_18shift_s
     __pyx_v_vv = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":689
+    /* "pplite/linear_algebra.pyx":688
  *         """
  *         cdef Variable vv
  *         if type(v) is Variable:             # <<<<<<<<<<<<<<
@@ -8646,7 +8665,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_18shift_s
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":692
+  /* "pplite/linear_algebra.pyx":691
  *             vv = <Variable> v
  *         else:
  *             vv = Variable(v)             # <<<<<<<<<<<<<<
@@ -8654,14 +8673,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_18shift_s
  * 
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 692, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_v); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 691, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_vv = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_2);
     __pyx_t_2 = 0;
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":693
+  /* "pplite/linear_algebra.pyx":692
  *         else:
  *             vv = Variable(v)
  *         self.thisptr.shift_space_dims(vv.thisptr[0], n)             # <<<<<<<<<<<<<<
@@ -8670,7 +8689,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_18shift_s
  */
   __pyx_v_self->thisptr->shift_space_dims((__pyx_v_vv->thisptr[0]), __pyx_v_n);
 
-  /* "pplite/linear_algebra.pyx":668
+  /* "pplite/linear_algebra.pyx":667
  *         self.thisptr.swap_space_dims(var_1, var_2)
  * 
  *     def shift_space_dimensions(self, v, dim_type n):             # <<<<<<<<<<<<<<
@@ -8692,7 +8711,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_18shift_s
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":713
+/* "pplite/linear_algebra.pyx":712
  *     #     self.thisptr.remove_space_dimensions(V.thisptr[0])
  * 
  *     def all_homogeneous_terms_are_zero(self):             # <<<<<<<<<<<<<<
@@ -8751,7 +8770,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_20all_hom
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("all_homogeneous_terms_are_zero", 1);
 
-  /* "pplite/linear_algebra.pyx":728
+  /* "pplite/linear_algebra.pyx":727
  *         True
  *         """
  *         return self.thisptr.is_zero()             # <<<<<<<<<<<<<<
@@ -8759,13 +8778,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_20all_hom
  *     def is_equal_to(self, Linear_Expression other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->thisptr->is_zero()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 728, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->thisptr->is_zero()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 727, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":713
+  /* "pplite/linear_algebra.pyx":712
  *     #     self.thisptr.remove_space_dimensions(V.thisptr[0])
  * 
  *     def all_homogeneous_terms_are_zero(self):             # <<<<<<<<<<<<<<
@@ -8784,7 +8803,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_20all_hom
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":730
+/* "pplite/linear_algebra.pyx":729
  *         return self.thisptr.is_zero()
  * 
  *     def is_equal_to(self, Linear_Expression other):             # <<<<<<<<<<<<<<
@@ -8846,12 +8865,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 730, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 729, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "is_equal_to") < 0)) __PYX_ERR(0, 730, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "is_equal_to") < 0)) __PYX_ERR(0, 729, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -8862,7 +8881,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("is_equal_to", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 730, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("is_equal_to", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 729, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8876,7 +8895,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_6pplite_14linear_algebra_Linear_Expression, 1, "other", 0))) __PYX_ERR(0, 730, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_6pplite_14linear_algebra_Linear_Expression, 1, "other", 0))) __PYX_ERR(0, 729, __pyx_L1_error)
   __pyx_r = __pyx_pf_6pplite_14linear_algebra_17Linear_Expression_22is_equal_to(((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_v_self), __pyx_v_other);
 
   /* function exit code */
@@ -8903,7 +8922,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_22is_equa
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("is_equal_to", 1);
 
-  /* "pplite/linear_algebra.pyx":747
+  /* "pplite/linear_algebra.pyx":746
  *         False
  *         """
  *         return self.thisptr.is_equal_to(other.thisptr[0])             # <<<<<<<<<<<<<<
@@ -8911,13 +8930,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_22is_equa
  *     def __add__(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->thisptr->is_equal_to((__pyx_v_other->thisptr[0]))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 747, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->thisptr->is_equal_to((__pyx_v_other->thisptr[0]))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 746, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":730
+  /* "pplite/linear_algebra.pyx":729
  *         return self.thisptr.is_zero()
  * 
  *     def is_equal_to(self, Linear_Expression other):             # <<<<<<<<<<<<<<
@@ -8936,7 +8955,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_22is_equa
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":749
+/* "pplite/linear_algebra.pyx":748
  *         return self.thisptr.is_equal_to(other.thisptr[0])
  * 
  *     def __add__(self, other):             # <<<<<<<<<<<<<<
@@ -8982,7 +9001,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__add__", 1);
 
-  /* "pplite/linear_algebra.pyx":792
+  /* "pplite/linear_algebra.pyx":791
  *         True
  *         """
  *         if not isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -8993,7 +9012,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
   __pyx_t_2 = (!__pyx_t_1);
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":793
+    /* "pplite/linear_algebra.pyx":792
  *         """
  *         if not isinstance(self, Linear_Expression):
  *             return NotImplemented             # <<<<<<<<<<<<<<
@@ -9005,7 +9024,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
     __pyx_r = __pyx_builtin_NotImplemented;
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":792
+    /* "pplite/linear_algebra.pyx":791
  *         True
  *         """
  *         if not isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9014,7 +9033,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":796
+  /* "pplite/linear_algebra.pyx":795
  *         # to mimic pplite, we use cases for type conversions.
  *         # case 1: linear_expr + var -> linear_expr
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -9024,7 +9043,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":797
+    /* "pplite/linear_algebra.pyx":796
  *         # case 1: linear_expr + var -> linear_expr
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other             # <<<<<<<<<<<<<<
@@ -9036,19 +9055,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
     __pyx_v_other_var = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":798
+    /* "pplite/linear_algebra.pyx":797
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other
  *             result = Linear_Expression()             # <<<<<<<<<<<<<<
  *             result.thisptr = new Linear_Expr(other_var.thisptr[0] + self.thisptr[0])
  *             return result
  */
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 798, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 797, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":799
+    /* "pplite/linear_algebra.pyx":798
  *             other_var = <Variable> other
  *             result = Linear_Expression()
  *             result.thisptr = new Linear_Expr(other_var.thisptr[0] + self.thisptr[0])             # <<<<<<<<<<<<<<
@@ -9057,7 +9076,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
  */
     __pyx_v_result->thisptr = new pplite::Linear_Expr(((__pyx_v_other_var->thisptr[0]) + (__pyx_v_self->thisptr[0])));
 
-    /* "pplite/linear_algebra.pyx":800
+    /* "pplite/linear_algebra.pyx":799
  *             result = Linear_Expression()
  *             result.thisptr = new Linear_Expr(other_var.thisptr[0] + self.thisptr[0])
  *             return result             # <<<<<<<<<<<<<<
@@ -9069,7 +9088,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
     __pyx_r = ((PyObject *)__pyx_v_result);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":796
+    /* "pplite/linear_algebra.pyx":795
  *         # to mimic pplite, we use cases for type conversions.
  *         # case 1: linear_expr + var -> linear_expr
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -9078,7 +9097,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":805
+  /* "pplite/linear_algebra.pyx":804
  *         cdef Linear_Expr* rhs_expr
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9088,7 +9107,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":806
+    /* "pplite/linear_algebra.pyx":805
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):
  *             lhs_expr = (<Linear_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -9098,7 +9117,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
     __pyx_t_4 = __pyx_v_self->thisptr;
     __pyx_v_lhs_expr = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":807
+    /* "pplite/linear_algebra.pyx":806
  *         if isinstance(other, Linear_Expression):
  *             lhs_expr = (<Linear_Expression> self).thisptr
  *             rhs_expr = (<Linear_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -9108,7 +9127,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
     __pyx_t_4 = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_rhs_expr = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":808
+    /* "pplite/linear_algebra.pyx":807
  *             lhs_expr = (<Linear_Expression> self).thisptr
  *             rhs_expr = (<Linear_Expression> other).thisptr
  *             result_expr = lhs_expr[0] + rhs_expr[0]             # <<<<<<<<<<<<<<
@@ -9117,19 +9136,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
  */
     __pyx_v_result_expr = ((__pyx_v_lhs_expr[0]) + (__pyx_v_rhs_expr[0]));
 
-    /* "pplite/linear_algebra.pyx":809
+    /* "pplite/linear_algebra.pyx":808
  *             rhs_expr = (<Linear_Expression> other).thisptr
  *             result_expr = lhs_expr[0] + rhs_expr[0]
  *             result = Linear_Expression()             # <<<<<<<<<<<<<<
  *             result.thisptr[0] = result_expr
  *             return result
  */
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 809, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 808, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":810
+    /* "pplite/linear_algebra.pyx":809
  *             result_expr = lhs_expr[0] + rhs_expr[0]
  *             result = Linear_Expression()
  *             result.thisptr[0] = result_expr             # <<<<<<<<<<<<<<
@@ -9138,7 +9157,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
  */
     (__pyx_v_result->thisptr[0]) = __pyx_v_result_expr;
 
-    /* "pplite/linear_algebra.pyx":811
+    /* "pplite/linear_algebra.pyx":810
  *             result = Linear_Expression()
  *             result.thisptr[0] = result_expr
  *             return result             # <<<<<<<<<<<<<<
@@ -9150,7 +9169,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
     __pyx_r = ((PyObject *)__pyx_v_result);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":805
+    /* "pplite/linear_algebra.pyx":804
  *         cdef Linear_Expr* rhs_expr
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9159,7 +9178,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":814
+  /* "pplite/linear_algebra.pyx":813
  *         # case 3: linear_expr + affine_expr -> affine_expr
  *         # this should be handeled by the affine expression class
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -9169,7 +9188,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":815
+    /* "pplite/linear_algebra.pyx":814
  *         # this should be handeled by the affine expression class
  *         if isinstance(other, Affine_Expression):
  *             return NotImplemented             # <<<<<<<<<<<<<<
@@ -9181,7 +9200,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
     __pyx_r = __pyx_builtin_NotImplemented;
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":814
+    /* "pplite/linear_algebra.pyx":813
  *         # case 3: linear_expr + affine_expr -> affine_expr
  *         # this should be handeled by the affine expression class
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -9190,28 +9209,28 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":818
+  /* "pplite/linear_algebra.pyx":817
  *         # case 4, linear_expr + integer -> affine expression
  *         # other should be an integer of some sorts
  *         result_aff = Affine_Expression(self, other)             # <<<<<<<<<<<<<<
  *         return result_aff
  * 
  */
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 818, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 817, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF((PyObject *)__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_v_self);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_3, 0, ((PyObject *)__pyx_v_self))) __PYX_ERR(0, 818, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_3, 0, ((PyObject *)__pyx_v_self))) __PYX_ERR(0, 817, __pyx_L1_error);
   __Pyx_INCREF(__pyx_v_other);
   __Pyx_GIVEREF(__pyx_v_other);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_other)) __PYX_ERR(0, 818, __pyx_L1_error);
-  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_t_3, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 818, __pyx_L1_error)
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_other)) __PYX_ERR(0, 817, __pyx_L1_error);
+  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_t_3, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 817, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_result_aff = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "pplite/linear_algebra.pyx":819
+  /* "pplite/linear_algebra.pyx":818
  *         # other should be an integer of some sorts
  *         result_aff = Affine_Expression(self, other)
  *         return result_aff             # <<<<<<<<<<<<<<
@@ -9223,7 +9242,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
   __pyx_r = ((PyObject *)__pyx_v_result_aff);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":749
+  /* "pplite/linear_algebra.pyx":748
  *         return self.thisptr.is_equal_to(other.thisptr[0])
  * 
  *     def __add__(self, other):             # <<<<<<<<<<<<<<
@@ -9246,7 +9265,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_24__add__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":821
+/* "pplite/linear_algebra.pyx":820
  *         return result_aff
  * 
  *     def __radd__(self, other):             # <<<<<<<<<<<<<<
@@ -9278,7 +9297,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_26__radd_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__radd__", 1);
 
-  /* "pplite/linear_algebra.pyx":822
+  /* "pplite/linear_algebra.pyx":821
  * 
  *     def __radd__(self, other):
  *         return self + other             # <<<<<<<<<<<<<<
@@ -9286,13 +9305,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_26__radd_
  *     def __sub__(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Add(((PyObject *)__pyx_v_self), __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 822, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(((PyObject *)__pyx_v_self), __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 821, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":821
+  /* "pplite/linear_algebra.pyx":820
  *         return result_aff
  * 
  *     def __radd__(self, other):             # <<<<<<<<<<<<<<
@@ -9311,7 +9330,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_26__radd_
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":824
+/* "pplite/linear_algebra.pyx":823
  *         return self + other
  * 
  *     def __sub__(self, other):             # <<<<<<<<<<<<<<
@@ -9357,7 +9376,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__sub__", 1);
 
-  /* "pplite/linear_algebra.pyx":867
+  /* "pplite/linear_algebra.pyx":866
  *         # to mimic pplite, we use cases for type conversions.
  *         # case 1: linear_expr - var -> linear_expr
  *         if not isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9368,7 +9387,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
   __pyx_t_2 = (!__pyx_t_1);
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":868
+    /* "pplite/linear_algebra.pyx":867
  *         # case 1: linear_expr - var -> linear_expr
  *         if not isinstance(self, Linear_Expression):
  *             return NotImplemented             # <<<<<<<<<<<<<<
@@ -9380,7 +9399,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
     __pyx_r = __pyx_builtin_NotImplemented;
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":867
+    /* "pplite/linear_algebra.pyx":866
  *         # to mimic pplite, we use cases for type conversions.
  *         # case 1: linear_expr - var -> linear_expr
  *         if not isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9389,7 +9408,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":869
+  /* "pplite/linear_algebra.pyx":868
  *         if not isinstance(self, Linear_Expression):
  *             return NotImplemented
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -9399,7 +9418,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":870
+    /* "pplite/linear_algebra.pyx":869
  *             return NotImplemented
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other             # <<<<<<<<<<<<<<
@@ -9411,19 +9430,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
     __pyx_v_other_var = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":871
+    /* "pplite/linear_algebra.pyx":870
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other
  *             result = Linear_Expression()             # <<<<<<<<<<<<<<
  *             self.thisptr[0] -= other_var.thisptr[0]
  *             result.thisptr = new Linear_Expr(self.thisptr[0])
  */
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 871, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 870, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":872
+    /* "pplite/linear_algebra.pyx":871
  *             other_var = <Variable> other
  *             result = Linear_Expression()
  *             self.thisptr[0] -= other_var.thisptr[0]             # <<<<<<<<<<<<<<
@@ -9432,7 +9451,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
  */
     (__pyx_v_self->thisptr[0]) -= (__pyx_v_other_var->thisptr[0]);
 
-    /* "pplite/linear_algebra.pyx":873
+    /* "pplite/linear_algebra.pyx":872
  *             result = Linear_Expression()
  *             self.thisptr[0] -= other_var.thisptr[0]
  *             result.thisptr = new Linear_Expr(self.thisptr[0])             # <<<<<<<<<<<<<<
@@ -9441,7 +9460,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
  */
     __pyx_v_result->thisptr = new pplite::Linear_Expr((__pyx_v_self->thisptr[0]));
 
-    /* "pplite/linear_algebra.pyx":874
+    /* "pplite/linear_algebra.pyx":873
  *             self.thisptr[0] -= other_var.thisptr[0]
  *             result.thisptr = new Linear_Expr(self.thisptr[0])
  *             return result             # <<<<<<<<<<<<<<
@@ -9453,7 +9472,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
     __pyx_r = ((PyObject *)__pyx_v_result);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":869
+    /* "pplite/linear_algebra.pyx":868
  *         if not isinstance(self, Linear_Expression):
  *             return NotImplemented
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -9462,7 +9481,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":879
+  /* "pplite/linear_algebra.pyx":878
  *         cdef Linear_Expr* rhs_expr
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9472,7 +9491,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":880
+    /* "pplite/linear_algebra.pyx":879
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):
  *             lhs_expr = (<Linear_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -9482,7 +9501,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
     __pyx_t_4 = __pyx_v_self->thisptr;
     __pyx_v_lhs_expr = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":881
+    /* "pplite/linear_algebra.pyx":880
  *         if isinstance(other, Linear_Expression):
  *             lhs_expr = (<Linear_Expression> self).thisptr
  *             rhs_expr = (<Linear_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -9492,7 +9511,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
     __pyx_t_4 = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_rhs_expr = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":882
+    /* "pplite/linear_algebra.pyx":881
  *             lhs_expr = (<Linear_Expression> self).thisptr
  *             rhs_expr = (<Linear_Expression> other).thisptr
  *             result_expr = lhs_expr[0] - rhs_expr[0]             # <<<<<<<<<<<<<<
@@ -9501,19 +9520,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
  */
     __pyx_v_result_expr = ((__pyx_v_lhs_expr[0]) - (__pyx_v_rhs_expr[0]));
 
-    /* "pplite/linear_algebra.pyx":883
+    /* "pplite/linear_algebra.pyx":882
  *             rhs_expr = (<Linear_Expression> other).thisptr
  *             result_expr = lhs_expr[0] - rhs_expr[0]
  *             result = Linear_Expression()             # <<<<<<<<<<<<<<
  *             result.thisptr[0] = result_expr
  *             return result
  */
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 883, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 882, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":884
+    /* "pplite/linear_algebra.pyx":883
  *             result_expr = lhs_expr[0] - rhs_expr[0]
  *             result = Linear_Expression()
  *             result.thisptr[0] = result_expr             # <<<<<<<<<<<<<<
@@ -9522,7 +9541,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
  */
     (__pyx_v_result->thisptr[0]) = __pyx_v_result_expr;
 
-    /* "pplite/linear_algebra.pyx":885
+    /* "pplite/linear_algebra.pyx":884
  *             result = Linear_Expression()
  *             result.thisptr[0] = result_expr
  *             return result             # <<<<<<<<<<<<<<
@@ -9534,7 +9553,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
     __pyx_r = ((PyObject *)__pyx_v_result);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":879
+    /* "pplite/linear_algebra.pyx":878
  *         cdef Linear_Expr* rhs_expr
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9543,7 +9562,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":888
+  /* "pplite/linear_algebra.pyx":887
  *         # case 3: linear_expr + affine_expr -> affine_expr
  *         # this should be handeled by the affine expression class
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -9553,7 +9572,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":889
+    /* "pplite/linear_algebra.pyx":888
  *         # this should be handeled by the affine expression class
  *         if isinstance(other, Affine_Expression):
  *             return NotImplemented             # <<<<<<<<<<<<<<
@@ -9565,7 +9584,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
     __pyx_r = __pyx_builtin_NotImplemented;
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":888
+    /* "pplite/linear_algebra.pyx":887
  *         # case 3: linear_expr + affine_expr -> affine_expr
  *         # this should be handeled by the affine expression class
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -9574,30 +9593,30 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":892
+  /* "pplite/linear_algebra.pyx":891
  *         # case 4, linear_expr + integer -> affine expression
  *         # other should be an integer of some sorts, create affine expr. just like pplite would.
  *         result_aff = Affine_Expression(self, -other)             # <<<<<<<<<<<<<<
  *         return result_aff
  * 
  */
-  __pyx_t_3 = PyNumber_Negative(__pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 892, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Negative(__pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 891, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 892, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 891, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF((PyObject *)__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_v_self);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, ((PyObject *)__pyx_v_self))) __PYX_ERR(0, 892, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, ((PyObject *)__pyx_v_self))) __PYX_ERR(0, 891, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_3);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_3)) __PYX_ERR(0, 892, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_3)) __PYX_ERR(0, 891, __pyx_L1_error);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 892, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 891, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_result_aff = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":893
+  /* "pplite/linear_algebra.pyx":892
  *         # other should be an integer of some sorts, create affine expr. just like pplite would.
  *         result_aff = Affine_Expression(self, -other)
  *         return result_aff             # <<<<<<<<<<<<<<
@@ -9609,7 +9628,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
   __pyx_r = ((PyObject *)__pyx_v_result_aff);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":824
+  /* "pplite/linear_algebra.pyx":823
  *         return self + other
  * 
  *     def __sub__(self, other):             # <<<<<<<<<<<<<<
@@ -9632,7 +9651,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_28__sub__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":895
+/* "pplite/linear_algebra.pyx":894
  *         return result_aff
  * 
  *     def __rsub__(self, other):             # <<<<<<<<<<<<<<
@@ -9674,7 +9693,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__rsub__", 1);
 
-  /* "pplite/linear_algebra.pyx":896
+  /* "pplite/linear_algebra.pyx":895
  * 
  *     def __rsub__(self, other):
  *         if not isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9685,7 +9704,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
   __pyx_t_2 = (!__pyx_t_1);
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":897
+    /* "pplite/linear_algebra.pyx":896
  *     def __rsub__(self, other):
  *         if not isinstance(self, Linear_Expression):
  *             return NotImplemented             # <<<<<<<<<<<<<<
@@ -9697,7 +9716,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
     __pyx_r = __pyx_builtin_NotImplemented;
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":896
+    /* "pplite/linear_algebra.pyx":895
  * 
  *     def __rsub__(self, other):
  *         if not isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9706,7 +9725,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
  */
   }
 
-  /* "pplite/linear_algebra.pyx":898
+  /* "pplite/linear_algebra.pyx":897
  *         if not isinstance(self, Linear_Expression):
  *             return NotImplemented
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -9716,7 +9735,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":899
+    /* "pplite/linear_algebra.pyx":898
  *             return NotImplemented
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other             # <<<<<<<<<<<<<<
@@ -9728,19 +9747,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
     __pyx_v_other_var = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":900
+    /* "pplite/linear_algebra.pyx":899
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other
  *             result = Linear_Expression()             # <<<<<<<<<<<<<<
  *             result.thisptr = new Linear_Expr(other_var.thisptr[0] - self.thisptr[0])
  *             return result
  */
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 900, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 899, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":901
+    /* "pplite/linear_algebra.pyx":900
  *             other_var = <Variable> other
  *             result = Linear_Expression()
  *             result.thisptr = new Linear_Expr(other_var.thisptr[0] - self.thisptr[0])             # <<<<<<<<<<<<<<
@@ -9749,7 +9768,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
  */
     __pyx_v_result->thisptr = new pplite::Linear_Expr(((__pyx_v_other_var->thisptr[0]) - (__pyx_v_self->thisptr[0])));
 
-    /* "pplite/linear_algebra.pyx":902
+    /* "pplite/linear_algebra.pyx":901
  *             result = Linear_Expression()
  *             result.thisptr = new Linear_Expr(other_var.thisptr[0] - self.thisptr[0])
  *             return result             # <<<<<<<<<<<<<<
@@ -9761,7 +9780,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
     __pyx_r = ((PyObject *)__pyx_v_result);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":898
+    /* "pplite/linear_algebra.pyx":897
  *         if not isinstance(self, Linear_Expression):
  *             return NotImplemented
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -9770,7 +9789,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
  */
   }
 
-  /* "pplite/linear_algebra.pyx":906
+  /* "pplite/linear_algebra.pyx":905
  *         cdef Linear_Expr* rhs_expr
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9780,7 +9799,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":907
+    /* "pplite/linear_algebra.pyx":906
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):
  *             lhs_expr = (<Linear_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -9790,7 +9809,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
     __pyx_t_4 = __pyx_v_self->thisptr;
     __pyx_v_lhs_expr = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":908
+    /* "pplite/linear_algebra.pyx":907
  *         if isinstance(other, Linear_Expression):
  *             lhs_expr = (<Linear_Expression> self).thisptr
  *             rhs_expr = (<Linear_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -9800,7 +9819,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
     __pyx_t_4 = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_rhs_expr = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":909
+    /* "pplite/linear_algebra.pyx":908
  *             lhs_expr = (<Linear_Expression> self).thisptr
  *             rhs_expr = (<Linear_Expression> other).thisptr
  *             result_expr = rhs_expr[0] - lhs_expr[0]             # <<<<<<<<<<<<<<
@@ -9809,19 +9828,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
  */
     __pyx_v_result_expr = ((__pyx_v_rhs_expr[0]) - (__pyx_v_lhs_expr[0]));
 
-    /* "pplite/linear_algebra.pyx":910
+    /* "pplite/linear_algebra.pyx":909
  *             rhs_expr = (<Linear_Expression> other).thisptr
  *             result_expr = rhs_expr[0] - lhs_expr[0]
  *             result = Linear_Expression()             # <<<<<<<<<<<<<<
  *             result.thisptr[0] = result_expr
  *             return result
  */
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 910, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 909, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":911
+    /* "pplite/linear_algebra.pyx":910
  *             result_expr = rhs_expr[0] - lhs_expr[0]
  *             result = Linear_Expression()
  *             result.thisptr[0] = result_expr             # <<<<<<<<<<<<<<
@@ -9830,7 +9849,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
  */
     (__pyx_v_result->thisptr[0]) = __pyx_v_result_expr;
 
-    /* "pplite/linear_algebra.pyx":912
+    /* "pplite/linear_algebra.pyx":911
  *             result = Linear_Expression()
  *             result.thisptr[0] = result_expr
  *             return result             # <<<<<<<<<<<<<<
@@ -9842,7 +9861,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
     __pyx_r = ((PyObject *)__pyx_v_result);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":906
+    /* "pplite/linear_algebra.pyx":905
  *         cdef Linear_Expr* rhs_expr
  *         cdef Linear_Expr result_expr
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9851,7 +9870,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
  */
   }
 
-  /* "pplite/linear_algebra.pyx":913
+  /* "pplite/linear_algebra.pyx":912
  *             result.thisptr[0] = result_expr
  *             return result
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -9861,7 +9880,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
   __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":914
+    /* "pplite/linear_algebra.pyx":913
  *             return result
  *         if isinstance(other, Affine_Expression):
  *             return NotImplemented             # <<<<<<<<<<<<<<
@@ -9873,7 +9892,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
     __pyx_r = __pyx_builtin_NotImplemented;
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":913
+    /* "pplite/linear_algebra.pyx":912
  *             result.thisptr[0] = result_expr
  *             return result
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -9882,30 +9901,30 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
  */
   }
 
-  /* "pplite/linear_algebra.pyx":915
+  /* "pplite/linear_algebra.pyx":914
  *         if isinstance(other, Affine_Expression):
  *             return NotImplemented
  *         result_aff = Affine_Expression(-1*self, other)             # <<<<<<<<<<<<<<
  *         return result_aff
  * 
  */
-  __pyx_t_3 = PyNumber_Multiply(__pyx_int_neg_1, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 915, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_int_neg_1, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 914, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 915, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 914, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_3);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3)) __PYX_ERR(0, 915, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3)) __PYX_ERR(0, 914, __pyx_L1_error);
   __Pyx_INCREF(__pyx_v_other);
   __Pyx_GIVEREF(__pyx_v_other);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_v_other)) __PYX_ERR(0, 915, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_v_other)) __PYX_ERR(0, 914, __pyx_L1_error);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 915, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 914, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_result_aff = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":916
+  /* "pplite/linear_algebra.pyx":915
  *             return NotImplemented
  *         result_aff = Affine_Expression(-1*self, other)
  *         return result_aff             # <<<<<<<<<<<<<<
@@ -9917,7 +9936,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
   __pyx_r = ((PyObject *)__pyx_v_result_aff);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":895
+  /* "pplite/linear_algebra.pyx":894
  *         return result_aff
  * 
  *     def __rsub__(self, other):             # <<<<<<<<<<<<<<
@@ -9940,7 +9959,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_30__rsub_
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":918
+/* "pplite/linear_algebra.pyx":917
  *         return result_aff
  * 
  *     def __mul__(self, other):             # <<<<<<<<<<<<<<
@@ -9983,7 +10002,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__mul__", 1);
 
-  /* "pplite/linear_algebra.pyx":950
+  /* "pplite/linear_algebra.pyx":949
  *         # 15*x0
  *         cdef Linear_Expr* e
  *         if isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -9993,7 +10012,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
   __pyx_t_1 = __Pyx_TypeCheck(((PyObject *)__pyx_v_self), __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":951
+    /* "pplite/linear_algebra.pyx":950
  *         cdef Linear_Expr* e
  *         if isinstance(self, Linear_Expression):
  *             e = (<Linear_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -10003,7 +10022,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
     __pyx_t_2 = __pyx_v_self->thisptr;
     __pyx_v_e = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":952
+    /* "pplite/linear_algebra.pyx":951
  *         if isinstance(self, Linear_Expression):
  *             e = (<Linear_Expression> self).thisptr
  *             c = other             # <<<<<<<<<<<<<<
@@ -10013,7 +10032,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
     __Pyx_INCREF(__pyx_v_other);
     __pyx_v_c = __pyx_v_other;
 
-    /* "pplite/linear_algebra.pyx":950
+    /* "pplite/linear_algebra.pyx":949
  *         # 15*x0
  *         cdef Linear_Expr* e
  *         if isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -10023,7 +10042,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":955
+  /* "pplite/linear_algebra.pyx":954
  *         else:
  *             # NOTE: this code path will only be executed when compiled with cython < 3.0.0
  *             e = (<Linear_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -10034,7 +10053,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
     __pyx_t_2 = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_e = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":956
+    /* "pplite/linear_algebra.pyx":955
  *             # NOTE: this code path will only be executed when compiled with cython < 3.0.0
  *             e = (<Linear_Expression> other).thisptr
  *             c = self             # <<<<<<<<<<<<<<
@@ -10046,29 +10065,29 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":957
+  /* "pplite/linear_algebra.pyx":956
  *             e = (<Linear_Expression> other).thisptr
  *             c = self
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)             # <<<<<<<<<<<<<<
  *         cdef Linear_Expression result = Linear_Expression()
  *         result.thisptr[0] = e[0] * cc
  */
-  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_c); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 957, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_c); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 956, __pyx_L1_error)
   __pyx_v_cc = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_3);
 
-  /* "pplite/linear_algebra.pyx":958
+  /* "pplite/linear_algebra.pyx":957
  *             c = self
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
  *         cdef Linear_Expression result = Linear_Expression()             # <<<<<<<<<<<<<<
  *         result.thisptr[0] = e[0] * cc
  *         return result
  */
-  __pyx_t_4 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 958, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 957, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pplite/linear_algebra.pyx":959
+  /* "pplite/linear_algebra.pyx":958
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
  *         cdef Linear_Expression result = Linear_Expression()
  *         result.thisptr[0] = e[0] * cc             # <<<<<<<<<<<<<<
@@ -10077,7 +10096,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
  */
   (__pyx_v_result->thisptr[0]) = ((__pyx_v_e[0]) * __pyx_v_cc);
 
-  /* "pplite/linear_algebra.pyx":960
+  /* "pplite/linear_algebra.pyx":959
  *         cdef Linear_Expression result = Linear_Expression()
  *         result.thisptr[0] = e[0] * cc
  *         return result             # <<<<<<<<<<<<<<
@@ -10089,7 +10108,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
   __pyx_r = ((PyObject *)__pyx_v_result);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":918
+  /* "pplite/linear_algebra.pyx":917
  *         return result_aff
  * 
  *     def __mul__(self, other):             # <<<<<<<<<<<<<<
@@ -10110,7 +10129,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_32__mul__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":962
+/* "pplite/linear_algebra.pyx":961
  *         return result
  * 
  *     def __rmul__(self, other):             # <<<<<<<<<<<<<<
@@ -10149,7 +10168,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__rmul__", 1);
 
-  /* "pplite/linear_algebra.pyx":964
+  /* "pplite/linear_algebra.pyx":963
  *     def __rmul__(self, other):
  *         cdef Linear_Expr* e
  *         if isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -10159,7 +10178,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
   __pyx_t_1 = __Pyx_TypeCheck(((PyObject *)__pyx_v_self), __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":965
+    /* "pplite/linear_algebra.pyx":964
  *         cdef Linear_Expr* e
  *         if isinstance(self, Linear_Expression):
  *             e = (<Linear_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -10169,7 +10188,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
     __pyx_t_2 = __pyx_v_self->thisptr;
     __pyx_v_e = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":966
+    /* "pplite/linear_algebra.pyx":965
  *         if isinstance(self, Linear_Expression):
  *             e = (<Linear_Expression> self).thisptr
  *             c = other             # <<<<<<<<<<<<<<
@@ -10179,7 +10198,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
     __Pyx_INCREF(__pyx_v_other);
     __pyx_v_c = __pyx_v_other;
 
-    /* "pplite/linear_algebra.pyx":964
+    /* "pplite/linear_algebra.pyx":963
  *     def __rmul__(self, other):
  *         cdef Linear_Expr* e
  *         if isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -10189,7 +10208,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":969
+  /* "pplite/linear_algebra.pyx":968
  *         else:
  *             # NOTE: this code path will only be executed when compiled with cython < 3.0.0
  *             e = (<Linear_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -10200,7 +10219,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
     __pyx_t_2 = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_e = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":970
+    /* "pplite/linear_algebra.pyx":969
  *             # NOTE: this code path will only be executed when compiled with cython < 3.0.0
  *             e = (<Linear_Expression> other).thisptr
  *             c = self             # <<<<<<<<<<<<<<
@@ -10212,29 +10231,29 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":971
+  /* "pplite/linear_algebra.pyx":970
  *             e = (<Linear_Expression> other).thisptr
  *             c = self
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)             # <<<<<<<<<<<<<<
  *         cdef Linear_Expression result = Linear_Expression()
  *         result.thisptr[0] = e[0] * cc
  */
-  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_c); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 971, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_c); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 970, __pyx_L1_error)
   __pyx_v_cc = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_3);
 
-  /* "pplite/linear_algebra.pyx":972
+  /* "pplite/linear_algebra.pyx":971
  *             c = self
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
  *         cdef Linear_Expression result = Linear_Expression()             # <<<<<<<<<<<<<<
  *         result.thisptr[0] = e[0] * cc
  *         return result
  */
-  __pyx_t_4 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 972, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 971, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pplite/linear_algebra.pyx":973
+  /* "pplite/linear_algebra.pyx":972
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
  *         cdef Linear_Expression result = Linear_Expression()
  *         result.thisptr[0] = e[0] * cc             # <<<<<<<<<<<<<<
@@ -10243,7 +10262,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
  */
   (__pyx_v_result->thisptr[0]) = ((__pyx_v_e[0]) * __pyx_v_cc);
 
-  /* "pplite/linear_algebra.pyx":974
+  /* "pplite/linear_algebra.pyx":973
  *         cdef Linear_Expression result = Linear_Expression()
  *         result.thisptr[0] = e[0] * cc
  *         return result             # <<<<<<<<<<<<<<
@@ -10255,7 +10274,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
   __pyx_r = ((PyObject *)__pyx_v_result);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":962
+  /* "pplite/linear_algebra.pyx":961
  *         return result
  * 
  *     def __rmul__(self, other):             # <<<<<<<<<<<<<<
@@ -10276,7 +10295,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_34__rmul_
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":975
+/* "pplite/linear_algebra.pyx":974
  *         result.thisptr[0] = e[0] * cc
  *         return result
  *     def __neg__(self):             # <<<<<<<<<<<<<<
@@ -10304,7 +10323,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_36__neg__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__neg__", 1);
 
-  /* "pplite/linear_algebra.pyx":976
+  /* "pplite/linear_algebra.pyx":975
  *         return result
  *     def __neg__(self):
  *         neg_assign(self.thisptr[0])             # <<<<<<<<<<<<<<
@@ -10313,7 +10332,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_36__neg__
  */
   pplite::neg_assign((__pyx_v_self->thisptr[0]));
 
-  /* "pplite/linear_algebra.pyx":977
+  /* "pplite/linear_algebra.pyx":976
  *     def __neg__(self):
  *         neg_assign(self.thisptr[0])
  *         return self             # <<<<<<<<<<<<<<
@@ -10325,7 +10344,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_36__neg__
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":975
+  /* "pplite/linear_algebra.pyx":974
  *         result.thisptr[0] = e[0] * cc
  *         return result
  *     def __neg__(self):             # <<<<<<<<<<<<<<
@@ -10340,7 +10359,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_36__neg__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":978
+/* "pplite/linear_algebra.pyx":977
  *         neg_assign(self.thisptr[0])
  *         return self
  *     def __pos__(self):             # <<<<<<<<<<<<<<
@@ -10368,7 +10387,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_38__pos__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__pos__", 1);
 
-  /* "pplite/linear_algebra.pyx":979
+  /* "pplite/linear_algebra.pyx":978
  *         return self
  *     def __pos__(self):
  *         return self             # <<<<<<<<<<<<<<
@@ -10380,7 +10399,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_38__pos__
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":978
+  /* "pplite/linear_algebra.pyx":977
  *         neg_assign(self.thisptr[0])
  *         return self
  *     def __pos__(self):             # <<<<<<<<<<<<<<
@@ -10395,7 +10414,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_38__pos__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":981
+/* "pplite/linear_algebra.pyx":980
  *         return self
  * 
  *     def __richcmp__(self, other, op):             # <<<<<<<<<<<<<<
@@ -10415,7 +10434,7 @@ static PyObject *__pyx_pw_6pplite_14linear_algebra_17Linear_Expression_41__richc
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__richcmp__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_v_op = __Pyx_PyInt_From_int(__pyx_arg_op); if (unlikely(!__pyx_v_op)) __PYX_ERR(0, 981, __pyx_L3_error)
+  __pyx_v_op = __Pyx_PyInt_From_int(__pyx_arg_op); if (unlikely(!__pyx_v_op)) __PYX_ERR(0, 980, __pyx_L3_error)
   __Pyx_GOTREF(__pyx_v_op);
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -10440,7 +10459,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_40__richc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__richcmp__", 1);
 
-  /* "pplite/linear_algebra.pyx":989
+  /* "pplite/linear_algebra.pyx":988
  *         >>> from pplite import Variable
  *         """
  *         return _make_Constraint_from_richcmp(self, other, op)             # <<<<<<<<<<<<<<
@@ -10448,13 +10467,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_40__richc
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pplite_10constraint__make_Constraint_from_richcmp(((PyObject *)__pyx_v_self), __pyx_v_other, __pyx_v_op); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 989, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pplite_10constraint__make_Constraint_from_richcmp(((PyObject *)__pyx_v_self), __pyx_v_other, __pyx_v_op); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 988, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":981
+  /* "pplite/linear_algebra.pyx":980
  *         return self
  * 
  *     def __richcmp__(self, other, op):             # <<<<<<<<<<<<<<
@@ -10689,7 +10708,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Linear_Expression_44__setst
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1047
+/* "pplite/linear_algebra.pyx":1046
  * #     String, rationals and floating point types are accepted as long as they
  * #    represent exact integers:
  *     def __init__(self, *args):             # <<<<<<<<<<<<<<
@@ -10745,52 +10764,52 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 1);
 
-  /* "pplite/linear_algebra.pyx":1054
+  /* "pplite/linear_algebra.pyx":1053
  *         """
  *         cdef FLINT_Integer k
  *         if len(args) == 2:             # <<<<<<<<<<<<<<
  *             expr_arg = args[0]
  *             int_arg = args[1]
  */
-  __pyx_t_1 = __Pyx_PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1054, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1053, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 == 2);
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":1055
+    /* "pplite/linear_algebra.pyx":1054
  *         cdef FLINT_Integer k
  *         if len(args) == 2:
  *             expr_arg = args[0]             # <<<<<<<<<<<<<<
  *             int_arg = args[1]
  *             # if isinstance(expr_arg, dict):
  */
-    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1055, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1054, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_expr_arg = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1056
+    /* "pplite/linear_algebra.pyx":1055
  *         if len(args) == 2:
  *             expr_arg = args[0]
  *             int_arg = args[1]             # <<<<<<<<<<<<<<
  *             # if isinstance(expr_arg, dict):
  *             #     if expr_arg:
  */
-    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1056, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1055, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_int_arg = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1061
+    /* "pplite/linear_algebra.pyx":1060
  *             #         for i, coeff in expr_arg.items():
  *             #             self.thisptr.impl()[Variable(i).id()] = Python_int_to_FLINT_Integer(coeff)
  *             k = Python_int_to_FLINT_Integer(int_arg)             # <<<<<<<<<<<<<<
  *             if isinstance(expr_arg, Linear_Expression):
  *                 e = <Linear_Expression> expr_arg
  */
-    __pyx_t_4 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_int_arg); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1061, __pyx_L1_error)
+    __pyx_t_4 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_int_arg); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1060, __pyx_L1_error)
     __pyx_v_k = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_4);
 
-    /* "pplite/linear_algebra.pyx":1062
+    /* "pplite/linear_algebra.pyx":1061
  *             #             self.thisptr.impl()[Variable(i).id()] = Python_int_to_FLINT_Integer(coeff)
  *             k = Python_int_to_FLINT_Integer(int_arg)
  *             if isinstance(expr_arg, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -10800,7 +10819,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
     __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_expr_arg, __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
     if (__pyx_t_2) {
 
-      /* "pplite/linear_algebra.pyx":1063
+      /* "pplite/linear_algebra.pyx":1062
  *             k = Python_int_to_FLINT_Integer(int_arg)
  *             if isinstance(expr_arg, Linear_Expression):
  *                 e = <Linear_Expression> expr_arg             # <<<<<<<<<<<<<<
@@ -10812,7 +10831,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
       __pyx_v_e = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "pplite/linear_algebra.pyx":1064
+      /* "pplite/linear_algebra.pyx":1063
  *             if isinstance(expr_arg, Linear_Expression):
  *                 e = <Linear_Expression> expr_arg
  *                 self.thisptr = new Affine_Expr(e.thisptr[0], k)             # <<<<<<<<<<<<<<
@@ -10821,7 +10840,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
       __pyx_v_self->thisptr = new pplite::Affine_Expr((__pyx_v_e->thisptr[0]), __pyx_v_k);
 
-      /* "pplite/linear_algebra.pyx":1065
+      /* "pplite/linear_algebra.pyx":1064
  *                 e = <Linear_Expression> expr_arg
  *                 self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *                 return             # <<<<<<<<<<<<<<
@@ -10831,7 +10850,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
       __pyx_r = 0;
       goto __pyx_L0;
 
-      /* "pplite/linear_algebra.pyx":1062
+      /* "pplite/linear_algebra.pyx":1061
  *             #             self.thisptr.impl()[Variable(i).id()] = Python_int_to_FLINT_Integer(coeff)
  *             k = Python_int_to_FLINT_Integer(int_arg)
  *             if isinstance(expr_arg, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -10840,20 +10859,20 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
     }
 
-    /* "pplite/linear_algebra.pyx":1074
+    /* "pplite/linear_algebra.pyx":1073
  *             #     #self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *                 # self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *             raise ValueError("We done goofed, no acceptable input here")             # <<<<<<<<<<<<<<
  *         if len(args) == 1:
  *             arg = args[0]
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1074, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1073, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1074, __pyx_L1_error)
+    __PYX_ERR(0, 1073, __pyx_L1_error)
 
-    /* "pplite/linear_algebra.pyx":1054
+    /* "pplite/linear_algebra.pyx":1053
  *         """
  *         cdef FLINT_Integer k
  *         if len(args) == 2:             # <<<<<<<<<<<<<<
@@ -10862,30 +10881,30 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1075
+  /* "pplite/linear_algebra.pyx":1074
  *                 # self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *             raise ValueError("We done goofed, no acceptable input here")
  *         if len(args) == 1:             # <<<<<<<<<<<<<<
  *             arg = args[0]
  *             if isinstance(arg, int):
  */
-  __pyx_t_1 = __Pyx_PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1075, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1074, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 == 1);
   if (__pyx_t_2) {
 
-    /* "pplite/linear_algebra.pyx":1076
+    /* "pplite/linear_algebra.pyx":1075
  *             raise ValueError("We done goofed, no acceptable input here")
  *         if len(args) == 1:
  *             arg = args[0]             # <<<<<<<<<<<<<<
  *             if isinstance(arg, int):
  *                 k = Python_int_to_FLINT_Integer(arg)
  */
-    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1076, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt_Tuple(__pyx_v_args, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1075, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_arg = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1077
+    /* "pplite/linear_algebra.pyx":1076
  *         if len(args) == 1:
  *             arg = args[0]
  *             if isinstance(arg, int):             # <<<<<<<<<<<<<<
@@ -10895,17 +10914,17 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
     __pyx_t_2 = PyInt_Check(__pyx_v_arg); 
     if (__pyx_t_2) {
 
-      /* "pplite/linear_algebra.pyx":1078
+      /* "pplite/linear_algebra.pyx":1077
  *             arg = args[0]
  *             if isinstance(arg, int):
  *                 k = Python_int_to_FLINT_Integer(arg)             # <<<<<<<<<<<<<<
  *                 self.thisptr = new Affine_Expr(k)
  *                 return
  */
-      __pyx_t_4 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_arg); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1078, __pyx_L1_error)
+      __pyx_t_4 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_arg); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1077, __pyx_L1_error)
       __pyx_v_k = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_4);
 
-      /* "pplite/linear_algebra.pyx":1079
+      /* "pplite/linear_algebra.pyx":1078
  *             if isinstance(arg, int):
  *                 k = Python_int_to_FLINT_Integer(arg)
  *                 self.thisptr = new Affine_Expr(k)             # <<<<<<<<<<<<<<
@@ -10914,7 +10933,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
       __pyx_v_self->thisptr = new pplite::Affine_Expr(__pyx_v_k);
 
-      /* "pplite/linear_algebra.pyx":1080
+      /* "pplite/linear_algebra.pyx":1079
  *                 k = Python_int_to_FLINT_Integer(arg)
  *                 self.thisptr = new Affine_Expr(k)
  *                 return             # <<<<<<<<<<<<<<
@@ -10924,7 +10943,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
       __pyx_r = 0;
       goto __pyx_L0;
 
-      /* "pplite/linear_algebra.pyx":1077
+      /* "pplite/linear_algebra.pyx":1076
  *         if len(args) == 1:
  *             arg = args[0]
  *             if isinstance(arg, int):             # <<<<<<<<<<<<<<
@@ -10933,7 +10952,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
     }
 
-    /* "pplite/linear_algebra.pyx":1081
+    /* "pplite/linear_algebra.pyx":1080
  *                 self.thisptr = new Affine_Expr(k)
  *                 return
  *             if isinstance(arg, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -10943,7 +10962,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
     __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_arg, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
     if (__pyx_t_2) {
 
-      /* "pplite/linear_algebra.pyx":1082
+      /* "pplite/linear_algebra.pyx":1081
  *                 return
  *             if isinstance(arg, Affine_Expression):
  *                 a = <Affine_Expression> arg             # <<<<<<<<<<<<<<
@@ -10955,7 +10974,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
       __pyx_v_a = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "pplite/linear_algebra.pyx":1083
+      /* "pplite/linear_algebra.pyx":1082
  *             if isinstance(arg, Affine_Expression):
  *                 a = <Affine_Expression> arg
  *                 self.thisptr = new Affine_Expr(a.thisptr[0])             # <<<<<<<<<<<<<<
@@ -10964,7 +10983,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
       __pyx_v_self->thisptr = new pplite::Affine_Expr((__pyx_v_a->thisptr[0]));
 
-      /* "pplite/linear_algebra.pyx":1084
+      /* "pplite/linear_algebra.pyx":1083
  *                 a = <Affine_Expression> arg
  *                 self.thisptr = new Affine_Expr(a.thisptr[0])
  *                 return             # <<<<<<<<<<<<<<
@@ -10974,7 +10993,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
       __pyx_r = 0;
       goto __pyx_L0;
 
-      /* "pplite/linear_algebra.pyx":1081
+      /* "pplite/linear_algebra.pyx":1080
  *                 self.thisptr = new Affine_Expr(k)
  *                 return
  *             if isinstance(arg, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -10983,20 +11002,20 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
     }
 
-    /* "pplite/linear_algebra.pyx":1090
+    /* "pplite/linear_algebra.pyx":1089
  *                     #     self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *                     #     return
  *             raise ValueError("Initalizing with one argument requires either a affine expression or an integer to be passed in.")             # <<<<<<<<<<<<<<
  *         elif len(args) == 0:
  *             self.thisptr = new Affine_Expr()
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1090, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1089, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1090, __pyx_L1_error)
+    __PYX_ERR(0, 1089, __pyx_L1_error)
 
-    /* "pplite/linear_algebra.pyx":1075
+    /* "pplite/linear_algebra.pyx":1074
  *                 # self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *             raise ValueError("We done goofed, no acceptable input here")
  *         if len(args) == 1:             # <<<<<<<<<<<<<<
@@ -11005,18 +11024,18 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1091
+  /* "pplite/linear_algebra.pyx":1090
  *                     #     return
  *             raise ValueError("Initalizing with one argument requires either a affine expression or an integer to be passed in.")
  *         elif len(args) == 0:             # <<<<<<<<<<<<<<
  *             self.thisptr = new Affine_Expr()
  *             return
  */
-  __pyx_t_1 = __Pyx_PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1091, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyTuple_GET_SIZE(__pyx_v_args); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 1090, __pyx_L1_error)
   __pyx_t_2 = (__pyx_t_1 == 0);
   if (likely(__pyx_t_2)) {
 
-    /* "pplite/linear_algebra.pyx":1092
+    /* "pplite/linear_algebra.pyx":1091
  *             raise ValueError("Initalizing with one argument requires either a affine expression or an integer to be passed in.")
  *         elif len(args) == 0:
  *             self.thisptr = new Affine_Expr()             # <<<<<<<<<<<<<<
@@ -11025,7 +11044,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
     __pyx_v_self->thisptr = new pplite::Affine_Expr();
 
-    /* "pplite/linear_algebra.pyx":1093
+    /* "pplite/linear_algebra.pyx":1092
  *         elif len(args) == 0:
  *             self.thisptr = new Affine_Expr()
  *             return             # <<<<<<<<<<<<<<
@@ -11035,7 +11054,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":1091
+    /* "pplite/linear_algebra.pyx":1090
  *                     #     return
  *             raise ValueError("Initalizing with one argument requires either a affine expression or an integer to be passed in.")
  *         elif len(args) == 0:             # <<<<<<<<<<<<<<
@@ -11044,7 +11063,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1095
+  /* "pplite/linear_algebra.pyx":1094
  *             return
  *         else:
  *             raise ValueError("Cannot initialize with more than 2 arguments.")             # <<<<<<<<<<<<<<
@@ -11052,14 +11071,14 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
  *     def __dealloc__(self):
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1095, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1094, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1095, __pyx_L1_error)
+    __PYX_ERR(0, 1094, __pyx_L1_error)
   }
 
-  /* "pplite/linear_algebra.pyx":1047
+  /* "pplite/linear_algebra.pyx":1046
  * #     String, rationals and floating point types are accepted as long as they
  * #    represent exact integers:
  *     def __init__(self, *args):             # <<<<<<<<<<<<<<
@@ -11082,7 +11101,7 @@ static int __pyx_pf_6pplite_14linear_algebra_17Affine_Expression___init__(struct
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1097
+/* "pplite/linear_algebra.pyx":1096
  *             raise ValueError("Cannot initialize with more than 2 arguments.")
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -11105,7 +11124,7 @@ static void __pyx_pw_6pplite_14linear_algebra_17Affine_Expression_3__dealloc__(P
 
 static void __pyx_pf_6pplite_14linear_algebra_17Affine_Expression_2__dealloc__(struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *__pyx_v_self) {
 
-  /* "pplite/linear_algebra.pyx":1101
+  /* "pplite/linear_algebra.pyx":1100
  *         The Cython destructor.
  *         """
  *         del self.thisptr             # <<<<<<<<<<<<<<
@@ -11114,7 +11133,7 @@ static void __pyx_pf_6pplite_14linear_algebra_17Affine_Expression_2__dealloc__(s
  */
   delete __pyx_v_self->thisptr;
 
-  /* "pplite/linear_algebra.pyx":1097
+  /* "pplite/linear_algebra.pyx":1096
  *             raise ValueError("Cannot initialize with more than 2 arguments.")
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -11125,7 +11144,7 @@ static void __pyx_pf_6pplite_14linear_algebra_17Affine_Expression_2__dealloc__(s
   /* function exit code */
 }
 
-/* "pplite/linear_algebra.pyx":1103
+/* "pplite/linear_algebra.pyx":1102
  *         del self.thisptr
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -11161,20 +11180,20 @@ static Py_hash_t __pyx_pf_6pplite_14linear_algebra_17Affine_Expression_4__hash__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__hash__", 1);
 
-  /* "pplite/linear_algebra.pyx":1112
+  /* "pplite/linear_algebra.pyx":1111
  *         TypeError: Affine_Expression unhashable
  *         """
  *         raise TypeError('Affine_Expression unhashable')             # <<<<<<<<<<<<<<
  * 
  *     def space_dimension(self):
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1112, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 1112, __pyx_L1_error)
+  __PYX_ERR(0, 1111, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1103
+  /* "pplite/linear_algebra.pyx":1102
  *         del self.thisptr
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -11192,7 +11211,7 @@ static Py_hash_t __pyx_pf_6pplite_14linear_algebra_17Affine_Expression_4__hash__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1114
+/* "pplite/linear_algebra.pyx":1113
  *         raise TypeError('Affine_Expression unhashable')
  * 
  *     def space_dimension(self):             # <<<<<<<<<<<<<<
@@ -11251,7 +11270,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_6space_di
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("space_dimension", 1);
 
-  /* "pplite/linear_algebra.pyx":1130
+  /* "pplite/linear_algebra.pyx":1129
  *         2
  *         """
  *         return self.thisptr.space_dim()             # <<<<<<<<<<<<<<
@@ -11259,13 +11278,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_6space_di
  *     def linear_form(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_self->thisptr->space_dim()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1130, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_self->thisptr->space_dim()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1114
+  /* "pplite/linear_algebra.pyx":1113
  *         raise TypeError('Affine_Expression unhashable')
  * 
  *     def space_dimension(self):             # <<<<<<<<<<<<<<
@@ -11284,7 +11303,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_6space_di
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1132
+/* "pplite/linear_algebra.pyx":1131
  *         return self.thisptr.space_dim()
  * 
  *     def linear_form(self):             # <<<<<<<<<<<<<<
@@ -11346,7 +11365,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_8linear_f
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("linear_form", 1);
 
-  /* "pplite/linear_algebra.pyx":1149
+  /* "pplite/linear_algebra.pyx":1148
  *         """
  *         cdef Linear_Expr e
  *         e = (<Affine_Expression> self).thisptr[0].expr             # <<<<<<<<<<<<<<
@@ -11356,19 +11375,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_8linear_f
   __pyx_t_1 = (__pyx_v_self->thisptr[0]).expr;
   __pyx_v_e = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
 
-  /* "pplite/linear_algebra.pyx":1150
+  /* "pplite/linear_algebra.pyx":1149
  *         cdef Linear_Expr e
  *         e = (<Affine_Expression> self).thisptr[0].expr
  *         ee = Linear_Expression()             # <<<<<<<<<<<<<<
  *         ee.thisptr[0] = e
  *         return ee
  */
-  __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1150, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_ee = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "pplite/linear_algebra.pyx":1151
+  /* "pplite/linear_algebra.pyx":1150
  *         e = (<Affine_Expression> self).thisptr[0].expr
  *         ee = Linear_Expression()
  *         ee.thisptr[0] = e             # <<<<<<<<<<<<<<
@@ -11377,7 +11396,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_8linear_f
  */
   (__pyx_v_ee->thisptr[0]) = __pyx_v_e;
 
-  /* "pplite/linear_algebra.pyx":1152
+  /* "pplite/linear_algebra.pyx":1151
  *         ee = Linear_Expression()
  *         ee.thisptr[0] = e
  *         return ee             # <<<<<<<<<<<<<<
@@ -11389,7 +11408,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_8linear_f
   __pyx_r = ((PyObject *)__pyx_v_ee);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1132
+  /* "pplite/linear_algebra.pyx":1131
  *         return self.thisptr.space_dim()
  * 
  *     def linear_form(self):             # <<<<<<<<<<<<<<
@@ -11409,7 +11428,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_8linear_f
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1154
+/* "pplite/linear_algebra.pyx":1153
  *         return ee
  * 
  *     def inhomogeneous_term(self):             # <<<<<<<<<<<<<<
@@ -11470,7 +11489,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_10inhomog
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("inhomogeneous_term", 1);
 
-  /* "pplite/linear_algebra.pyx":1172
+  /* "pplite/linear_algebra.pyx":1171
  *         """
  *         cdef FLINT_Integer c
  *         c = self.thisptr.inhomo             # <<<<<<<<<<<<<<
@@ -11480,7 +11499,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_10inhomog
   __pyx_t_1 = __pyx_v_self->thisptr->inhomo;
   __pyx_v_c = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_1);
 
-  /* "pplite/linear_algebra.pyx":1173
+  /* "pplite/linear_algebra.pyx":1172
  *         cdef FLINT_Integer c
  *         c = self.thisptr.inhomo
  *         return FLINT_Integer_to_Python(c)             # <<<<<<<<<<<<<<
@@ -11488,13 +11507,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_10inhomog
  *     def coefficient(self, v):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_f_6pplite_14linear_algebra_FLINT_Integer_to_Python(__pyx_v_c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1173, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_6pplite_14linear_algebra_FLINT_Integer_to_Python(__pyx_v_c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1154
+  /* "pplite/linear_algebra.pyx":1153
  *         return ee
  * 
  *     def inhomogeneous_term(self):             # <<<<<<<<<<<<<<
@@ -11513,7 +11532,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_10inhomog
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1175
+/* "pplite/linear_algebra.pyx":1174
  *         return FLINT_Integer_to_Python(c)
  * 
  *     def coefficient(self, v):             # <<<<<<<<<<<<<<
@@ -11575,12 +11594,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1175, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1174, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "coefficient") < 0)) __PYX_ERR(0, 1175, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "coefficient") < 0)) __PYX_ERR(0, 1174, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -11591,7 +11610,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("coefficient", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1175, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("coefficient", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1174, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -11631,7 +11650,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_12coeffic
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("coefficient", 1);
 
-  /* "pplite/linear_algebra.pyx":1195
+  /* "pplite/linear_algebra.pyx":1194
  *         mpz(1)
  *         """
  *         return self.linear_form().coefficient(v)             # <<<<<<<<<<<<<<
@@ -11639,7 +11658,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_12coeffic
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_linear_form); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1195, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_linear_form); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -11659,11 +11678,11 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_12coeffic
     PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1195, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_coefficient); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1195, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_coefficient); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -11684,7 +11703,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_12coeffic
     PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_v_v};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1195, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
@@ -11692,7 +11711,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_12coeffic
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1175
+  /* "pplite/linear_algebra.pyx":1174
  *         return FLINT_Integer_to_Python(c)
  * 
  *     def coefficient(self, v):             # <<<<<<<<<<<<<<
@@ -11714,7 +11733,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_12coeffic
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1197
+/* "pplite/linear_algebra.pyx":1196
  *         return self.linear_form().coefficient(v)
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -11766,7 +11785,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 1);
 
-  /* "pplite/linear_algebra.pyx":1217
+  /* "pplite/linear_algebra.pyx":1216
  *         2*x0
  *         """
  *         s = ''             # <<<<<<<<<<<<<<
@@ -11776,7 +11795,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
   __Pyx_INCREF(__pyx_kp_u__6);
   __pyx_v_s = __pyx_kp_u__6;
 
-  /* "pplite/linear_algebra.pyx":1218
+  /* "pplite/linear_algebra.pyx":1217
  *         """
  *         s = ''
  *         first = True             # <<<<<<<<<<<<<<
@@ -11785,14 +11804,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
   __pyx_v_first = 1;
 
-  /* "pplite/linear_algebra.pyx":1219
+  /* "pplite/linear_algebra.pyx":1218
  *         s = ''
  *         first = True
  *         for i in range(self.space_dimension()):             # <<<<<<<<<<<<<<
  *             x = Variable(i)
  *             coeff = self.coefficient(x)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_space_dimension); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1219, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_space_dimension); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -11812,11 +11831,11 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1219, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1218, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1219, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
@@ -11824,9 +11843,9 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
     __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1219, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1218, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1219, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1218, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
@@ -11835,28 +11854,28 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
         {
           Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_1);
           #if !CYTHON_ASSUME_SAFE_MACROS
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 1219, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 1218, __pyx_L1_error)
           #endif
           if (__pyx_t_5 >= __pyx_temp) break;
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 1219, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 1218, __pyx_L1_error)
         #else
-        __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1219, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1218, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       } else {
         {
           Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_1);
           #if !CYTHON_ASSUME_SAFE_MACROS
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 1219, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 1218, __pyx_L1_error)
           #endif
           if (__pyx_t_5 >= __pyx_temp) break;
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 1219, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely((0 < 0))) __PYX_ERR(0, 1218, __pyx_L1_error)
         #else
-        __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1219, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1218, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       }
@@ -11866,7 +11885,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1219, __pyx_L1_error)
+          else __PYX_ERR(0, 1218, __pyx_L1_error)
         }
         break;
       }
@@ -11875,26 +11894,26 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
     __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":1220
+    /* "pplite/linear_algebra.pyx":1219
  *         first = True
  *         for i in range(self.space_dimension()):
  *             x = Variable(i)             # <<<<<<<<<<<<<<
  *             coeff = self.coefficient(x)
  *             if coeff == 0:
  */
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1220, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Variable), __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1219, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_XDECREF_SET(__pyx_v_x, ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":1221
+    /* "pplite/linear_algebra.pyx":1220
  *         for i in range(self.space_dimension()):
  *             x = Variable(i)
  *             coeff = self.coefficient(x)             # <<<<<<<<<<<<<<
  *             if coeff == 0:
  *                 continue
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_coefficient); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1221, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_coefficient); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1220, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_7 = NULL;
     __pyx_t_4 = 0;
@@ -11914,24 +11933,24 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       PyObject *__pyx_callargs[2] = {__pyx_t_7, ((PyObject *)__pyx_v_x)};
       __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1221, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1220, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __Pyx_XDECREF_SET(__pyx_v_coeff, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pplite/linear_algebra.pyx":1222
+    /* "pplite/linear_algebra.pyx":1221
  *             x = Variable(i)
  *             coeff = self.coefficient(x)
  *             if coeff == 0:             # <<<<<<<<<<<<<<
  *                 continue
  *             if first and coeff == 1:
  */
-    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_0, 0, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1222, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_0, 0, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1221, __pyx_L1_error)
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":1223
+      /* "pplite/linear_algebra.pyx":1222
  *             coeff = self.coefficient(x)
  *             if coeff == 0:
  *                 continue             # <<<<<<<<<<<<<<
@@ -11940,7 +11959,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
       goto __pyx_L3_continue;
 
-      /* "pplite/linear_algebra.pyx":1222
+      /* "pplite/linear_algebra.pyx":1221
  *             x = Variable(i)
  *             coeff = self.coefficient(x)
  *             if coeff == 0:             # <<<<<<<<<<<<<<
@@ -11949,7 +11968,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
     }
 
-    /* "pplite/linear_algebra.pyx":1224
+    /* "pplite/linear_algebra.pyx":1223
  *             if coeff == 0:
  *                 continue
  *             if first and coeff == 1:             # <<<<<<<<<<<<<<
@@ -11961,27 +11980,27 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       __pyx_t_8 = __pyx_v_first;
       goto __pyx_L7_bool_binop_done;
     }
-    __pyx_t_9 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 1224, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 1223, __pyx_L1_error)
     __pyx_t_8 = __pyx_t_9;
     __pyx_L7_bool_binop_done:;
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":1225
+      /* "pplite/linear_algebra.pyx":1224
  *                 continue
  *             if first and coeff == 1:
  *                 s += '%r' % x             # <<<<<<<<<<<<<<
  *                 first = False
  *             elif first and coeff == -1:
  */
-      __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_r, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1225, __pyx_L1_error)
+      __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_r, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1224, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1225, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1224, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_3));
       __pyx_t_3 = 0;
 
-      /* "pplite/linear_algebra.pyx":1226
+      /* "pplite/linear_algebra.pyx":1225
  *             if first and coeff == 1:
  *                 s += '%r' % x
  *                 first = False             # <<<<<<<<<<<<<<
@@ -11990,7 +12009,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
       __pyx_v_first = 0;
 
-      /* "pplite/linear_algebra.pyx":1224
+      /* "pplite/linear_algebra.pyx":1223
  *             if coeff == 0:
  *                 continue
  *             if first and coeff == 1:             # <<<<<<<<<<<<<<
@@ -12000,7 +12019,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":1227
+    /* "pplite/linear_algebra.pyx":1226
  *                 s += '%r' % x
  *                 first = False
  *             elif first and coeff == -1:             # <<<<<<<<<<<<<<
@@ -12012,27 +12031,27 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       __pyx_t_8 = __pyx_v_first;
       goto __pyx_L9_bool_binop_done;
     }
-    __pyx_t_9 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 1227, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 1226, __pyx_L1_error)
     __pyx_t_8 = __pyx_t_9;
     __pyx_L9_bool_binop_done:;
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":1228
+      /* "pplite/linear_algebra.pyx":1227
  *                 first = False
  *             elif first and coeff == -1:
  *                 s += '-%r' % x             # <<<<<<<<<<<<<<
  *                 first = False
  *             elif first and coeff != 1:
  */
-      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_r_2, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1228, __pyx_L1_error)
+      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_r_2, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1227, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1228, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1227, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "pplite/linear_algebra.pyx":1229
+      /* "pplite/linear_algebra.pyx":1228
  *             elif first and coeff == -1:
  *                 s += '-%r' % x
  *                 first = False             # <<<<<<<<<<<<<<
@@ -12041,7 +12060,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
       __pyx_v_first = 0;
 
-      /* "pplite/linear_algebra.pyx":1227
+      /* "pplite/linear_algebra.pyx":1226
  *                 s += '%r' % x
  *                 first = False
  *             elif first and coeff == -1:             # <<<<<<<<<<<<<<
@@ -12051,7 +12070,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":1230
+    /* "pplite/linear_algebra.pyx":1229
  *                 s += '-%r' % x
  *                 first = False
  *             elif first and coeff != 1:             # <<<<<<<<<<<<<<
@@ -12063,23 +12082,23 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       __pyx_t_8 = __pyx_v_first;
       goto __pyx_L11_bool_binop_done;
     }
-    __pyx_t_9 = (__Pyx_PyInt_BoolNeObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 1230, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyInt_BoolNeObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_9 < 0))) __PYX_ERR(0, 1229, __pyx_L1_error)
     __pyx_t_8 = __pyx_t_9;
     __pyx_L11_bool_binop_done:;
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":1231
+      /* "pplite/linear_algebra.pyx":1230
  *                 first = False
  *             elif first and coeff != 1:
  *                 s += '%d*%r' % (coeff, x)             # <<<<<<<<<<<<<<
  *                 first = False
  *             elif coeff == 1:
  */
-      __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1231, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1230, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_10 = 0;
       __pyx_t_11 = 127;
-      __pyx_t_3 = __Pyx_PyObject_FormatAndDecref(__Pyx_PyNumber_IntOrLong(__pyx_v_coeff), __pyx_n_u_d); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1231, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_FormatAndDecref(__Pyx_PyNumber_IntOrLong(__pyx_v_coeff), __pyx_n_u_d); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1230, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_11;
       __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3);
@@ -12090,23 +12109,23 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       __pyx_t_10 += 1;
       __Pyx_GIVEREF(__pyx_kp_u__7);
       PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_kp_u__7);
-      __pyx_t_3 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Repr(((PyObject *)__pyx_v_x)), __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1231, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Repr(((PyObject *)__pyx_v_x)), __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1230, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_11 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_11) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_11;
       __pyx_t_10 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_2, 3, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1231, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_2, 3, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1230, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1231, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1230, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "pplite/linear_algebra.pyx":1232
+      /* "pplite/linear_algebra.pyx":1231
  *             elif first and coeff != 1:
  *                 s += '%d*%r' % (coeff, x)
  *                 first = False             # <<<<<<<<<<<<<<
@@ -12115,7 +12134,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
       __pyx_v_first = 0;
 
-      /* "pplite/linear_algebra.pyx":1230
+      /* "pplite/linear_algebra.pyx":1229
  *                 s += '-%r' % x
  *                 first = False
  *             elif first and coeff != 1:             # <<<<<<<<<<<<<<
@@ -12125,32 +12144,32 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":1233
+    /* "pplite/linear_algebra.pyx":1232
  *                 s += '%d*%r' % (coeff, x)
  *                 first = False
  *             elif coeff == 1:             # <<<<<<<<<<<<<<
  *                 s += '+%r' % x
  *             elif coeff == -1:
  */
-    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1233, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_1, 1, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1232, __pyx_L1_error)
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":1234
+      /* "pplite/linear_algebra.pyx":1233
  *                 first = False
  *             elif coeff == 1:
  *                 s += '+%r' % x             # <<<<<<<<<<<<<<
  *             elif coeff == -1:
  *                 s += '-%r' % x
  */
-      __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_r_3, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1234, __pyx_L1_error)
+      __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_r_3, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1233, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1234, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1233, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_3));
       __pyx_t_3 = 0;
 
-      /* "pplite/linear_algebra.pyx":1233
+      /* "pplite/linear_algebra.pyx":1232
  *                 s += '%d*%r' % (coeff, x)
  *                 first = False
  *             elif coeff == 1:             # <<<<<<<<<<<<<<
@@ -12160,32 +12179,32 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":1235
+    /* "pplite/linear_algebra.pyx":1234
  *             elif coeff == 1:
  *                 s += '+%r' % x
  *             elif coeff == -1:             # <<<<<<<<<<<<<<
  *                 s += '-%r' % x
  *             else:
  */
-    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1235, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_coeff, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1234, __pyx_L1_error)
     if (__pyx_t_8) {
 
-      /* "pplite/linear_algebra.pyx":1236
+      /* "pplite/linear_algebra.pyx":1235
  *                 s += '+%r' % x
  *             elif coeff == -1:
  *                 s += '-%r' % x             # <<<<<<<<<<<<<<
  *             else:
  *                 s += '%+d*%r' % (coeff, x)
  */
-      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_r_2, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1236, __pyx_L1_error)
+      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_r_2, ((PyObject *)__pyx_v_x)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1235, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1236, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1235, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "pplite/linear_algebra.pyx":1235
+      /* "pplite/linear_algebra.pyx":1234
  *             elif coeff == 1:
  *                 s += '+%r' % x
  *             elif coeff == -1:             # <<<<<<<<<<<<<<
@@ -12195,7 +12214,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       goto __pyx_L6;
     }
 
-    /* "pplite/linear_algebra.pyx":1238
+    /* "pplite/linear_algebra.pyx":1237
  *                 s += '-%r' % x
  *             else:
  *                 s += '%+d*%r' % (coeff, x)             # <<<<<<<<<<<<<<
@@ -12203,18 +12222,18 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  *         if inhomog != 0:
  */
     /*else*/ {
-      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1238, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1237, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_INCREF(__pyx_v_coeff);
       __Pyx_GIVEREF(__pyx_v_coeff);
-      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_coeff)) __PYX_ERR(0, 1238, __pyx_L1_error);
+      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_coeff)) __PYX_ERR(0, 1237, __pyx_L1_error);
       __Pyx_INCREF((PyObject *)__pyx_v_x);
       __Pyx_GIVEREF((PyObject *)__pyx_v_x);
-      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_x))) __PYX_ERR(0, 1238, __pyx_L1_error);
-      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_d_r, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1238, __pyx_L1_error)
+      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_x))) __PYX_ERR(0, 1237, __pyx_L1_error);
+      __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_d_r, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1237, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1238, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1237, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
@@ -12222,7 +12241,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
     }
     __pyx_L6:;
 
-    /* "pplite/linear_algebra.pyx":1219
+    /* "pplite/linear_algebra.pyx":1218
  *         s = ''
  *         first = True
  *         for i in range(self.space_dimension()):             # <<<<<<<<<<<<<<
@@ -12233,14 +12252,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pplite/linear_algebra.pyx":1239
+  /* "pplite/linear_algebra.pyx":1238
  *             else:
  *                 s += '%+d*%r' % (coeff, x)
  *         inhomog = self.inhomogeneous_term()             # <<<<<<<<<<<<<<
  *         if inhomog != 0:
  *             if first:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_inhomogeneous_term); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1239, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_inhomogeneous_term); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1238, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -12260,24 +12279,24 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1239, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1238, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __pyx_v_inhomog = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "pplite/linear_algebra.pyx":1240
+  /* "pplite/linear_algebra.pyx":1239
  *                 s += '%+d*%r' % (coeff, x)
  *         inhomog = self.inhomogeneous_term()
  *         if inhomog != 0:             # <<<<<<<<<<<<<<
  *             if first:
  *                 s += '%d' % inhomog
  */
-  __pyx_t_8 = (__Pyx_PyInt_BoolNeObjC(__pyx_v_inhomog, __pyx_int_0, 0, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1240, __pyx_L1_error)
+  __pyx_t_8 = (__Pyx_PyInt_BoolNeObjC(__pyx_v_inhomog, __pyx_int_0, 0, 0)); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 1239, __pyx_L1_error)
   if (__pyx_t_8) {
 
-    /* "pplite/linear_algebra.pyx":1241
+    /* "pplite/linear_algebra.pyx":1240
  *         inhomog = self.inhomogeneous_term()
  *         if inhomog != 0:
  *             if first:             # <<<<<<<<<<<<<<
@@ -12286,22 +12305,22 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
     if (__pyx_v_first) {
 
-      /* "pplite/linear_algebra.pyx":1242
+      /* "pplite/linear_algebra.pyx":1241
  *         if inhomog != 0:
  *             if first:
  *                 s += '%d' % inhomog             # <<<<<<<<<<<<<<
  *                 first = False
  *             else:
  */
-      __pyx_t_1 = __Pyx_PyUnicode_FormatSafe(__pyx_kp_u_d_2, __pyx_v_inhomog); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1242, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyUnicode_FormatSafe(__pyx_kp_u_d_2, __pyx_v_inhomog); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1242, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1241, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "pplite/linear_algebra.pyx":1243
+      /* "pplite/linear_algebra.pyx":1242
  *             if first:
  *                 s += '%d' % inhomog
  *                 first = False             # <<<<<<<<<<<<<<
@@ -12310,7 +12329,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
       __pyx_v_first = 0;
 
-      /* "pplite/linear_algebra.pyx":1241
+      /* "pplite/linear_algebra.pyx":1240
  *         inhomog = self.inhomogeneous_term()
  *         if inhomog != 0:
  *             if first:             # <<<<<<<<<<<<<<
@@ -12320,7 +12339,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
       goto __pyx_L15;
     }
 
-    /* "pplite/linear_algebra.pyx":1245
+    /* "pplite/linear_algebra.pyx":1244
  *                 first = False
  *             else:
  *                 s += '%+d' % inhomog             # <<<<<<<<<<<<<<
@@ -12328,9 +12347,9 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  *             s = '0'
  */
     /*else*/ {
-      __pyx_t_2 = __Pyx_PyUnicode_FormatSafe(__pyx_kp_u_d_3, __pyx_v_inhomog); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1245, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyUnicode_FormatSafe(__pyx_kp_u_d_3, __pyx_v_inhomog); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_1 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1245, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyUnicode_ConcatInPlace(__pyx_v_s, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1244, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF_SET(__pyx_v_s, ((PyObject*)__pyx_t_1));
@@ -12338,7 +12357,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
     }
     __pyx_L15:;
 
-    /* "pplite/linear_algebra.pyx":1240
+    /* "pplite/linear_algebra.pyx":1239
  *                 s += '%+d*%r' % (coeff, x)
  *         inhomog = self.inhomogeneous_term()
  *         if inhomog != 0:             # <<<<<<<<<<<<<<
@@ -12347,7 +12366,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1246
+  /* "pplite/linear_algebra.pyx":1245
  *             else:
  *                 s += '%+d' % inhomog
  *         if first:             # <<<<<<<<<<<<<<
@@ -12356,7 +12375,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
   if (__pyx_v_first) {
 
-    /* "pplite/linear_algebra.pyx":1247
+    /* "pplite/linear_algebra.pyx":1246
  *                 s += '%+d' % inhomog
  *         if first:
  *             s = '0'             # <<<<<<<<<<<<<<
@@ -12366,7 +12385,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
     __Pyx_INCREF(__pyx_kp_u_0);
     __Pyx_DECREF_SET(__pyx_v_s, __pyx_kp_u_0);
 
-    /* "pplite/linear_algebra.pyx":1246
+    /* "pplite/linear_algebra.pyx":1245
  *             else:
  *                 s += '%+d' % inhomog
  *         if first:             # <<<<<<<<<<<<<<
@@ -12375,7 +12394,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1248
+  /* "pplite/linear_algebra.pyx":1247
  *         if first:
  *             s = '0'
  *         return s             # <<<<<<<<<<<<<<
@@ -12387,7 +12406,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
   __pyx_r = __pyx_v_s;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1197
+  /* "pplite/linear_algebra.pyx":1196
  *         return self.linear_form().coefficient(v)
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -12414,7 +12433,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_14__repr_
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1251
+/* "pplite/linear_algebra.pyx":1250
  * 
  * 
  *     def all_terms_are_zero(self):             # <<<<<<<<<<<<<<
@@ -12473,7 +12492,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_16all_ter
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("all_terms_are_zero", 1);
 
-  /* "pplite/linear_algebra.pyx":1262
+  /* "pplite/linear_algebra.pyx":1261
  * 
  *         """
  *         return self.thisptr.is_zero()             # <<<<<<<<<<<<<<
@@ -12481,13 +12500,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_16all_ter
  *     def is_equal_to(self, Affine_Expression other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->thisptr->is_zero()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->thisptr->is_zero()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1251
+  /* "pplite/linear_algebra.pyx":1250
  * 
  * 
  *     def all_terms_are_zero(self):             # <<<<<<<<<<<<<<
@@ -12506,7 +12525,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_16all_ter
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1264
+/* "pplite/linear_algebra.pyx":1263
  *         return self.thisptr.is_zero()
  * 
  *     def is_equal_to(self, Affine_Expression other):             # <<<<<<<<<<<<<<
@@ -12568,12 +12587,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1264, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1263, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "is_equal_to") < 0)) __PYX_ERR(0, 1264, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "is_equal_to") < 0)) __PYX_ERR(0, 1263, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -12584,7 +12603,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("is_equal_to", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1264, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("is_equal_to", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1263, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -12598,7 +12617,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_6pplite_14linear_algebra_Affine_Expression, 1, "other", 0))) __PYX_ERR(0, 1264, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_6pplite_14linear_algebra_Affine_Expression, 1, "other", 0))) __PYX_ERR(0, 1263, __pyx_L1_error)
   __pyx_r = __pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equal_to(((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_v_self), __pyx_v_other);
 
   /* function exit code */
@@ -12632,14 +12651,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("is_equal_to", 1);
 
-  /* "pplite/linear_algebra.pyx":1270
+  /* "pplite/linear_algebra.pyx":1269
  *         OUTPUT: boolean
  *         """
  *         if self.inhomogeneous_term() == other.inhomogeneous_term() and self.linear_form().is_equal_to(other.linear_form()):             # <<<<<<<<<<<<<<
  *             return True
  *         return False
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_inhomogeneous_term); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1270, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_inhomogeneous_term); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -12659,11 +12678,11 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
     PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1270, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1269, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_other), __pyx_n_s_inhomogeneous_term); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1270, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_other), __pyx_n_s_inhomogeneous_term); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_6 = NULL;
   __pyx_t_5 = 0;
@@ -12683,21 +12702,21 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
     PyObject *__pyx_callargs[2] = {__pyx_t_6, NULL};
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1270, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1269, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1270, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1270, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (__pyx_t_7) {
   } else {
     __pyx_t_1 = __pyx_t_7;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_linear_form); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1270, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_linear_form); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_6 = NULL;
   __pyx_t_5 = 0;
@@ -12717,14 +12736,14 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
     PyObject *__pyx_callargs[2] = {__pyx_t_6, NULL};
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1270, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1269, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_is_equal_to); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1270, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_is_equal_to); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_other), __pyx_n_s_linear_form); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1270, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_other), __pyx_n_s_linear_form); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_8 = NULL;
   __pyx_t_5 = 0;
@@ -12744,7 +12763,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
     PyObject *__pyx_callargs[2] = {__pyx_t_8, NULL};
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_6, __pyx_callargs+1-__pyx_t_5, 0+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1270, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1269, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
@@ -12767,17 +12786,17 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
     __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1270, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1269, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1270, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 1269, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_1 = __pyx_t_7;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1271
+    /* "pplite/linear_algebra.pyx":1270
  *         """
  *         if self.inhomogeneous_term() == other.inhomogeneous_term() and self.linear_form().is_equal_to(other.linear_form()):
  *             return True             # <<<<<<<<<<<<<<
@@ -12789,7 +12808,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
     __pyx_r = Py_True;
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":1270
+    /* "pplite/linear_algebra.pyx":1269
  *         OUTPUT: boolean
  *         """
  *         if self.inhomogeneous_term() == other.inhomogeneous_term() and self.linear_form().is_equal_to(other.linear_form()):             # <<<<<<<<<<<<<<
@@ -12798,7 +12817,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1272
+  /* "pplite/linear_algebra.pyx":1271
  *         if self.inhomogeneous_term() == other.inhomogeneous_term() and self.linear_form().is_equal_to(other.linear_form()):
  *             return True
  *         return False             # <<<<<<<<<<<<<<
@@ -12810,7 +12829,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
   __pyx_r = Py_False;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1264
+  /* "pplite/linear_algebra.pyx":1263
  *         return self.thisptr.is_zero()
  * 
  *     def is_equal_to(self, Affine_Expression other):             # <<<<<<<<<<<<<<
@@ -12833,7 +12852,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_18is_equa
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1276
+/* "pplite/linear_algebra.pyx":1275
  * # TODO: Add tests.
  * 
  *     def m_swap(self, Affine_Expression y):             # <<<<<<<<<<<<<<
@@ -12895,12 +12914,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1276, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1275, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "m_swap") < 0)) __PYX_ERR(0, 1276, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "m_swap") < 0)) __PYX_ERR(0, 1275, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -12911,7 +12930,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("m_swap", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1276, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("m_swap", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 1275, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -12925,7 +12944,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_6pplite_14linear_algebra_Affine_Expression, 1, "y", 0))) __PYX_ERR(0, 1276, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_6pplite_14linear_algebra_Affine_Expression, 1, "y", 0))) __PYX_ERR(0, 1275, __pyx_L1_error)
   __pyx_r = __pyx_pf_6pplite_14linear_algebra_17Affine_Expression_20m_swap(((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_v_self), __pyx_v_y);
 
   /* function exit code */
@@ -12948,7 +12967,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_20m_swap(
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("m_swap", 1);
 
-  /* "pplite/linear_algebra.pyx":1277
+  /* "pplite/linear_algebra.pyx":1276
  * 
  *     def m_swap(self, Affine_Expression y):
  *         self.thisptr[0].m_swap(y.thisptr[0])             # <<<<<<<<<<<<<<
@@ -12957,7 +12976,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_20m_swap(
  */
   (__pyx_v_self->thisptr[0]).m_swap((__pyx_v_y->thisptr[0]));
 
-  /* "pplite/linear_algebra.pyx":1278
+  /* "pplite/linear_algebra.pyx":1277
  *     def m_swap(self, Affine_Expression y):
  *         self.thisptr[0].m_swap(y.thisptr[0])
  *         return self             # <<<<<<<<<<<<<<
@@ -12969,7 +12988,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_20m_swap(
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1276
+  /* "pplite/linear_algebra.pyx":1275
  * # TODO: Add tests.
  * 
  *     def m_swap(self, Affine_Expression y):             # <<<<<<<<<<<<<<
@@ -12984,7 +13003,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_20m_swap(
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1280
+/* "pplite/linear_algebra.pyx":1279
  *         return self
  * 
  *     def normalize(self):             # <<<<<<<<<<<<<<
@@ -13039,7 +13058,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_22normali
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("normalize", 1);
 
-  /* "pplite/linear_algebra.pyx":1281
+  /* "pplite/linear_algebra.pyx":1280
  * 
  *     def normalize(self):
  *         self.thisptr[0].normalize()             # <<<<<<<<<<<<<<
@@ -13048,7 +13067,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_22normali
  */
   (__pyx_v_self->thisptr[0]).normalize();
 
-  /* "pplite/linear_algebra.pyx":1282
+  /* "pplite/linear_algebra.pyx":1281
  *     def normalize(self):
  *         self.thisptr[0].normalize()
  *         return self             # <<<<<<<<<<<<<<
@@ -13060,7 +13079,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_22normali
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1280
+  /* "pplite/linear_algebra.pyx":1279
  *         return self
  * 
  *     def normalize(self):             # <<<<<<<<<<<<<<
@@ -13075,7 +13094,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_22normali
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1284
+/* "pplite/linear_algebra.pyx":1283
  *         return self
  * 
  *     def sign_normalize(self):             # <<<<<<<<<<<<<<
@@ -13130,7 +13149,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_24sign_no
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("sign_normalize", 1);
 
-  /* "pplite/linear_algebra.pyx":1285
+  /* "pplite/linear_algebra.pyx":1284
  * 
  *     def sign_normalize(self):
  *         self.thisptr[0].sign_normalize()             # <<<<<<<<<<<<<<
@@ -13139,7 +13158,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_24sign_no
  */
   (__pyx_v_self->thisptr[0]).sign_normalize();
 
-  /* "pplite/linear_algebra.pyx":1286
+  /* "pplite/linear_algebra.pyx":1285
  *     def sign_normalize(self):
  *         self.thisptr[0].sign_normalize()
  *         return self             # <<<<<<<<<<<<<<
@@ -13151,7 +13170,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_24sign_no
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1284
+  /* "pplite/linear_algebra.pyx":1283
  *         return self
  * 
  *     def sign_normalize(self):             # <<<<<<<<<<<<<<
@@ -13166,7 +13185,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_24sign_no
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1288
+/* "pplite/linear_algebra.pyx":1287
  *         return self
  * 
  *     def __add__(self, other):             # <<<<<<<<<<<<<<
@@ -13217,7 +13236,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__add__", 1);
 
-  /* "pplite/linear_algebra.pyx":1325
+  /* "pplite/linear_algebra.pyx":1324
  *         """
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -13227,7 +13246,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   __pyx_t_1 = __Pyx_TypeCheck(((PyObject *)__pyx_v_self), __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1326
+    /* "pplite/linear_algebra.pyx":1325
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):
  *             lhs = (<Affine_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -13237,7 +13256,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     __pyx_t_2 = __pyx_v_self->thisptr;
     __pyx_v_lhs = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1325
+    /* "pplite/linear_algebra.pyx":1324
  *         """
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -13247,7 +13266,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":1328
+  /* "pplite/linear_algebra.pyx":1327
  *             lhs = (<Affine_Expression> self).thisptr
  *         else:
  *             lhs_expr = Affine_Expression(self)             # <<<<<<<<<<<<<<
@@ -13255,12 +13274,12 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  *         result_expr = Affine_Expression()
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1328, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1327, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_lhs_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1329
+    /* "pplite/linear_algebra.pyx":1328
  *         else:
  *             lhs_expr = Affine_Expression(self)
  *             lhs = (<Affine_Expression> lhs_expr).thisptr             # <<<<<<<<<<<<<<
@@ -13272,19 +13291,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":1330
+  /* "pplite/linear_algebra.pyx":1329
  *             lhs_expr = Affine_Expression(self)
  *             lhs = (<Affine_Expression> lhs_expr).thisptr
  *         result_expr = Affine_Expression()             # <<<<<<<<<<<<<<
  *         cdef Var* vv
  *         cdef Affine_Expr* temp
  */
-  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1330, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1329, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_result_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":1333
+  /* "pplite/linear_algebra.pyx":1332
  *         cdef Var* vv
  *         cdef Affine_Expr* temp
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -13294,7 +13313,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1334
+    /* "pplite/linear_algebra.pyx":1333
  *         cdef Affine_Expr* temp
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other             # <<<<<<<<<<<<<<
@@ -13306,7 +13325,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     __pyx_v_other_var = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1335
+    /* "pplite/linear_algebra.pyx":1334
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other
  *             vv = other_var.thisptr             # <<<<<<<<<<<<<<
@@ -13316,7 +13335,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     __pyx_t_4 = __pyx_v_other_var->thisptr;
     __pyx_v_vv = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":1336
+    /* "pplite/linear_algebra.pyx":1335
  *             other_var = <Variable> other
  *             vv = other_var.thisptr
  *             temp = new Affine_Expr(self.thisptr[0])             # <<<<<<<<<<<<<<
@@ -13325,26 +13344,26 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  */
     __pyx_v_temp = new pplite::Affine_Expr((__pyx_v_self->thisptr[0]));
 
-    /* "pplite/linear_algebra.pyx":1337
+    /* "pplite/linear_algebra.pyx":1336
  *             vv = other_var.thisptr
  *             temp = new Affine_Expr(self.thisptr[0])
  *             self.thisptr[0] += vv[0]  # There is an oddity where adding affine expression and variable doesn't work. Error: Cannot assign type 'Var &' to 'Affine_Expr &'             # <<<<<<<<<<<<<<
  *             # This means to add via PPlite add methods, we need to use += operator (it is what works okay!). This modifies self's data.
- *             # To ensure that the orginal affine epxresion's data is unmodified, tempoary store data to save it.
+ *             # To ensure that the original affine expression's data is unmodified, tempoary store data to save it.
  */
     (__pyx_v_self->thisptr[0]) += (__pyx_v_vv[0]);
 
-    /* "pplite/linear_algebra.pyx":1340
+    /* "pplite/linear_algebra.pyx":1339
  *             # This means to add via PPlite add methods, we need to use += operator (it is what works okay!). This modifies self's data.
- *             # To ensure that the orginal affine epxresion's data is unmodified, tempoary store data to save it.
+ *             # To ensure that the original affine expression's data is unmodified, tempoary store data to save it.
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0])             # <<<<<<<<<<<<<<
  *             self.thisptr = temp # fix, save old data, then reset data to correct place. Remove if affine expression addition ever is fixed.
  *             return result_expr
  */
     __pyx_v_result_expr->thisptr = new pplite::Affine_Expr((__pyx_v_self->thisptr[0]));
 
-    /* "pplite/linear_algebra.pyx":1341
- *             # To ensure that the orginal affine epxresion's data is unmodified, tempoary store data to save it.
+    /* "pplite/linear_algebra.pyx":1340
+ *             # To ensure that the original affine expression's data is unmodified, tempoary store data to save it.
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0])
  *             self.thisptr = temp # fix, save old data, then reset data to correct place. Remove if affine expression addition ever is fixed.             # <<<<<<<<<<<<<<
  *             return result_expr
@@ -13352,7 +13371,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  */
     __pyx_v_self->thisptr = __pyx_v_temp;
 
-    /* "pplite/linear_algebra.pyx":1342
+    /* "pplite/linear_algebra.pyx":1341
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0])
  *             self.thisptr = temp # fix, save old data, then reset data to correct place. Remove if affine expression addition ever is fixed.
  *             return result_expr             # <<<<<<<<<<<<<<
@@ -13364,7 +13383,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     __pyx_r = ((PyObject *)__pyx_v_result_expr);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":1333
+    /* "pplite/linear_algebra.pyx":1332
  *         cdef Var* vv
  *         cdef Affine_Expr* temp
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -13373,7 +13392,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1344
+  /* "pplite/linear_algebra.pyx":1343
  *             return result_expr
  *         cdef Linear_Expr* e1
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -13383,7 +13402,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1345
+    /* "pplite/linear_algebra.pyx":1344
  *         cdef Linear_Expr* e1
  *         if isinstance(other, Linear_Expression):
  *             other_lin = <Linear_Expression> other             # <<<<<<<<<<<<<<
@@ -13395,7 +13414,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     __pyx_v_other_lin = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1346
+    /* "pplite/linear_algebra.pyx":1345
  *         if isinstance(other, Linear_Expression):
  *             other_lin = <Linear_Expression> other
  *             e1 = other_lin.thisptr             # <<<<<<<<<<<<<<
@@ -13405,7 +13424,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     __pyx_t_5 = __pyx_v_other_lin->thisptr;
     __pyx_v_e1 = __pyx_t_5;
 
-    /* "pplite/linear_algebra.pyx":1347
+    /* "pplite/linear_algebra.pyx":1346
  *             other_lin = <Linear_Expression> other
  *             e1 = other_lin.thisptr
  *             self.thisptr[0] += e1[0]             # <<<<<<<<<<<<<<
@@ -13414,7 +13433,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  */
     (__pyx_v_self->thisptr[0]) += (__pyx_v_e1[0]);
 
-    /* "pplite/linear_algebra.pyx":1348
+    /* "pplite/linear_algebra.pyx":1347
  *             e1 = other_lin.thisptr
  *             self.thisptr[0] += e1[0]
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0])             # <<<<<<<<<<<<<<
@@ -13423,7 +13442,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  */
     __pyx_v_result_expr->thisptr = new pplite::Affine_Expr((__pyx_v_self->thisptr[0]));
 
-    /* "pplite/linear_algebra.pyx":1349
+    /* "pplite/linear_algebra.pyx":1348
  *             self.thisptr[0] += e1[0]
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0])
  *             return result_expr             # <<<<<<<<<<<<<<
@@ -13435,7 +13454,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     __pyx_r = ((PyObject *)__pyx_v_result_expr);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":1344
+    /* "pplite/linear_algebra.pyx":1343
  *             return result_expr
  *         cdef Linear_Expr* e1
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -13444,7 +13463,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1351
+  /* "pplite/linear_algebra.pyx":1350
  *             return result_expr
  *         # TO DO: Make int add explicit. For now, converting to affine expr.
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -13454,7 +13473,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1352
+    /* "pplite/linear_algebra.pyx":1351
  *         # TO DO: Make int add explicit. For now, converting to affine expr.
  *         if isinstance(other, Affine_Expression):
  *             rhs = (<Affine_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -13464,7 +13483,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     __pyx_t_2 = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_rhs = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1351
+    /* "pplite/linear_algebra.pyx":1350
  *             return result_expr
  *         # TO DO: Make int add explicit. For now, converting to affine expr.
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -13474,7 +13493,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
     goto __pyx_L6;
   }
 
-  /* "pplite/linear_algebra.pyx":1354
+  /* "pplite/linear_algebra.pyx":1353
  *             rhs = (<Affine_Expression> other).thisptr
  *         else:
  *             rhs_expr = Affine_Expression(other)             # <<<<<<<<<<<<<<
@@ -13482,12 +13501,12 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  *         cdef Affine_Expr result
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1354, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_rhs_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1355
+    /* "pplite/linear_algebra.pyx":1354
  *         else:
  *             rhs_expr = Affine_Expression(other)
  *             rhs = (<Affine_Expression> rhs_expr).thisptr             # <<<<<<<<<<<<<<
@@ -13499,7 +13518,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   }
   __pyx_L6:;
 
-  /* "pplite/linear_algebra.pyx":1357
+  /* "pplite/linear_algebra.pyx":1356
  *             rhs = (<Affine_Expression> rhs_expr).thisptr
  *         cdef Affine_Expr result
  *         result = lhs[0] + rhs[0]             # <<<<<<<<<<<<<<
@@ -13508,19 +13527,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  */
   __pyx_v_result = ((__pyx_v_lhs[0]) + (__pyx_v_rhs[0]));
 
-  /* "pplite/linear_algebra.pyx":1358
+  /* "pplite/linear_algebra.pyx":1357
  *         cdef Affine_Expr result
  *         result = lhs[0] + rhs[0]
  *         result_expr = Affine_Expression()             # <<<<<<<<<<<<<<
  *         result_expr.thisptr[0] = result #could be copying or moving?
  *         return result_expr
  */
-  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1358, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1357, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF_SET(__pyx_v_result_expr, ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3));
   __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":1359
+  /* "pplite/linear_algebra.pyx":1358
  *         result = lhs[0] + rhs[0]
  *         result_expr = Affine_Expression()
  *         result_expr.thisptr[0] = result #could be copying or moving?             # <<<<<<<<<<<<<<
@@ -13529,7 +13548,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
  */
   (__pyx_v_result_expr->thisptr[0]) = __pyx_v_result;
 
-  /* "pplite/linear_algebra.pyx":1360
+  /* "pplite/linear_algebra.pyx":1359
  *         result_expr = Affine_Expression()
  *         result_expr.thisptr[0] = result #could be copying or moving?
  *         return result_expr             # <<<<<<<<<<<<<<
@@ -13541,7 +13560,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   __pyx_r = ((PyObject *)__pyx_v_result_expr);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1288
+  /* "pplite/linear_algebra.pyx":1287
  *         return self
  * 
  *     def __add__(self, other):             # <<<<<<<<<<<<<<
@@ -13565,7 +13584,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_26__add__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1362
+/* "pplite/linear_algebra.pyx":1361
  *         return result_expr
  * 
  *     def __radd__(self, other):             # <<<<<<<<<<<<<<
@@ -13597,7 +13616,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_28__radd_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__radd__", 1);
 
-  /* "pplite/linear_algebra.pyx":1363
+  /* "pplite/linear_algebra.pyx":1362
  * 
  *     def __radd__(self, other):
  *         return self + other             # <<<<<<<<<<<<<<
@@ -13605,13 +13624,13 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_28__radd_
  *     def __sub__(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Add(((PyObject *)__pyx_v_self), __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1363, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(((PyObject *)__pyx_v_self), __pyx_v_other); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1362, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1362
+  /* "pplite/linear_algebra.pyx":1361
  *         return result_expr
  * 
  *     def __radd__(self, other):             # <<<<<<<<<<<<<<
@@ -13630,7 +13649,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_28__radd_
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1365
+/* "pplite/linear_algebra.pyx":1364
  *         return self + other
  * 
  *     def __sub__(self, other):             # <<<<<<<<<<<<<<
@@ -13680,7 +13699,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__sub__", 1);
 
-  /* "pplite/linear_algebra.pyx":1398
+  /* "pplite/linear_algebra.pyx":1397
  *         """
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -13690,7 +13709,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   __pyx_t_1 = __Pyx_TypeCheck(((PyObject *)__pyx_v_self), __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1399
+    /* "pplite/linear_algebra.pyx":1398
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):
  *             lhs = (<Affine_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -13700,7 +13719,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     __pyx_t_2 = __pyx_v_self->thisptr;
     __pyx_v_lhs = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1398
+    /* "pplite/linear_algebra.pyx":1397
  *         """
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -13710,7 +13729,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":1401
+  /* "pplite/linear_algebra.pyx":1400
  *             lhs = (<Affine_Expression> self).thisptr
  *         else:
  *             lhs_expr = Affine_Expression(self)             # <<<<<<<<<<<<<<
@@ -13718,12 +13737,12 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  *         result_expr = Affine_Expression()
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1401, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1400, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_lhs_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1402
+    /* "pplite/linear_algebra.pyx":1401
  *         else:
  *             lhs_expr = Affine_Expression(self)
  *             lhs = (<Affine_Expression> lhs_expr).thisptr             # <<<<<<<<<<<<<<
@@ -13735,19 +13754,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":1403
+  /* "pplite/linear_algebra.pyx":1402
  *             lhs_expr = Affine_Expression(self)
  *             lhs = (<Affine_Expression> lhs_expr).thisptr
  *         result_expr = Affine_Expression()             # <<<<<<<<<<<<<<
  *         cdef Var* vv
  *         if isinstance(other, Variable):
  */
-  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1403, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1402, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_result_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":1405
+  /* "pplite/linear_algebra.pyx":1404
  *         result_expr = Affine_Expression()
  *         cdef Var* vv
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -13757,7 +13776,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1406
+    /* "pplite/linear_algebra.pyx":1405
  *         cdef Var* vv
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other             # <<<<<<<<<<<<<<
@@ -13769,7 +13788,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     __pyx_v_other_var = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1407
+    /* "pplite/linear_algebra.pyx":1406
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other
  *             vv = other_var.thisptr             # <<<<<<<<<<<<<<
@@ -13779,7 +13798,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     __pyx_t_4 = __pyx_v_other_var->thisptr;
     __pyx_v_vv = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":1408
+    /* "pplite/linear_algebra.pyx":1407
  *             other_var = <Variable> other
  *             vv = other_var.thisptr
  *             self.thisptr[0] -= vv[0] #this works wtf. Calling += seems to work in this case but not in other. I'm unsure why.             # <<<<<<<<<<<<<<
@@ -13788,7 +13807,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  */
     (__pyx_v_self->thisptr[0]) -= (__pyx_v_vv[0]);
 
-    /* "pplite/linear_algebra.pyx":1409
+    /* "pplite/linear_algebra.pyx":1408
  *             vv = other_var.thisptr
  *             self.thisptr[0] -= vv[0] #this works wtf. Calling += seems to work in this case but not in other. I'm unsure why.
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0]) #should I modify in place or just create a new object. I'm unsure of design choice here.             # <<<<<<<<<<<<<<
@@ -13797,7 +13816,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  */
     __pyx_v_result_expr->thisptr = new pplite::Affine_Expr((__pyx_v_self->thisptr[0]));
 
-    /* "pplite/linear_algebra.pyx":1410
+    /* "pplite/linear_algebra.pyx":1409
  *             self.thisptr[0] -= vv[0] #this works wtf. Calling += seems to work in this case but not in other. I'm unsure why.
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0]) #should I modify in place or just create a new object. I'm unsure of design choice here.
  *             return result_expr             # <<<<<<<<<<<<<<
@@ -13809,7 +13828,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     __pyx_r = ((PyObject *)__pyx_v_result_expr);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":1405
+    /* "pplite/linear_algebra.pyx":1404
  *         result_expr = Affine_Expression()
  *         cdef Var* vv
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -13818,7 +13837,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1412
+  /* "pplite/linear_algebra.pyx":1411
  *             return result_expr
  *         cdef Linear_Expr* e1
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -13828,7 +13847,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1413
+    /* "pplite/linear_algebra.pyx":1412
  *         cdef Linear_Expr* e1
  *         if isinstance(other, Linear_Expression):
  *             other_lin = <Linear_Expression> other             # <<<<<<<<<<<<<<
@@ -13840,7 +13859,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     __pyx_v_other_lin = ((struct __pyx_obj_6pplite_14linear_algebra_Linear_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1414
+    /* "pplite/linear_algebra.pyx":1413
  *         if isinstance(other, Linear_Expression):
  *             other_lin = <Linear_Expression> other
  *             e1 = other_lin.thisptr             # <<<<<<<<<<<<<<
@@ -13850,7 +13869,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     __pyx_t_5 = __pyx_v_other_lin->thisptr;
     __pyx_v_e1 = __pyx_t_5;
 
-    /* "pplite/linear_algebra.pyx":1415
+    /* "pplite/linear_algebra.pyx":1414
  *             other_lin = <Linear_Expression> other
  *             e1 = other_lin.thisptr
  *             self.thisptr[0] -= e1[0]             # <<<<<<<<<<<<<<
@@ -13859,7 +13878,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  */
     (__pyx_v_self->thisptr[0]) -= (__pyx_v_e1[0]);
 
-    /* "pplite/linear_algebra.pyx":1416
+    /* "pplite/linear_algebra.pyx":1415
  *             e1 = other_lin.thisptr
  *             self.thisptr[0] -= e1[0]
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0])             # <<<<<<<<<<<<<<
@@ -13868,7 +13887,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  */
     __pyx_v_result_expr->thisptr = new pplite::Affine_Expr((__pyx_v_self->thisptr[0]));
 
-    /* "pplite/linear_algebra.pyx":1417
+    /* "pplite/linear_algebra.pyx":1416
  *             self.thisptr[0] -= e1[0]
  *             result_expr.thisptr = new Affine_Expr(self.thisptr[0])
  *             return result_expr             # <<<<<<<<<<<<<<
@@ -13880,7 +13899,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     __pyx_r = ((PyObject *)__pyx_v_result_expr);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":1412
+    /* "pplite/linear_algebra.pyx":1411
  *             return result_expr
  *         cdef Linear_Expr* e1
  *         if isinstance(other, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -13889,7 +13908,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1419
+  /* "pplite/linear_algebra.pyx":1418
  *             return result_expr
  *         # TO DO: Make int add explicit. For now, converting to affine expr. b.c we either have an int or affine_expr here.
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -13899,7 +13918,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1420
+    /* "pplite/linear_algebra.pyx":1419
  *         # TO DO: Make int add explicit. For now, converting to affine expr. b.c we either have an int or affine_expr here.
  *         if isinstance(other, Affine_Expression):
  *             rhs = (<Affine_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -13909,7 +13928,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     __pyx_t_2 = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_rhs = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1419
+    /* "pplite/linear_algebra.pyx":1418
  *             return result_expr
  *         # TO DO: Make int add explicit. For now, converting to affine expr. b.c we either have an int or affine_expr here.
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -13919,7 +13938,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
     goto __pyx_L6;
   }
 
-  /* "pplite/linear_algebra.pyx":1422
+  /* "pplite/linear_algebra.pyx":1421
  *             rhs = (<Affine_Expression> other).thisptr
  *         else:
  *             rhs_expr = Affine_Expression(other)             # <<<<<<<<<<<<<<
@@ -13927,12 +13946,12 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  *         cdef Affine_Expr result
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1422, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1421, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_rhs_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1423
+    /* "pplite/linear_algebra.pyx":1422
  *         else:
  *             rhs_expr = Affine_Expression(other)
  *             rhs = (<Affine_Expression> rhs_expr).thisptr             # <<<<<<<<<<<<<<
@@ -13944,7 +13963,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   }
   __pyx_L6:;
 
-  /* "pplite/linear_algebra.pyx":1425
+  /* "pplite/linear_algebra.pyx":1424
  *             rhs = (<Affine_Expression> rhs_expr).thisptr
  *         cdef Affine_Expr result
  *         result = lhs[0] - rhs[0]             # <<<<<<<<<<<<<<
@@ -13953,19 +13972,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  */
   __pyx_v_result = ((__pyx_v_lhs[0]) - (__pyx_v_rhs[0]));
 
-  /* "pplite/linear_algebra.pyx":1426
+  /* "pplite/linear_algebra.pyx":1425
  *         cdef Affine_Expr result
  *         result = lhs[0] - rhs[0]
  *         result_expr = Affine_Expression()             # <<<<<<<<<<<<<<
  *         result_expr.thisptr[0] = result
  *         return result_expr
  */
-  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1426, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1425, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF_SET(__pyx_v_result_expr, ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3));
   __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":1427
+  /* "pplite/linear_algebra.pyx":1426
  *         result = lhs[0] - rhs[0]
  *         result_expr = Affine_Expression()
  *         result_expr.thisptr[0] = result             # <<<<<<<<<<<<<<
@@ -13974,7 +13993,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
  */
   (__pyx_v_result_expr->thisptr[0]) = __pyx_v_result;
 
-  /* "pplite/linear_algebra.pyx":1428
+  /* "pplite/linear_algebra.pyx":1427
  *         result_expr = Affine_Expression()
  *         result_expr.thisptr[0] = result
  *         return result_expr             # <<<<<<<<<<<<<<
@@ -13986,7 +14005,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   __pyx_r = ((PyObject *)__pyx_v_result_expr);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1365
+  /* "pplite/linear_algebra.pyx":1364
  *         return self + other
  * 
  *     def __sub__(self, other):             # <<<<<<<<<<<<<<
@@ -14010,7 +14029,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_30__sub__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1430
+/* "pplite/linear_algebra.pyx":1429
  *         return result_expr
  * 
  *     def __rsub__(self, other):             # <<<<<<<<<<<<<<
@@ -14053,7 +14072,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__rsub__", 1);
 
-  /* "pplite/linear_algebra.pyx":1432
+  /* "pplite/linear_algebra.pyx":1431
  *     def __rsub__(self, other):
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -14063,7 +14082,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
   __pyx_t_1 = __Pyx_TypeCheck(((PyObject *)__pyx_v_self), __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1433
+    /* "pplite/linear_algebra.pyx":1432
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):
  *             lhs = (<Affine_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -14073,7 +14092,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
     __pyx_t_2 = __pyx_v_self->thisptr;
     __pyx_v_lhs = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1432
+    /* "pplite/linear_algebra.pyx":1431
  *     def __rsub__(self, other):
  *         cdef Affine_Expr* lhs
  *         if isinstance(self, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -14083,7 +14102,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":1435
+  /* "pplite/linear_algebra.pyx":1434
  *             lhs = (<Affine_Expression> self).thisptr
  *         else:
  *             lhs_expr = Affine_Expression(self)             # <<<<<<<<<<<<<<
@@ -14091,12 +14110,12 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
  *         result_expr = Affine_Expression()
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1435, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1434, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_lhs_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1436
+    /* "pplite/linear_algebra.pyx":1435
  *         else:
  *             lhs_expr = Affine_Expression(self)
  *             lhs = (<Affine_Expression> lhs_expr).thisptr             # <<<<<<<<<<<<<<
@@ -14108,19 +14127,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":1437
+  /* "pplite/linear_algebra.pyx":1436
  *             lhs_expr = Affine_Expression(self)
  *             lhs = (<Affine_Expression> lhs_expr).thisptr
  *         result_expr = Affine_Expression()             # <<<<<<<<<<<<<<
  *         cdef Var* vv
  *         if isinstance(other, Variable):
  */
-  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1437, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1436, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_result_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":1439
+  /* "pplite/linear_algebra.pyx":1438
  *         result_expr = Affine_Expression()
  *         cdef Var* vv
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -14130,7 +14149,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Variable); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1440
+    /* "pplite/linear_algebra.pyx":1439
  *         cdef Var* vv
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other             # <<<<<<<<<<<<<<
@@ -14142,7 +14161,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
     __pyx_v_other_var = ((struct __pyx_obj_6pplite_14linear_algebra_Variable *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1441
+    /* "pplite/linear_algebra.pyx":1440
  *         if isinstance(other, Variable):
  *             other_var = <Variable> other
  *             vv = other_var.thisptr             # <<<<<<<<<<<<<<
@@ -14152,7 +14171,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
     __pyx_t_4 = __pyx_v_other_var->thisptr;
     __pyx_v_vv = __pyx_t_4;
 
-    /* "pplite/linear_algebra.pyx":1442
+    /* "pplite/linear_algebra.pyx":1441
  *             other_var = <Variable> other
  *             vv = other_var.thisptr
  *             result_expr.thisptr = new Affine_Expr(vv[0] - self.thisptr[0]) #should I modify in place or just create a new object. I'm unsure of design choice here.             # <<<<<<<<<<<<<<
@@ -14161,7 +14180,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
  */
     __pyx_v_result_expr->thisptr = new pplite::Affine_Expr(((__pyx_v_vv[0]) - (__pyx_v_self->thisptr[0])));
 
-    /* "pplite/linear_algebra.pyx":1443
+    /* "pplite/linear_algebra.pyx":1442
  *             vv = other_var.thisptr
  *             result_expr.thisptr = new Affine_Expr(vv[0] - self.thisptr[0]) #should I modify in place or just create a new object. I'm unsure of design choice here.
  *             return result_expr             # <<<<<<<<<<<<<<
@@ -14173,7 +14192,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
     __pyx_r = ((PyObject *)__pyx_v_result_expr);
     goto __pyx_L0;
 
-    /* "pplite/linear_algebra.pyx":1439
+    /* "pplite/linear_algebra.pyx":1438
  *         result_expr = Affine_Expression()
  *         cdef Var* vv
  *         if isinstance(other, Variable):             # <<<<<<<<<<<<<<
@@ -14182,7 +14201,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
  */
   }
 
-  /* "pplite/linear_algebra.pyx":1454
+  /* "pplite/linear_algebra.pyx":1453
  *         #     return result_expr
  *         # TO DO: Make int add explicit. For now, converting to affine expr. b.c we either have an int or affine_expr here.
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -14192,7 +14211,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
   __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_other, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1455
+    /* "pplite/linear_algebra.pyx":1454
  *         # TO DO: Make int add explicit. For now, converting to affine expr. b.c we either have an int or affine_expr here.
  *         if isinstance(other, Affine_Expression):
  *             rhs = (<Affine_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -14202,7 +14221,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
     __pyx_t_2 = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_rhs = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1454
+    /* "pplite/linear_algebra.pyx":1453
  *         #     return result_expr
  *         # TO DO: Make int add explicit. For now, converting to affine expr. b.c we either have an int or affine_expr here.
  *         if isinstance(other, Affine_Expression):             # <<<<<<<<<<<<<<
@@ -14212,7 +14231,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
     goto __pyx_L5;
   }
 
-  /* "pplite/linear_algebra.pyx":1457
+  /* "pplite/linear_algebra.pyx":1456
  *             rhs = (<Affine_Expression> other).thisptr
  *         else:
  *             rhs_expr = Affine_Expression(other)             # <<<<<<<<<<<<<<
@@ -14220,12 +14239,12 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
  *         cdef Affine_Expr result
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1457, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression), __pyx_v_other); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1456, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_v_rhs_expr = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "pplite/linear_algebra.pyx":1458
+    /* "pplite/linear_algebra.pyx":1457
  *         else:
  *             rhs_expr = Affine_Expression(other)
  *             rhs = (<Affine_Expression> rhs_expr).thisptr             # <<<<<<<<<<<<<<
@@ -14237,7 +14256,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
   }
   __pyx_L5:;
 
-  /* "pplite/linear_algebra.pyx":1460
+  /* "pplite/linear_algebra.pyx":1459
  *             rhs = (<Affine_Expression> rhs_expr).thisptr
  *         cdef Affine_Expr result
  *         result = rhs[0] - lhs[0]             # <<<<<<<<<<<<<<
@@ -14246,19 +14265,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
  */
   __pyx_v_result = ((__pyx_v_rhs[0]) - (__pyx_v_lhs[0]));
 
-  /* "pplite/linear_algebra.pyx":1461
+  /* "pplite/linear_algebra.pyx":1460
  *         cdef Affine_Expr result
  *         result = rhs[0] - lhs[0]
  *         result_expr = Affine_Expression()             # <<<<<<<<<<<<<<
  *         result_expr.thisptr[0] = result
  *         return result_expr
  */
-  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1461, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1460, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF_SET(__pyx_v_result_expr, ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_3));
   __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":1462
+  /* "pplite/linear_algebra.pyx":1461
  *         result = rhs[0] - lhs[0]
  *         result_expr = Affine_Expression()
  *         result_expr.thisptr[0] = result             # <<<<<<<<<<<<<<
@@ -14267,7 +14286,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
  */
   (__pyx_v_result_expr->thisptr[0]) = __pyx_v_result;
 
-  /* "pplite/linear_algebra.pyx":1463
+  /* "pplite/linear_algebra.pyx":1462
  *         result_expr = Affine_Expression()
  *         result_expr.thisptr[0] = result
  *         return result_expr             # <<<<<<<<<<<<<<
@@ -14279,7 +14298,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
   __pyx_r = ((PyObject *)__pyx_v_result_expr);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1430
+  /* "pplite/linear_algebra.pyx":1429
  *         return result_expr
  * 
  *     def __rsub__(self, other):             # <<<<<<<<<<<<<<
@@ -14302,7 +14321,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_32__rsub_
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1465
+/* "pplite/linear_algebra.pyx":1464
  *         return result_expr
  * 
  *     def __mul__(self, other):             # <<<<<<<<<<<<<<
@@ -14341,7 +14360,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__mul__", 1);
 
-  /* "pplite/linear_algebra.pyx":1467
+  /* "pplite/linear_algebra.pyx":1466
  *     def __mul__(self, other):
  *         cdef Affine_Expr* a
  *         if isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -14351,7 +14370,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
   __pyx_t_1 = __Pyx_TypeCheck(((PyObject *)__pyx_v_self), __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1468
+    /* "pplite/linear_algebra.pyx":1467
  *         cdef Affine_Expr* a
  *         if isinstance(self, Linear_Expression):
  *             a = (<Affine_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -14361,7 +14380,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
     __pyx_t_2 = __pyx_v_self->thisptr;
     __pyx_v_a = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1469
+    /* "pplite/linear_algebra.pyx":1468
  *         if isinstance(self, Linear_Expression):
  *             a = (<Affine_Expression> self).thisptr
  *             c = other             # <<<<<<<<<<<<<<
@@ -14371,7 +14390,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
     __Pyx_INCREF(__pyx_v_other);
     __pyx_v_c = __pyx_v_other;
 
-    /* "pplite/linear_algebra.pyx":1467
+    /* "pplite/linear_algebra.pyx":1466
  *     def __mul__(self, other):
  *         cdef Affine_Expr* a
  *         if isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -14381,7 +14400,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":1472
+  /* "pplite/linear_algebra.pyx":1471
  *         else:
  *             # NOTE: this code path will only be executed when compiled with cython < 3.0.0
  *             a = (<Affine_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -14392,7 +14411,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
     __pyx_t_2 = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_a = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1473
+    /* "pplite/linear_algebra.pyx":1472
  *             # NOTE: this code path will only be executed when compiled with cython < 3.0.0
  *             a = (<Affine_Expression> other).thisptr
  *             c = self             # <<<<<<<<<<<<<<
@@ -14404,30 +14423,30 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":1474
+  /* "pplite/linear_algebra.pyx":1473
  *             a = (<Affine_Expression> other).thisptr
  *             c = self
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)             # <<<<<<<<<<<<<<
  *         cdef Affine_Expression result = Linear_Expression()
  *         result.thisptr[0] = a[0] * cc
  */
-  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_c); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1474, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_c); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1473, __pyx_L1_error)
   __pyx_v_cc = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_3);
 
-  /* "pplite/linear_algebra.pyx":1475
+  /* "pplite/linear_algebra.pyx":1474
  *             c = self
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
  *         cdef Affine_Expression result = Linear_Expression()             # <<<<<<<<<<<<<<
  *         result.thisptr[0] = a[0] * cc
  *         return result
  */
-  __pyx_t_4 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1475, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1474, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression)))) __PYX_ERR(0, 1475, __pyx_L1_error)
+  if (!(likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression)))) __PYX_ERR(0, 1474, __pyx_L1_error)
   __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pplite/linear_algebra.pyx":1476
+  /* "pplite/linear_algebra.pyx":1475
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
  *         cdef Affine_Expression result = Linear_Expression()
  *         result.thisptr[0] = a[0] * cc             # <<<<<<<<<<<<<<
@@ -14436,7 +14455,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
  */
   (__pyx_v_result->thisptr[0]) = ((__pyx_v_a[0]) * __pyx_v_cc);
 
-  /* "pplite/linear_algebra.pyx":1477
+  /* "pplite/linear_algebra.pyx":1476
  *         cdef Affine_Expression result = Linear_Expression()
  *         result.thisptr[0] = a[0] * cc
  *         return result             # <<<<<<<<<<<<<<
@@ -14448,7 +14467,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
   __pyx_r = ((PyObject *)__pyx_v_result);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1465
+  /* "pplite/linear_algebra.pyx":1464
  *         return result_expr
  * 
  *     def __mul__(self, other):             # <<<<<<<<<<<<<<
@@ -14469,7 +14488,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_34__mul__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1479
+/* "pplite/linear_algebra.pyx":1478
  *         return result
  * 
  *     def __rmul__(self, other):             # <<<<<<<<<<<<<<
@@ -14508,7 +14527,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__rmul__", 1);
 
-  /* "pplite/linear_algebra.pyx":1481
+  /* "pplite/linear_algebra.pyx":1480
  *     def __rmul__(self, other):
  *         cdef Affine_Expr* a
  *         if isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -14518,7 +14537,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
   __pyx_t_1 = __Pyx_TypeCheck(((PyObject *)__pyx_v_self), __pyx_ptype_6pplite_14linear_algebra_Linear_Expression); 
   if (__pyx_t_1) {
 
-    /* "pplite/linear_algebra.pyx":1482
+    /* "pplite/linear_algebra.pyx":1481
  *         cdef Affine_Expr* a
  *         if isinstance(self, Linear_Expression):
  *             a = (<Affine_Expression> self).thisptr             # <<<<<<<<<<<<<<
@@ -14528,7 +14547,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
     __pyx_t_2 = __pyx_v_self->thisptr;
     __pyx_v_a = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1483
+    /* "pplite/linear_algebra.pyx":1482
  *         if isinstance(self, Linear_Expression):
  *             a = (<Affine_Expression> self).thisptr
  *             c = other             # <<<<<<<<<<<<<<
@@ -14538,7 +14557,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
     __Pyx_INCREF(__pyx_v_other);
     __pyx_v_c = __pyx_v_other;
 
-    /* "pplite/linear_algebra.pyx":1481
+    /* "pplite/linear_algebra.pyx":1480
  *     def __rmul__(self, other):
  *         cdef Affine_Expr* a
  *         if isinstance(self, Linear_Expression):             # <<<<<<<<<<<<<<
@@ -14548,7 +14567,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
     goto __pyx_L3;
   }
 
-  /* "pplite/linear_algebra.pyx":1486
+  /* "pplite/linear_algebra.pyx":1485
  *         else:
  *             # NOTE: this code path will only be executed when compiled with cython < 3.0.0
  *             a = (<Affine_Expression> other).thisptr             # <<<<<<<<<<<<<<
@@ -14559,7 +14578,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
     __pyx_t_2 = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_v_other)->thisptr;
     __pyx_v_a = __pyx_t_2;
 
-    /* "pplite/linear_algebra.pyx":1487
+    /* "pplite/linear_algebra.pyx":1486
  *             # NOTE: this code path will only be executed when compiled with cython < 3.0.0
  *             a = (<Affine_Expression> other).thisptr
  *             c = self             # <<<<<<<<<<<<<<
@@ -14571,30 +14590,30 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
   }
   __pyx_L3:;
 
-  /* "pplite/linear_algebra.pyx":1488
+  /* "pplite/linear_algebra.pyx":1487
  *             a = (<Affine_Expression> other).thisptr
  *             c = self
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)             # <<<<<<<<<<<<<<
  *         cdef Affine_Expression result = Linear_Expression()
  *         result.thisptr[0] = a[0] * cc
  */
-  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_c); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1488, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6pplite_14linear_algebra_Python_int_to_FLINT_Integer(__pyx_v_c); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 1487, __pyx_L1_error)
   __pyx_v_cc = __PYX_STD_MOVE_IF_SUPPORTED(__pyx_t_3);
 
-  /* "pplite/linear_algebra.pyx":1489
+  /* "pplite/linear_algebra.pyx":1488
  *             c = self
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
  *         cdef Affine_Expression result = Linear_Expression()             # <<<<<<<<<<<<<<
  *         result.thisptr[0] = a[0] * cc
  *         return result
  */
-  __pyx_t_4 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1489, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1488, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression)))) __PYX_ERR(0, 1489, __pyx_L1_error)
+  if (!(likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression)))) __PYX_ERR(0, 1488, __pyx_L1_error)
   __pyx_v_result = ((struct __pyx_obj_6pplite_14linear_algebra_Affine_Expression *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pplite/linear_algebra.pyx":1490
+  /* "pplite/linear_algebra.pyx":1489
  *         cdef FLINT_Integer cc = Python_int_to_FLINT_Integer(c)
  *         cdef Affine_Expression result = Linear_Expression()
  *         result.thisptr[0] = a[0] * cc             # <<<<<<<<<<<<<<
@@ -14603,7 +14622,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
  */
   (__pyx_v_result->thisptr[0]) = ((__pyx_v_a[0]) * __pyx_v_cc);
 
-  /* "pplite/linear_algebra.pyx":1491
+  /* "pplite/linear_algebra.pyx":1490
  *         cdef Affine_Expression result = Linear_Expression()
  *         result.thisptr[0] = a[0] * cc
  *         return result             # <<<<<<<<<<<<<<
@@ -14615,7 +14634,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
   __pyx_r = ((PyObject *)__pyx_v_result);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1479
+  /* "pplite/linear_algebra.pyx":1478
  *         return result
  * 
  *     def __rmul__(self, other):             # <<<<<<<<<<<<<<
@@ -14636,7 +14655,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_36__rmul_
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1493
+/* "pplite/linear_algebra.pyx":1492
  *         return result
  * 
  *     def __neg__(self):             # <<<<<<<<<<<<<<
@@ -14664,7 +14683,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_38__neg__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__neg__", 1);
 
-  /* "pplite/linear_algebra.pyx":1494
+  /* "pplite/linear_algebra.pyx":1493
  * 
  *     def __neg__(self):
  *         neg_assign(self.thisptr[0])             # <<<<<<<<<<<<<<
@@ -14673,7 +14692,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_38__neg__
  */
   pplite::neg_assign((__pyx_v_self->thisptr[0]));
 
-  /* "pplite/linear_algebra.pyx":1495
+  /* "pplite/linear_algebra.pyx":1494
  *     def __neg__(self):
  *         neg_assign(self.thisptr[0])
  *         return self             # <<<<<<<<<<<<<<
@@ -14685,7 +14704,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_38__neg__
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1493
+  /* "pplite/linear_algebra.pyx":1492
  *         return result
  * 
  *     def __neg__(self):             # <<<<<<<<<<<<<<
@@ -14700,7 +14719,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_38__neg__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1497
+/* "pplite/linear_algebra.pyx":1496
  *         return self
  * 
  *     def __pos__(self):             # <<<<<<<<<<<<<<
@@ -14728,7 +14747,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_40__pos__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__pos__", 1);
 
-  /* "pplite/linear_algebra.pyx":1498
+  /* "pplite/linear_algebra.pyx":1497
  * 
  *     def __pos__(self):
  *         return self             # <<<<<<<<<<<<<<
@@ -14740,7 +14759,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_40__pos__
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1497
+  /* "pplite/linear_algebra.pyx":1496
  *         return self
  * 
  *     def __pos__(self):             # <<<<<<<<<<<<<<
@@ -14755,7 +14774,7 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_40__pos__
   return __pyx_r;
 }
 
-/* "pplite/linear_algebra.pyx":1500
+/* "pplite/linear_algebra.pyx":1499
  *         return self
  * 
  *     def __richcmp__(self, other, op):             # <<<<<<<<<<<<<<
@@ -14775,7 +14794,7 @@ static PyObject *__pyx_pw_6pplite_14linear_algebra_17Affine_Expression_43__richc
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__richcmp__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_v_op = __Pyx_PyInt_From_int(__pyx_arg_op); if (unlikely(!__pyx_v_op)) __PYX_ERR(0, 1500, __pyx_L3_error)
+  __pyx_v_op = __Pyx_PyInt_From_int(__pyx_arg_op); if (unlikely(!__pyx_v_op)) __PYX_ERR(0, 1499, __pyx_L3_error)
   __Pyx_GOTREF(__pyx_v_op);
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -14800,19 +14819,19 @@ static PyObject *__pyx_pf_6pplite_14linear_algebra_17Affine_Expression_42__richc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__richcmp__", 1);
 
-  /* "pplite/linear_algebra.pyx":1508
+  /* "pplite/linear_algebra.pyx":1507
  *         >>> from pplite import Variable
  *         """
  *         return _make_Constraint_from_richcmp(self, other, op)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_6pplite_10constraint__make_Constraint_from_richcmp(((PyObject *)__pyx_v_self), __pyx_v_other, __pyx_v_op); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1508, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_6pplite_10constraint__make_Constraint_from_richcmp(((PyObject *)__pyx_v_self), __pyx_v_other, __pyx_v_op); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1507, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pplite/linear_algebra.pyx":1500
+  /* "pplite/linear_algebra.pyx":1499
  *         return self
  * 
  *     def __richcmp__(self, other, op):             # <<<<<<<<<<<<<<
@@ -16285,7 +16304,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 38, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 109, __pyx_L1_error)
   __pyx_builtin_NotImplemented = __Pyx_GetBuiltinName(__pyx_n_s_NotImplemented); if (!__pyx_builtin_NotImplemented) __PYX_ERR(0, 193, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 610, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 609, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -16351,36 +16370,36 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "pplite/linear_algebra.pyx":1074
+  /* "pplite/linear_algebra.pyx":1073
  *             #     #self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *                 # self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *             raise ValueError("We done goofed, no acceptable input here")             # <<<<<<<<<<<<<<
  *         if len(args) == 1:
  *             arg = args[0]
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_We_done_goofed_no_acceptable_inp); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 1074, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_We_done_goofed_no_acceptable_inp); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 1073, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "pplite/linear_algebra.pyx":1090
+  /* "pplite/linear_algebra.pyx":1089
  *                     #     self.thisptr = new Affine_Expr(e.thisptr[0], k)
  *                     #     return
  *             raise ValueError("Initalizing with one argument requires either a affine expression or an integer to be passed in.")             # <<<<<<<<<<<<<<
  *         elif len(args) == 0:
  *             self.thisptr = new Affine_Expr()
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Initalizing_with_one_argument_re_2); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 1090, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Initalizing_with_one_argument_re_2); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 1089, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "pplite/linear_algebra.pyx":1112
+  /* "pplite/linear_algebra.pyx":1111
  *         TypeError: Affine_Expression unhashable
  *         """
  *         raise TypeError('Affine_Expression unhashable')             # <<<<<<<<<<<<<<
  * 
  *     def space_dimension(self):
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_u_Affine_Expression_unhashable); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 1112, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_u_Affine_Expression_unhashable); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 1111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
@@ -16468,62 +16487,62 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__22);
   __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_coefficient, 528, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 528, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":558
+  /* "pplite/linear_algebra.pyx":557
  *         return FLINT_Integer_to_Python(self.thisptr.impl()[vv.id()])
  * 
  *     def set_coefficient(self, i, n):             # <<<<<<<<<<<<<<
  *         """
  *         Set the ``i``-th coefficient to ``n``.
  */
-  __pyx_tuple__24 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_i, __pyx_n_s_n, __pyx_n_s_nn, __pyx_n_s_ii, __pyx_n_s_var_i); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 558, __pyx_L1_error)
+  __pyx_tuple__24 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_i, __pyx_n_s_n, __pyx_n_s_nn, __pyx_n_s_ii, __pyx_n_s_var_i); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 557, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_set_coefficient, 558, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 558, __pyx_L1_error)
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_set_coefficient, 557, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 557, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":634
+  /* "pplite/linear_algebra.pyx":633
  *         return s
  * 
  *     def swap_space_dimensions(self, v1, v2):             # <<<<<<<<<<<<<<
  *         r"""
  *         Swaps the coefficients of ``v1`` and ``v2``.
  */
-  __pyx_tuple__26 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_v1, __pyx_n_s_v2, __pyx_n_s_var_1, __pyx_n_s_var_2, __pyx_n_s_vv1, __pyx_n_s_vv2); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 634, __pyx_L1_error)
+  __pyx_tuple__26 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_v1, __pyx_n_s_v2, __pyx_n_s_var_1, __pyx_n_s_var_2, __pyx_n_s_vv1, __pyx_n_s_vv2); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 633, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_swap_space_dimensions, 634, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 634, __pyx_L1_error)
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_swap_space_dimensions, 633, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 633, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":668
+  /* "pplite/linear_algebra.pyx":667
  *         self.thisptr.swap_space_dims(var_1, var_2)
  * 
  *     def shift_space_dimensions(self, v, dim_type n):             # <<<<<<<<<<<<<<
  *         r"""
  *         Shift by ``n`` the coefficients of variables starting from the
  */
-  __pyx_tuple__28 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_v, __pyx_n_s_n, __pyx_n_s_vv); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 668, __pyx_L1_error)
+  __pyx_tuple__28 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_v, __pyx_n_s_n, __pyx_n_s_vv); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 667, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_shift_space_dimensions, 668, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 668, __pyx_L1_error)
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_shift_space_dimensions, 667, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 667, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":713
+  /* "pplite/linear_algebra.pyx":712
  *     #     self.thisptr.remove_space_dimensions(V.thisptr[0])
  * 
  *     def all_homogeneous_terms_are_zero(self):             # <<<<<<<<<<<<<<
  *         """
  *         Test if ``self`` is a constant linear expression.
  */
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_all_homogeneous_terms_are_zero, 713, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 713, __pyx_L1_error)
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_all_homogeneous_terms_are_zero, 712, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 712, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":730
+  /* "pplite/linear_algebra.pyx":729
  *         return self.thisptr.is_zero()
  * 
  *     def is_equal_to(self, Linear_Expression other):             # <<<<<<<<<<<<<<
  *         """
  *         Test equality with another linear expression.
  */
-  __pyx_tuple__31 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 730, __pyx_L1_error)
+  __pyx_tuple__31 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 729, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__31);
   __Pyx_GIVEREF(__pyx_tuple__31);
-  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_is_equal_to, 730, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 730, __pyx_L1_error)
+  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_is_equal_to, 729, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 729, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -16540,98 +16559,98 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  */
   __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(2, 3, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1114
+  /* "pplite/linear_algebra.pyx":1113
  *         raise TypeError('Affine_Expression unhashable')
  * 
  *     def space_dimension(self):             # <<<<<<<<<<<<<<
  *         """
  *         Return the dimension of the vector space necessary for the
  */
-  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_space_dimension, 1114, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 1114, __pyx_L1_error)
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_space_dimension, 1113, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 1113, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1132
+  /* "pplite/linear_algebra.pyx":1131
  *         return self.thisptr.space_dim()
  * 
  *     def linear_form(self):             # <<<<<<<<<<<<<<
  *         """
  *         Returns the linear form of the affine expression.
  */
-  __pyx_tuple__36 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_e, __pyx_n_s_ee); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 1132, __pyx_L1_error)
+  __pyx_tuple__36 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_e, __pyx_n_s_ee); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 1131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__36);
   __Pyx_GIVEREF(__pyx_tuple__36);
-  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_linear_form, 1132, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 1132, __pyx_L1_error)
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_linear_form, 1131, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 1131, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1154
+  /* "pplite/linear_algebra.pyx":1153
  *         return ee
  * 
  *     def inhomogeneous_term(self):             # <<<<<<<<<<<<<<
  *         """
  *         Returns the inhogogenous term of an affine expression.
  */
-  __pyx_tuple__38 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_c); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(0, 1154, __pyx_L1_error)
+  __pyx_tuple__38 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_c); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(0, 1153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__38);
   __Pyx_GIVEREF(__pyx_tuple__38);
-  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_inhomogeneous_term, 1154, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 1154, __pyx_L1_error)
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_inhomogeneous_term, 1153, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 1153, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1175
+  /* "pplite/linear_algebra.pyx":1174
  *         return FLINT_Integer_to_Python(c)
  * 
  *     def coefficient(self, v):             # <<<<<<<<<<<<<<
  *         """
  *         Return the coefficient of the variable ``v``.
  */
-  __pyx_tuple__40 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_v); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 1175, __pyx_L1_error)
+  __pyx_tuple__40 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_v); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 1174, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__40);
   __Pyx_GIVEREF(__pyx_tuple__40);
-  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_coefficient, 1175, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(0, 1175, __pyx_L1_error)
+  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_coefficient, 1174, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(0, 1174, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1251
+  /* "pplite/linear_algebra.pyx":1250
  * 
  * 
  *     def all_terms_are_zero(self):             # <<<<<<<<<<<<<<
  *         """
  *         Test if ``self`` is a constant linear expression.
  */
-  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_all_terms_are_zero, 1251, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 1251, __pyx_L1_error)
+  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_all_terms_are_zero, 1250, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 1250, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1264
+  /* "pplite/linear_algebra.pyx":1263
  *         return self.thisptr.is_zero()
  * 
  *     def is_equal_to(self, Affine_Expression other):             # <<<<<<<<<<<<<<
  *         """
  *         Test equality with another affine expression.
  */
-  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_is_equal_to, 1264, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 1264, __pyx_L1_error)
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_is_equal_to, 1263, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 1263, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1276
+  /* "pplite/linear_algebra.pyx":1275
  * # TODO: Add tests.
  * 
  *     def m_swap(self, Affine_Expression y):             # <<<<<<<<<<<<<<
  *         self.thisptr[0].m_swap(y.thisptr[0])
  *         return self
  */
-  __pyx_tuple__44 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_y); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 1276, __pyx_L1_error)
+  __pyx_tuple__44 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_y); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 1275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__44);
   __Pyx_GIVEREF(__pyx_tuple__44);
-  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_m_swap, 1276, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 1276, __pyx_L1_error)
+  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_m_swap, 1275, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 1275, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1280
+  /* "pplite/linear_algebra.pyx":1279
  *         return self
  * 
  *     def normalize(self):             # <<<<<<<<<<<<<<
  *         self.thisptr[0].normalize()
  *         return self
  */
-  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_normalize, 1280, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 1280, __pyx_L1_error)
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_normalize, 1279, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 1279, __pyx_L1_error)
 
-  /* "pplite/linear_algebra.pyx":1284
+  /* "pplite/linear_algebra.pyx":1283
  *         return self
  * 
  *     def sign_normalize(self):             # <<<<<<<<<<<<<<
  *         self.thisptr[0].sign_normalize()
  *         return self
  */
-  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_sign_normalize, 1284, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 1284, __pyx_L1_error)
+  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pplite_linear_algebra_pyx, __pyx_n_s_sign_normalize, 1283, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 1283, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -16887,15 +16906,15 @@ static int __Pyx_modinit_type_init_code(void) {
   if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6pplite_14linear_algebra_Linear_Expression) < 0) __PYX_ERR(0, 370, __pyx_L1_error)
   #endif
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_6pplite_14linear_algebra_Affine_Expression = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6pplite_14linear_algebra_Affine_Expression_spec, NULL); if (unlikely(!__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)) __PYX_ERR(0, 996, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6pplite_14linear_algebra_Affine_Expression_spec, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression) < 0) __PYX_ERR(0, 996, __pyx_L1_error)
+  __pyx_ptype_6pplite_14linear_algebra_Affine_Expression = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6pplite_14linear_algebra_Affine_Expression_spec, NULL); if (unlikely(!__pyx_ptype_6pplite_14linear_algebra_Affine_Expression)) __PYX_ERR(0, 995, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6pplite_14linear_algebra_Affine_Expression_spec, __pyx_ptype_6pplite_14linear_algebra_Affine_Expression) < 0) __PYX_ERR(0, 995, __pyx_L1_error)
   #else
   __pyx_ptype_6pplite_14linear_algebra_Affine_Expression = &__pyx_type_6pplite_14linear_algebra_Affine_Expression;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression) < 0) __PYX_ERR(0, 996, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression) < 0) __PYX_ERR(0, 995, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_6pplite_14linear_algebra_Affine_Expression->tp_print = 0;
@@ -16907,7 +16926,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_UPDATE_DESCRIPTOR_DOC
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 996, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 995, __pyx_L1_error)
     if (__Pyx_IS_TYPE(wrapper, &PyWrapperDescr_Type)) {
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression___init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression___init__.doc = __pyx_doc_6pplite_14linear_algebra_17Affine_Expression___init__;
@@ -16917,7 +16936,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_UPDATE_DESCRIPTOR_DOC
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__hash__"); if (unlikely(!wrapper)) __PYX_ERR(0, 996, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__hash__"); if (unlikely(!wrapper)) __PYX_ERR(0, 995, __pyx_L1_error)
     if (__Pyx_IS_TYPE(wrapper, &PyWrapperDescr_Type)) {
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression_4__hash__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression_4__hash__.doc = __pyx_doc_6pplite_14linear_algebra_17Affine_Expression_4__hash__;
@@ -16927,7 +16946,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_UPDATE_DESCRIPTOR_DOC
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__repr__"); if (unlikely(!wrapper)) __PYX_ERR(0, 996, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__repr__"); if (unlikely(!wrapper)) __PYX_ERR(0, 995, __pyx_L1_error)
     if (__Pyx_IS_TYPE(wrapper, &PyWrapperDescr_Type)) {
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression_14__repr__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression_14__repr__.doc = __pyx_doc_6pplite_14linear_algebra_17Affine_Expression_14__repr__;
@@ -16937,7 +16956,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_UPDATE_DESCRIPTOR_DOC
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__add__"); if (unlikely(!wrapper)) __PYX_ERR(0, 996, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__add__"); if (unlikely(!wrapper)) __PYX_ERR(0, 995, __pyx_L1_error)
     if (__Pyx_IS_TYPE(wrapper, &PyWrapperDescr_Type)) {
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression_26__add__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression_26__add__.doc = __pyx_doc_6pplite_14linear_algebra_17Affine_Expression_26__add__;
@@ -16947,7 +16966,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_UPDATE_DESCRIPTOR_DOC
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__sub__"); if (unlikely(!wrapper)) __PYX_ERR(0, 996, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, "__sub__"); if (unlikely(!wrapper)) __PYX_ERR(0, 995, __pyx_L1_error)
     if (__Pyx_IS_TYPE(wrapper, &PyWrapperDescr_Type)) {
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression_30__sub__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_6pplite_14linear_algebra_17Affine_Expression_30__sub__.doc = __pyx_doc_6pplite_14linear_algebra_17Affine_Expression_30__sub__;
@@ -16955,9 +16974,9 @@ static int __Pyx_modinit_type_init_code(void) {
     }
   }
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Affine_Expression, (PyObject *) __pyx_ptype_6pplite_14linear_algebra_Affine_Expression) < 0) __PYX_ERR(0, 996, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Affine_Expression, (PyObject *) __pyx_ptype_6pplite_14linear_algebra_Affine_Expression) < 0) __PYX_ERR(0, 995, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6pplite_14linear_algebra_Affine_Expression) < 0) __PYX_ERR(0, 996, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6pplite_14linear_algebra_Affine_Expression) < 0) __PYX_ERR(0, 995, __pyx_L1_error)
   #endif
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -17408,68 +17427,68 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Linear_Expression);
 
-  /* "pplite/linear_algebra.pyx":558
+  /* "pplite/linear_algebra.pyx":557
  *         return FLINT_Integer_to_Python(self.thisptr.impl()[vv.id()])
  * 
  *     def set_coefficient(self, i, n):             # <<<<<<<<<<<<<<
  *         """
  *         Set the ``i``-th coefficient to ``n``.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_13set_coefficient, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_set_coefficien, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 558, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_13set_coefficient, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_set_coefficien, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 557, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_set_coefficient, __pyx_t_3) < 0) __PYX_ERR(0, 558, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_set_coefficient, __pyx_t_3) < 0) __PYX_ERR(0, 557, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Linear_Expression);
 
-  /* "pplite/linear_algebra.pyx":634
+  /* "pplite/linear_algebra.pyx":633
  *         return s
  * 
  *     def swap_space_dimensions(self, v1, v2):             # <<<<<<<<<<<<<<
  *         r"""
  *         Swaps the coefficients of ``v1`` and ``v2``.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_17swap_space_dimensions, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_swap_space_dim, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 634, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_17swap_space_dimensions, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_swap_space_dim, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 633, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_swap_space_dimensions, __pyx_t_3) < 0) __PYX_ERR(0, 634, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_swap_space_dimensions, __pyx_t_3) < 0) __PYX_ERR(0, 633, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Linear_Expression);
 
-  /* "pplite/linear_algebra.pyx":668
+  /* "pplite/linear_algebra.pyx":667
  *         self.thisptr.swap_space_dims(var_1, var_2)
  * 
  *     def shift_space_dimensions(self, v, dim_type n):             # <<<<<<<<<<<<<<
  *         r"""
  *         Shift by ``n`` the coefficients of variables starting from the
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_19shift_space_dimensions, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_shift_space_di, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 668, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_19shift_space_dimensions, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_shift_space_di, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 667, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_shift_space_dimensions, __pyx_t_3) < 0) __PYX_ERR(0, 668, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_shift_space_dimensions, __pyx_t_3) < 0) __PYX_ERR(0, 667, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Linear_Expression);
 
-  /* "pplite/linear_algebra.pyx":713
+  /* "pplite/linear_algebra.pyx":712
  *     #     self.thisptr.remove_space_dimensions(V.thisptr[0])
  * 
  *     def all_homogeneous_terms_are_zero(self):             # <<<<<<<<<<<<<<
  *         """
  *         Test if ``self`` is a constant linear expression.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_21all_homogeneous_terms_are_zero, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_all_homogeneou, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 713, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_21all_homogeneous_terms_are_zero, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_all_homogeneou, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 712, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_all_homogeneous_terms_are_zero, __pyx_t_3) < 0) __PYX_ERR(0, 713, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_all_homogeneous_terms_are_zero, __pyx_t_3) < 0) __PYX_ERR(0, 712, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Linear_Expression);
 
-  /* "pplite/linear_algebra.pyx":730
+  /* "pplite/linear_algebra.pyx":729
  *         return self.thisptr.is_zero()
  * 
  *     def is_equal_to(self, Linear_Expression other):             # <<<<<<<<<<<<<<
  *         """
  *         Test equality with another linear expression.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_23is_equal_to, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_is_equal_to, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 730, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Linear_Expression_23is_equal_to, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Linear_Expression_is_equal_to, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 729, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_is_equal_to, __pyx_t_3) < 0) __PYX_ERR(0, 730, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Linear_Expression, __pyx_n_s_is_equal_to, __pyx_t_3) < 0) __PYX_ERR(0, 729, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Linear_Expression);
 
@@ -17494,120 +17513,120 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_3) < 0) __PYX_ERR(2, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "pplite/linear_algebra.pyx":1114
+  /* "pplite/linear_algebra.pyx":1113
  *         raise TypeError('Affine_Expression unhashable')
  * 
  *     def space_dimension(self):             # <<<<<<<<<<<<<<
  *         """
  *         Return the dimension of the vector space necessary for the
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_7space_dimension, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_space_dimensio, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1114, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_7space_dimension, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_space_dimensio, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_space_dimension, __pyx_t_3) < 0) __PYX_ERR(0, 1114, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_space_dimension, __pyx_t_3) < 0) __PYX_ERR(0, 1113, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 
-  /* "pplite/linear_algebra.pyx":1132
+  /* "pplite/linear_algebra.pyx":1131
  *         return self.thisptr.space_dim()
  * 
  *     def linear_form(self):             # <<<<<<<<<<<<<<
  *         """
  *         Returns the linear form of the affine expression.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_9linear_form, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_linear_form, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1132, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_9linear_form, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_linear_form, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_linear_form, __pyx_t_3) < 0) __PYX_ERR(0, 1132, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_linear_form, __pyx_t_3) < 0) __PYX_ERR(0, 1131, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 
-  /* "pplite/linear_algebra.pyx":1154
+  /* "pplite/linear_algebra.pyx":1153
  *         return ee
  * 
  *     def inhomogeneous_term(self):             # <<<<<<<<<<<<<<
  *         """
  *         Returns the inhogogenous term of an affine expression.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_11inhomogeneous_term, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_inhomogeneous, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1154, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_11inhomogeneous_term, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_inhomogeneous, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_inhomogeneous_term, __pyx_t_3) < 0) __PYX_ERR(0, 1154, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_inhomogeneous_term, __pyx_t_3) < 0) __PYX_ERR(0, 1153, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 
-  /* "pplite/linear_algebra.pyx":1175
+  /* "pplite/linear_algebra.pyx":1174
  *         return FLINT_Integer_to_Python(c)
  * 
  *     def coefficient(self, v):             # <<<<<<<<<<<<<<
  *         """
  *         Return the coefficient of the variable ``v``.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_13coefficient, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_coefficient, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1175, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_13coefficient, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_coefficient, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1174, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_coefficient, __pyx_t_3) < 0) __PYX_ERR(0, 1175, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_coefficient, __pyx_t_3) < 0) __PYX_ERR(0, 1174, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 
-  /* "pplite/linear_algebra.pyx":1251
+  /* "pplite/linear_algebra.pyx":1250
  * 
  * 
  *     def all_terms_are_zero(self):             # <<<<<<<<<<<<<<
  *         """
  *         Test if ``self`` is a constant linear expression.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_17all_terms_are_zero, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_all_terms_are, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1251, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_17all_terms_are_zero, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_all_terms_are, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_all_terms_are_zero, __pyx_t_3) < 0) __PYX_ERR(0, 1251, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_all_terms_are_zero, __pyx_t_3) < 0) __PYX_ERR(0, 1250, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 
-  /* "pplite/linear_algebra.pyx":1264
+  /* "pplite/linear_algebra.pyx":1263
  *         return self.thisptr.is_zero()
  * 
  *     def is_equal_to(self, Affine_Expression other):             # <<<<<<<<<<<<<<
  *         """
  *         Test equality with another affine expression.
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_19is_equal_to, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_is_equal_to, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1264, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_19is_equal_to, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_is_equal_to, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_is_equal_to, __pyx_t_3) < 0) __PYX_ERR(0, 1264, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_is_equal_to, __pyx_t_3) < 0) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 
-  /* "pplite/linear_algebra.pyx":1276
+  /* "pplite/linear_algebra.pyx":1275
  * # TODO: Add tests.
  * 
  *     def m_swap(self, Affine_Expression y):             # <<<<<<<<<<<<<<
  *         self.thisptr[0].m_swap(y.thisptr[0])
  *         return self
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_21m_swap, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_m_swap, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1276, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_21m_swap, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_m_swap, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_m_swap, __pyx_t_3) < 0) __PYX_ERR(0, 1276, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_m_swap, __pyx_t_3) < 0) __PYX_ERR(0, 1275, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 
-  /* "pplite/linear_algebra.pyx":1280
+  /* "pplite/linear_algebra.pyx":1279
  *         return self
  * 
  *     def normalize(self):             # <<<<<<<<<<<<<<
  *         self.thisptr[0].normalize()
  *         return self
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_23normalize, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_normalize, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1280, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_23normalize, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_normalize, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_normalize, __pyx_t_3) < 0) __PYX_ERR(0, 1280, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_normalize, __pyx_t_3) < 0) __PYX_ERR(0, 1279, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 
-  /* "pplite/linear_algebra.pyx":1284
+  /* "pplite/linear_algebra.pyx":1283
  *         return self
  * 
  *     def sign_normalize(self):             # <<<<<<<<<<<<<<
  *         self.thisptr[0].sign_normalize()
  *         return self
  */
-  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_25sign_normalize, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_sign_normalize, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1284, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_6pplite_14linear_algebra_17Affine_Expression_25sign_normalize, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Affine_Expression_sign_normalize, NULL, __pyx_n_s_pplite_linear_algebra, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1283, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_sign_normalize, __pyx_t_3) < 0) __PYX_ERR(0, 1284, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6pplite_14linear_algebra_Affine_Expression, __pyx_n_s_sign_normalize, __pyx_t_3) < 0) __PYX_ERR(0, 1283, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   PyType_Modified(__pyx_ptype_6pplite_14linear_algebra_Affine_Expression);
 

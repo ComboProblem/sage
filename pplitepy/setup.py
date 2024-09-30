@@ -81,7 +81,8 @@ extensions = [
     Extension('pplite.linear_algebra', sources=['pplite/linear_algebra.pyx']),
     Extension('pplite.constraint', sources=['pplite/constraint.pyx']),
     Extension('pplite.generators', sources=['pplite/generators.pyx']),
-    Extension('pplite.intervals', sources=['pplite/intervals.pyx'])
+    Extension('pplite.intervals', sources=['pplite/intervals.pyx']),
+    Extension('pplite.bounding_box', sources=['pplite/bounding_box.pyx'])
     ]
 #finish writing setup at some point
 setup(

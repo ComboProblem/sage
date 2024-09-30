@@ -2,6 +2,10 @@ README.rst
 pyproject.toml
 setup.py
 pplite/__init__.py
+pplite/bounding_box.c
+pplite/bounding_box.cpp
+pplite/bounding_box.pxd
+pplite/bounding_box.pyx
 pplite/constraint.cpp
 pplite/constraint.pxd
 pplite/constraint.pyx

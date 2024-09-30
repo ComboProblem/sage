@@ -1,5 +1,6 @@
 from libcpp cimport bool as cppbool
 from libcpp.vector cimport vector as cppvector
+from libcpp.utility cimport pair
 from gmpy2 cimport mpz 
 
 # gmp and flint integer/rational cdefs 
@@ -90,6 +91,9 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         EMPTY
         UNIVERSE
 
+    cdef enum class Topol:
+        CLOSED
+        NNC
 
     # cdef enum class Widen_Spec:
     #     SAFE
@@ -401,9 +405,203 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     Con get_eq_con(Var var, const Itv& itv)
 
 
-    # "pplite/BBox.hh"
+# "pplite/Bits.hh"
+    
+    # cppclass Bits
+    # cppclass Bits:
+    #     Bits
 
-    # cppclass Box
-    # cppclass Box:
+
+    # cdef cppbool KVI
+    # value template
+    # ctypedef cppbool KVI "BBox.hh::KVI"
+    # cdef cppclass Box
+    # cdef cppclass Box:
     #     Box(Box& y)
-    #     Boxdim_type sd, S
+    # #     Box& operator=(Box& y)
+    # #     # Box(const Box<not KVI>& y)
+    #     Box()
+    #     Box(dim_type sd, Spec_Elem se)
+    #     Volume_Info compute_volume_info()
+    #     void maybe_update_volume_info()
+    #     dim_type num_rays()
+    #     FLINT_Rational pseudo_volume()
+    #     cppbool check_inv()
+    #     dim_type space_dim()
+    #     dim_type affine_dim()
+    #     cppbool is_empty()
+    #     cppbool is_universe()
+    #     cppbool is_bounded()
+    #     cppbool is_bounded_expr()
+    #     Topol topology()
+    #     cppbool is_topologially_closed()
+    #     cppbool constrains(Var v)
+    #     Itv get_bounds(Var v)
+    #     cppbool is_included_in(Con& c)
+    #     cppbool contains(Box& y)
+    #     cppbool equals(Box& y)
+    #     cppbool is_disjoint_from(Box& y)
+    #     cppbool less(Box& y)
+    #     dim_type num_min_cons()
+    #     dim_type num_min_gens()
+    #     # Gens_Info gens_info()
+    #     size_t hash()
+    #     void swap(Box& y)
+    #     void set_empty()
+    #     void set_origin()
+    #     void affine_image(Var var, Linear_Expr expr, FLINT_Integer inhomo, FLINT_Integer den)
+    #     void concatenate_assign(Box& y)
+    #     void glb_assign(Box& y)
+    #     void lub_assign(Box& y)
+    #     void time_elapse_assign(Box& y)
+    #     void unconstrain(Var var)
+    #     # void unconstrain(Iter first, Iter last)      
+    #     # void unconstrain(const Index_Set& vars)
+    #     void widening_assign(const Box& y)
+    #     void add_space_dims(dim_type d, cppbool project)
+    #     # void permute_space_dims(const Dims& perm)
+    #     # void map_space_dims(const Dims& pfunc)
+    #     void remove_space_dim(Var var)
+    #     # void remove_space_dims(const Index_Set& vars)
+    #     void remove_higher_space_dims(dim_type new_dim)
+    #     void expand_space_dim(Var var, dim_type d)
+    #     # void fold_space_dims(const Index_Set& vars, Var dst)
+    #     void add_gen(const Gen& g)
+    #     # void add_gens(const Gens& gs)
+    #     void refine_bounds(dim_type dim, const Itv& y_itv)
+    #     void refine_as_integral(dim_type dim)
+    #     void refine_as_integral(dim_type first, dim_type last)
+
+    # "pplite/BBox.hh" 
+    # Note: We are explicitly defining the two possible Box classes.
+
+    cdef cppclass Box_t "pplite::Box<true>": # namespace trick
+        ctypedef pair[dim_type, FLINT_Rational] Volume_Info "Volume_Info"
+        Box_t(Box_f& y)
+        Box_t(const Box_t&& y)
+        Box_t(dim_type sd, Spec_Elem se)
+        Volume_Info compute_volume_info()
+        void maybe_update_volume_info()
+        dim_type num_rays()
+        FLINT_Rational pseudo_volume()
+        cppbool check_inv()
+        dim_type space_dim()
+        dim_type affine_dim()
+        cppbool is_empty()
+        cppbool is_universe()
+        cppbool is_bounded()
+        cppbool is_bounded_expr()
+        Topol topology()
+        cppbool is_topologially_closed()
+        cppbool constrains(Var v)
+        Itv get_bounds(Var v)
+        cppbool is_included_in(Con& c)
+        cppbool contains(const Box_t& y)
+        # cppbool contains(const Box_f& y)
+        cppbool equals(Box_t& y)
+        # cppbool equals(Box_f& y)
+        cppbool is_disjoint_from(const Box_t& y)
+        # cppbool is_disjoint_from(const Box_f& y)
+        cppbool less(const Box_t& y)
+        # cppbool less(const Box_f& y)
+        dim_type num_min_cons()
+        dim_type num_min_gens()
+        # Gens_Info gens_info()
+        size_t hash()
+        void swap(Box_t& y)
+        void swap(Box_f& y)
+        void set_empty()
+        void set_origin()
+        void affine_image(Var var, Linear_Expr expr, FLINT_Integer inhomo, FLINT_Integer den)
+        void concatenate_assign(Box_t& y)
+        # void concatenate_assign(Box_f& y)
+        void glb_assign(Box_t& y)
+        # void glb_assign(Box_f& y)
+        void lub_assign(Box_t& y)
+        # void lub_assign(Box_f& y)
+        void time_elapse_assign(Box_t& y)
+        # void time_elapse_assign(Box_f& y)
+        void unconstrain(Var var)
+        # void unconstrain(Iter first, Iter last)      
+        # void unconstrain(const Index_Set& vars)
+        void widening_assign(const Box_t& y)
+        void widening_assign(const Box_f& y)
+        void add_space_dims(dim_type d, cppbool project)
+        # void permute_space_dims(const Dims& perm)
+        # void map_space_dims(const Dims& pfunc)
+        void remove_space_dim(Var var)
+        # void remove_space_dims(const Index_Set& vars)
+        void remove_higher_space_dims(dim_type new_dim)
+        void expand_space_dim(Var var, dim_type d)
+        # void fold_space_dims(const Index_Set& vars, Var dst)
+        void add_gen(const Gen& g)
+        # void add_gens(const Gens& gs)
+        void refine_bounds(dim_type dim, const Itv& y_itv)
+        void refine_as_integral(dim_type dim)
+        void refine_as_integral(dim_type first, dim_type last)
+
+
+    cdef cppclass Box_f "pplite::Box<false>":
+        ctypedef pair[dim_type, FLINT_Rational] Volume_Info "Volume_Info"
+        Box_f(Box_t& y)
+        # Box_f(const Box_f&& y)
+        Box_f(dim_type sd, Spec_Elem se)
+        Volume_Info compute_volume_info()
+        void maybe_update_volume_info()
+        dim_type num_rays()
+        FLINT_Rational pseudo_volume()
+        cppbool check_inv()
+        dim_type space_dim()
+        dim_type affine_dim()
+        cppbool is_empty()
+        cppbool is_universe()
+        cppbool is_bounded()
+        cppbool is_bounded_expr()
+        Topol topology()
+        cppbool is_topologially_closed()
+        cppbool constrains(Var v)
+        Itv get_bounds(Var v)
+        cppbool is_included_in(Con& c)
+        cppbool contains(Box_t& y) 
+        cppbool contains(Box_f& y)
+        cppbool equals(Box_t& y)
+        cppbool equals(Box_f& y)
+        cppbool is_disjoint_from(Box_t& y)
+        cppbool is_disjoint_from(Box_f& y)
+        cppbool less(Box_t& y)
+        cppbool less(Box_f& y)
+        dim_type num_min_cons()
+        dim_type num_min_gens()
+        # Gens_Info gens_info()
+        size_t hash()
+        void swap(Box_t& y)
+        void swap(Box_f& y)
+        void set_empty()
+        void set_origin()
+        void affine_image(Var var, Linear_Expr expr, FLINT_Integer inhomo, FLINT_Integer den)
+        void concatenate_assign(Box_t& y)
+        void concatenate_assign(Box_f& y)
+        void glb_assign(Box_t& y)
+        void glb_assign(Box_f& y)
+        void lub_assign(Box_t& y)
+        void lub_assign(Box_f& y)
+        void time_elapse_assign(Box_t& y)
+        void time_elapse_assign(Box_f& y)
+        void unconstrain(Var var)
+        # void unconstrain(Iter first, Iter last)      
+        # void unconstrain(const Index_Set& vars)
+        void widening_assign(const Box_t& y)
+        void widening_assign(const Box_f& y)
+        void add_space_dims(dim_type d, cppbool project)
+        # void permute_space_dims(const Dims& perm)
+        # void map_space_dims(const Dims& pfunc)
+        void remove_space_dim(Var var)
+        # void remove_space_dims(const Index_Set& vars)
+        void remove_higher_space_dims(dim_type new_dim)
+        void expand_space_dim(Var var, dim_type d)
+        # void fold_space_dims(const Index_Set& vars, Var dst)
+        void add_gen(const Gen& g)
+        # void add_gens(const Gens& gs)
+        void refine_bounds(dim_type dim, const Itv& y_itv)
+        void refine_as_integral(dim_type dim)
+        void refine_as_integral(dim_type first, dim_type last)

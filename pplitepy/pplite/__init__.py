@@ -20,3 +20,7 @@ from .generators import (
 from .intervals import (
         Interval
         )
+
+from .bounding_box import (
+        Bounding_Box_t, Bounding_Box_f
+        )

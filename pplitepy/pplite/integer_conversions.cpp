@@ -4,13 +4,13 @@
 {
     "distutils": {
         "depends": [
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2/gmp.h",
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2/gmpy2.h",
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2/mpc.h",
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2/mpfr.h"
         ],
         "include_dirs": [
-            "/tmp/pip-build-env-6w_4mlfl/overlay/lib/python3.10/site-packages/gmpy2"
+            "/tmp/pip-build-env-jhsdc99n/overlay/lib/python3.10/site-packages/gmpy2"
         ],
         "language": "c++",
         "libraries": [
@@ -1265,6 +1265,19 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <vector>
+#include <utility>
+
+    #if __cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1600)
+    // move should be defined for these versions of MSVC, but __cplusplus isn't set usefully
+    #include <type_traits>
+
+    namespace cython_std {
+    template <typename T> typename std::remove_reference<T>::type&& move(T& t) noexcept { return std::move(t); }
+    template <typename T> typename std::remove_reference<T>::type&& move(T&& t) noexcept { return std::move(t); }
+    }
+
+    #endif
+    
 #include "gmp.h"
 #include "mpfr.h"
 #include "mpc.h"
@@ -1543,7 +1556,7 @@ static const char *__pyx_f[] = {
 
 /* #### Code section: numeric_typedefs ### */
 
-/* "pplite_decl.pxd":28
+/* "pplite_decl.pxd":29
  *         mpz_class operator%(mpz_class, mpz_class)
  * 
  * ctypedef mp_limb_t ulong             # <<<<<<<<<<<<<<
@@ -1552,7 +1565,7 @@ static const char *__pyx_f[] = {
  */
 typedef mp_limb_t __pyx_t_6pplite_11pplite_decl_ulong;
 
-/* "pplite_decl.pxd":29
+/* "pplite_decl.pxd":30
  * 
  * ctypedef mp_limb_t ulong
  * ctypedef mp_limb_signed_t slong             # <<<<<<<<<<<<<<
@@ -2169,6 +2182,8 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from "libcpp.vector" */
 
+/* Module declarations from "libcpp.utility" */
+
 /* Module declarations from "gmpy2" */
 
 /* Module declarations from "gmpy2.gmpy2" */
@@ -2235,6 +2250,8 @@ typedef struct {
   #endif
   #ifdef __Pyx_Coroutine_USED
   PyTypeObject *__pyx_CoroutineType;
+  #endif
+  #if CYTHON_USE_MODULE_STATE
   #endif
   #if CYTHON_USE_MODULE_STATE
   #endif
@@ -2404,6 +2421,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 #ifdef __Pyx_Coroutine_USED
 #define __pyx_CoroutineType __pyx_mstate_global->__pyx_CoroutineType
+#endif
+#if CYTHON_USE_MODULE_STATE
 #endif
 #if CYTHON_USE_MODULE_STATE
 #endif

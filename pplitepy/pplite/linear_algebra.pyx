@@ -547,8 +547,7 @@ cdef class Linear_Expression(object):
         """
         #      >>> e.coefficient(Variable(1))
         # mpz(0)   
-        cdef Variable vv # rewrite this method to read coeffs correctly
-        
+        cdef Variable vv # rewrite
         if type(v) is Variable:
             vv = <Variable> v
         else:
@@ -1336,7 +1335,7 @@ cdef class Affine_Expression(object):
             temp = new Affine_Expr(self.thisptr[0])
             self.thisptr[0] += vv[0]  # There is an oddity where adding affine expression and variable doesn't work. Error: Cannot assign type 'Var &' to 'Affine_Expr &'
             # This means to add via PPlite add methods, we need to use += operator (it is what works okay!). This modifies self's data. 
-            # To ensure that the orginal affine epxresion's data is unmodified, tempoary store data to save it. 
+            # To ensure that the original affine expression's data is unmodified, tempoary store data to save it. 
             result_expr.thisptr = new Affine_Expr(self.thisptr[0]) 
             self.thisptr = temp # fix, save old data, then reset data to correct place. Remove if affine expression addition ever is fixed. 
             return result_expr

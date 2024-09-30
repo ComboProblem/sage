@@ -10,34 +10,60 @@ from .integer_conversions cimport FLINT_Integer_to_Python, Python_int_to_FLINT_I
 from .constraint cimport Constraint
 from .linear_algebra cimport Variable
 
-# To figure out: Do I need to write dealloc and cint methods?
+# struct is fully public class in c++. del is for manual memory management. new needs a corresponding del.
 
 cdef class Interval(object):
     """
     cython wrapper for pplite Itv struct. This represent a topologically closed 1 dimensional interval.
-    
+
     EXAMPLES:
+    >>> from pplite.intervals import Interval
+    >>> I = Interval()
+    >>> I["lb"] = 3/2
+    >>> I["ub"] = 5/2
+    >>> I
+    [mpq(3,2), mpq(5,2)]
+    >>> J = Interval()
+    >>> J
+    (-inf, +inf)
 
+    Intervals are mutable:
+
+    >>> I["lb"] = 4/2
+    >>> I
+    [mpq(2,1), mpq(5,2)]
+    >>> I["lb"] = 100
+    >>> I # this is a bug
+    [mpq(100,1), mpq(5,2)] 
+    >>> I.is_empty() # something is wrong here. investigate
+    False
     """
+    # def __init__(self, *args):
+    #     """
 
+    #     """
     def __hash__(self):
         cdef size_t h
         h = self.interval.hash()
-        return h #doth this work?
+        return h # doth this work?
 
     def __repr__(self):
+        """
+        TESTS:
+
+        """
         s = ""
         if self.is_universe():
             s += "(-inf, +inf)"
             return s
         elif self.inf_lb() and self.has_ub():
-            s += "(-inf, "+self["ub"]+"]"
+            s += "(-inf, "+self["ub"].__repr__()+"]"
             return s
-        elif self.inf_up() and self.has_lb():
-            s += "["+self["lb"]+", inf)"
+        elif self.inf_ub() and self.has_lb():
+            s += "["+self["lb"].__repr__()+", +inf)"
             return s
         elif self.has_ub() and self.has_lb():
-            s += "["+self["lb"]+", "+self["ub"]+"]"
+            s += "["+self["lb"].__repr__()+", "+self["ub"].__repr__()+"]"
             return s
         elif self.is_empty():
             s += "{ }"
@@ -238,6 +264,32 @@ cdef class Interval(object):
         """
         return self.interval.has_ub()
 
+    def inf_lb(self):
+        """
+        Checks if the interval is unbounded from below.
+        Output: Bool
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval()
+        >>> I.inf_lb()
+        True
+        """
+        return self.interval.inf_lb()
+
+    def inf_ub(self):
+        """
+        Checks if the interval is unbounded from above.
+        Output: Bool
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval()
+        >>> I.inf_ub()
+        True
+        """
+        return self.interval.inf_ub()
+
     def is_bounded(self):
         """
         Checks if the interval has an upper bound.
@@ -328,6 +380,7 @@ cdef class Interval(object):
         INPUT: other_interval a :class:`Interval`
 
         OUTPUT: Bool
+
         TESTS: 
         >>> from pplite.intervals import Interval
         >>> I = Interval()
@@ -348,39 +401,133 @@ cdef class Interval(object):
         raise ValueError("other_interval is required to be an Interval")
 
     def length(self):
+        """
+        Computes the length of an interval.
+
+        OUTPUT: :class:`mpq`
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval()
+        >>> I["lb"] = 3/2
+        >>> I["ub"] = 5/2
+        >>> I.length()
+        mpq(1,1)
+        """
         cdef FLINT_Rational l 
         l = self.interval.length()
         return FLINT_Rational_to_Python(l)
 
     def num_min_cons(self):
+        """
+
+        """
         cdef dim_type d
         d = self.interval.num_min_cons()
         return d
 
     def num_rays(self):
+        """
+        Returns the number of rays.
+        """
         cdef dim_type d
         d = self.interval.num_rays()
         return d
 
     def set_empty(self):
+        """
+        Sets the interval to the empty set.
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval(); I
+        (-inf, +inf)
+        >>> I.set_empty()
+        >>> I
+        { }
+        """
         self.interval.set_empty()
 
     def set_universe(self):
+        """
+        Sets the interval to the empty set.
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval();
+        >>> I["ub"] = 12; I["lb"] = 2; I
+        [mpq(2,1), mpq(12,1)]
+        >>> I.set_universe()
+        >>> I
+        (-inf, +inf)
+        """
         self.interval.set_universe()
 
     def set_zero(self):
+        """
+        Sets the interval to the empty set.
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval()
+        >>> I
+        (-inf, +inf)
+        >>> I.set_zero()
+        >>> I
+        [mpq(0,1), mpq(0,1)]
+        """
         self.interval.set_zero()
 
     def set_singleton(self, value):
+        """
+        Sets the interval to a singleton of the specified value.
+
+        INPUT: rational
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval()
+        >>> I
+        (-inf, +inf)
+        >>> I.set_singleton(3/4)
+        >>> I
+        [mpq(3,4), mpq(3,4)]
+        """
         cdef FLINT_Rational v
         v = Python_float_to_FLINT_Rational(value)
         self.interval.set_singleton(v)
 
     def unset_lower_bound(self):
+        """
+        Unset the interval's lower bound value.
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval();
+        >>> I["ub"] = 12; I["lb"] = 2; I
+        [mpq(2,1), mpq(12,1)]
+        >>> I.unset_lower_bound()
+        >>> I
+        (-inf, mpq(12,1)]
+        """
         self.interval.unset_lb()
 
     def unset_upper_bound(self):
+        """
+        Unset the interval's upperbound bound value.
+
+        TESTS:
+        >>> from pplite.intervals import Interval
+        >>> I = Interval();
+        >>> I["ub"] = 12; I["lb"] = 2; I
+        [mpq(2,1), mpq(12,1)]
+        >>> I.unset_upper_bound()
+        >>> I
+        [mpq(2,1), +inf)
+        """
         self.interval.unset_ub()
+
+# Double check what these functions should do. 
 
     def glb_assign(self, other_interval):
         cdef Itv y
@@ -470,8 +617,6 @@ def split_interval(this_interval, constraint, intergral):
     new_interval = Interval()
     new_interval.interval = result
     return new_interval
-
-
 
 def get_lower_bound_constraint(variable, this_interval):
     cdef Var* var

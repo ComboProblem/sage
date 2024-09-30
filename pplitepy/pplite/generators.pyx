@@ -29,6 +29,8 @@ cdef class PPliteGenerator(object):
 		>>> e_2 = 2*x-3*y
 		>>> g_3 =  PPliteGenerator('point', e_2, 9); g_3
 		p((2*x0-3*x1)/9)
+		>>> g_4 = PPliteGenerator('ray', Linear_Expression(x), 0); g_4
+		r(x0)
 		"""
 		if len(args) == 0:
 			self.thisptr = new Gen()
@@ -43,7 +45,8 @@ cdef class PPliteGenerator(object):
 			raise ValueError("creating an instance of PPliteGenerator from one input requires the input to be a PPliteGenerator.")
 		cdef GenType tt
 		cdef FLINT_Integer dd
-		cdef Linear_Expr ee
+		cdef Linear_Expr ee 
+		#  TODO: Make type conversions so Generators can take more expressions such as var or affine_expression as input for a pythonic ease of use. 
 		# if len(args) == 2:
 		# 	t = args[0]
 		# 	a = args[1]
