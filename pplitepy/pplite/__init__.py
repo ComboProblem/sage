@@ -24,3 +24,7 @@ from .intervals import (
 from .bounding_box import (
         Bounding_Box_t, Bounding_Box_f
         )
+
+from .polyhedron import (
+        NNC_Polyhedron
+        )

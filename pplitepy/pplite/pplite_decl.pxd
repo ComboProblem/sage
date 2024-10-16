@@ -406,79 +406,15 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
 
 
 # "pplite/Bits.hh"
-    
-    # cppclass Bits
-    # cppclass Bits:
-    #     Bits
 
-
-    # cdef cppbool KVI
-    # value template
-    # ctypedef cppbool KVI "BBox.hh::KVI"
-    # cdef cppclass Box
-    # cdef cppclass Box:
-    #     Box(Box& y)
-    # #     Box& operator=(Box& y)
-    # #     # Box(const Box<not KVI>& y)
-    #     Box()
-    #     Box(dim_type sd, Spec_Elem se)
-    #     Volume_Info compute_volume_info()
-    #     void maybe_update_volume_info()
-    #     dim_type num_rays()
-    #     FLINT_Rational pseudo_volume()
-    #     cppbool check_inv()
-    #     dim_type space_dim()
-    #     dim_type affine_dim()
-    #     cppbool is_empty()
-    #     cppbool is_universe()
-    #     cppbool is_bounded()
-    #     cppbool is_bounded_expr()
-    #     Topol topology()
-    #     cppbool is_topologially_closed()
-    #     cppbool constrains(Var v)
-    #     Itv get_bounds(Var v)
-    #     cppbool is_included_in(Con& c)
-    #     cppbool contains(Box& y)
-    #     cppbool equals(Box& y)
-    #     cppbool is_disjoint_from(Box& y)
-    #     cppbool less(Box& y)
-    #     dim_type num_min_cons()
-    #     dim_type num_min_gens()
-    #     # Gens_Info gens_info()
-    #     size_t hash()
-    #     void swap(Box& y)
-    #     void set_empty()
-    #     void set_origin()
-    #     void affine_image(Var var, Linear_Expr expr, FLINT_Integer inhomo, FLINT_Integer den)
-    #     void concatenate_assign(Box& y)
-    #     void glb_assign(Box& y)
-    #     void lub_assign(Box& y)
-    #     void time_elapse_assign(Box& y)
-    #     void unconstrain(Var var)
-    #     # void unconstrain(Iter first, Iter last)      
-    #     # void unconstrain(const Index_Set& vars)
-    #     void widening_assign(const Box& y)
-    #     void add_space_dims(dim_type d, cppbool project)
-    #     # void permute_space_dims(const Dims& perm)
-    #     # void map_space_dims(const Dims& pfunc)
-    #     void remove_space_dim(Var var)
-    #     # void remove_space_dims(const Index_Set& vars)
-    #     void remove_higher_space_dims(dim_type new_dim)
-    #     void expand_space_dim(Var var, dim_type d)
-    #     # void fold_space_dims(const Index_Set& vars, Var dst)
-    #     void add_gen(const Gen& g)
-    #     # void add_gens(const Gens& gs)
-    #     void refine_bounds(dim_type dim, const Itv& y_itv)
-    #     void refine_as_integral(dim_type dim)
-    #     void refine_as_integral(dim_type first, dim_type last)
 
     # "pplite/BBox.hh" 
     # Note: We are explicitly defining the two possible Box classes.
 
     cdef cppclass Box_t "pplite::Box<true>": # namespace trick
         ctypedef pair[dim_type, FLINT_Rational] Volume_Info "Volume_Info"
-        Box_t(Box_f& y)
-        Box_t(const Box_t&& y)
+        # Box_t(Box_f& y)
+        Box_t(Box_t& y)
         Box_t(dim_type sd, Spec_Elem se)
         Volume_Info compute_volume_info()
         void maybe_update_volume_info()
@@ -492,7 +428,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         cppbool is_bounded()
         cppbool is_bounded_expr()
         Topol topology()
-        cppbool is_topologially_closed()
+        cppbool is_topologically_closed()
         cppbool constrains(Var v)
         Itv get_bounds(Var v)
         cppbool is_included_in(Con& c)
@@ -509,7 +445,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         # Gens_Info gens_info()
         size_t hash()
         void swap(Box_t& y)
-        void swap(Box_f& y)
+        # void swap(Box_f& y)
         void set_empty()
         void set_origin()
         void affine_image(Var var, Linear_Expr expr, FLINT_Integer inhomo, FLINT_Integer den)
@@ -525,7 +461,7 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         # void unconstrain(Iter first, Iter last)      
         # void unconstrain(const Index_Set& vars)
         void widening_assign(const Box_t& y)
-        void widening_assign(const Box_f& y)
+        # void widening_assign(const Box_f& y)
         void add_space_dims(dim_type d, cppbool project)
         # void permute_space_dims(const Dims& perm)
         # void map_space_dims(const Dims& pfunc)
@@ -539,12 +475,21 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         void refine_bounds(dim_type dim, const Itv& y_itv)
         void refine_as_integral(dim_type dim)
         void refine_as_integral(dim_type first, dim_type last)
+        void unconstrain_lb(dim_type d)
+        void unconstrain_ub(dim_type d)
+        cppbool inf_lb(dim_type i)
+        cppbool inf_ub(dim_type i)
+        const FLINT_Rational& lb(dim_type i)
+        const FLINT_Rational& ub(dim_type i)
+
+        # Itvs itvs
+        # Volume_Info volume
 
 
     cdef cppclass Box_f "pplite::Box<false>":
         ctypedef pair[dim_type, FLINT_Rational] Volume_Info "Volume_Info"
-        Box_f(Box_t& y)
-        # Box_f(const Box_f&& y)
+        # Box_f(Box_t& y)
+        Box_f(Box_f y)
         Box_f(dim_type sd, Spec_Elem se)
         Volume_Info compute_volume_info()
         void maybe_update_volume_info()
@@ -558,39 +503,39 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         cppbool is_bounded()
         cppbool is_bounded_expr()
         Topol topology()
-        cppbool is_topologially_closed()
+        cppbool is_topologically_closed()
         cppbool constrains(Var v)
         Itv get_bounds(Var v)
         cppbool is_included_in(Con& c)
-        cppbool contains(Box_t& y) 
-        cppbool contains(Box_f& y)
-        cppbool equals(Box_t& y)
+        # cppbool contains(const Box_t& y)
+        cppbool contains(const Box_f& y)
+        # cppbool equals(Box_t& y)
         cppbool equals(Box_f& y)
-        cppbool is_disjoint_from(Box_t& y)
-        cppbool is_disjoint_from(Box_f& y)
-        cppbool less(Box_t& y)
-        cppbool less(Box_f& y)
+        # cppbool is_disjoint_from(const Box_t& y)
+        cppbool is_disjoint_from(const Box_f& y)
+        # cppbool less(const Box_t& y)
+        cppbool less(const Box_f& y)
         dim_type num_min_cons()
         dim_type num_min_gens()
         # Gens_Info gens_info()
         size_t hash()
-        void swap(Box_t& y)
+        # void swap(Box_t& y)
         void swap(Box_f& y)
         void set_empty()
         void set_origin()
         void affine_image(Var var, Linear_Expr expr, FLINT_Integer inhomo, FLINT_Integer den)
-        void concatenate_assign(Box_t& y)
+        # void concatenate_assign(Box_t& y)
         void concatenate_assign(Box_f& y)
-        void glb_assign(Box_t& y)
+        # void glb_assign(Box_t& y)
         void glb_assign(Box_f& y)
-        void lub_assign(Box_t& y)
+        # void lub_assign(Box_t& y)
         void lub_assign(Box_f& y)
-        void time_elapse_assign(Box_t& y)
+        # void time_elapse_assign(Box_t& y)
         void time_elapse_assign(Box_f& y)
         void unconstrain(Var var)
         # void unconstrain(Iter first, Iter last)      
         # void unconstrain(const Index_Set& vars)
-        void widening_assign(const Box_t& y)
+        # void widening_assign(const Box_t& y)
         void widening_assign(const Box_f& y)
         void add_space_dims(dim_type d, cppbool project)
         # void permute_space_dims(const Dims& perm)
@@ -605,3 +550,101 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         void refine_bounds(dim_type dim, const Itv& y_itv)
         void refine_as_integral(dim_type dim)
         void refine_as_integral(dim_type first, dim_type last)
+        void unconstrain_lb(dim_type d)
+        void unconstrain_ub(dim_type d)
+        cppbool inf_lb(dim_type i)
+        cppbool inf_ub(dim_type i)
+        const FLINT_Rational& lb(dim_type i)
+        const FLINT_Rational& ub(dim_type i)
+
+# "pplite/Poly.hh"
+
+    cdef cppclass Poly_Impl:
+        # enum Status:
+        #     EMPTY
+        #     MINIMIZED
+        #     PENDING
+
+        # struct Sys_
+        pass 
+
+    cdef cppclass Poly:
+        Impl cppclass "Poly::Poly_Impl" # guess on how to alias this
+        Poly(dim_type d, Spec_Elem s, Topol t)
+        Poly(dim_type d, Topol t, Spec_Elem s)
+        Poly(Spec_Elem s, Topol t, dim_type d)
+        Poly(Topol t, dim_type d, Spec_Elem s)
+        Poly(Topol t, Spec_Elem s, dim_type d)
+        Poly(Poly& y)
+        Impl impl()
+  # /* Types */
+  # using Impl::Cons_Proxy;
+  # using Impl::Gens_Proxy;
+    # Predicates
+        cppbool is_necessarily_closed()
+        cppbool check_inv()
+        cppbool is_empty()
+        cppbool is_universe()
+        cppbool is_minimized()
+        cppbool is_topologically_closed()
+        cppbool is_bounded()
+        cppbool is_bounded_expr(cppbool from_below, const Linear_Expr& expr)
+        cppbool constrains(Var var) 
+        cppbool equals(const Poly& y)
+        cppbool contains(const Poly& y)
+        cppbool strictly_contains(const Poly& y)
+        cppbool is_disjoint_from(const Poly& y)
+        # BBox get_bounding_box() #what type of box?
+        cppbool boxed_contains(const Poly& y)
+    # queries
+        Topol topology()
+        dim_type space_dim()
+        dim_type affine_dim()
+        # # Poly_Con_Rel relation_with(const Con& c)
+        # # Poly_Gen_Rel relation_with(const Gen& g)
+        # cppbool min(const Affine_Expr& ae, Rational& value, cppbool* included_ptr, Gen* g_ptr)
+        # cppbool max(const Affine_Expr& ae, Rational& value, cppbool* included_ptr, Gen* g_ptr)
+        # Itv get_bounds(Var var)
+        # Itv get_bounds(Affine_Expr& ae)
+        # # Itv get_bounds(Itv_Expr& ie)
+        # Index_Set get_unconstrained()
+        # size_t hash() 
+        # Cons_Proxy cons()
+        # Gens_Proxy gens()
+        # Cons copy_cons()
+        # Gens copy_gens()
+        # Cons_Proxy normalized_cons()
+        # Gens_Info gens_info()
+        # dim_type num_min_cons()
+        # dim_type num_min_gens()
+        # void collapse(dim_type n)
+        # dim_type num_disjuncts()
+        # Cons_Proxy disjunct_cons(dim_type n)
+        # cppbool geom_covers(const Poly& y)
+        # # Modifiers
+        # void m_swap(Poly& y)
+        # void set_empty()
+        # void set_universe()
+        # void set_topology(Topol t)
+        # void add_con(Con c)
+        # void add_cons(Cons cs)
+        # #  void add_cons(Iter first, Iter last)
+        # void add_gen(Gen g)
+        # void add_gens(Gens gs)
+        # # void add_gens(Iter first, Iter last)
+        # void topological_closure_assign()
+        # # void unconstrain(Iter first, Iter last)
+        # void unconstrain(Var var)
+        # void unconstrain(const Index_Set& vars)
+        # void intersection_assign(const Poly& y)
+        # void join_assign(const Poly& y)
+        # void poly_hull_assign(const Poly& y)
+        # void con_hull_assign(const Poly& y, cppbool boxed)
+        # void poly_difference_assign(const Poly& y)
+        # void affine_image(Var var, const Linear_Expr& expr,Flint_Integer& inhomo, Flint_Integer& den) # default args
+        # void affine_preimage(Var var, const Linear_Expr& expr,Flint_Integer& inhomo, Flint_Integer& den) # default args
+        # void parallel_affine_image(const Vars& vars, const Linear_Exprs& exprs, const Integers& inhomos, const Integers& dens)
+        # void widening_assign(const Poly& y, Widen_Impl w_impl, Widen_Spec w_spec)
+        # void widening_assign(const Poly& y, const Cons& upto_cons, Widen_Impl w_impl, Widen_Spec w_spec)
+        # void time_elapse_assign(const Poly& y)
+        # split

@@ -411,6 +411,7 @@ cdef class PPliteGenerator(object):
 ##########################
 #### Helper Functions ####
 ##########################
+# TODO migrate helper functions to a single module. 
 
 
 cdef GenType string_to_GenType(t):

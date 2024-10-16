@@ -8,7 +8,9 @@ from libcpp.vector cimport vector as cppvector
 
 # from numbers import Rational
 
-#  about inclusion of types. concrete type to handle is faraciton. 
+#  about inclusion of types. concrete type to handle is fraction. 
+
+#cpdef is testable from python, can't test from python directly. 
 
 import_gmpy2()
 
@@ -35,7 +37,7 @@ cdef FLINT_Integer Python_int_to_FLINT_Integer(integer):
     if MPZ_Check(integer): # is this okay?
         y = <fmpz> integer
         return FLINT_Integer(y)
-    raise ValueError("Integer Conversion Failed")
+    raise ValueError("Integer Conversion Failed") # double check errors get actually get raised. 
 
 
 cdef FLINT_Rational_to_Python(FLINT_Rational& rational):

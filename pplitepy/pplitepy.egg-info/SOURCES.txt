@@ -23,6 +23,9 @@ pplite/intervals.pyx
 pplite/linear_algebra.cpp
 pplite/linear_algebra.pxd
 pplite/linear_algebra.pyx
+pplite/polyhedron.cpp
+pplite/polyhedron.pxd
+pplite/polyhedron.pyx
 pplite/pplite_decl.pxd
 pplitepy.egg-info/PKG-INFO
 pplitepy.egg-info/SOURCES.txt
