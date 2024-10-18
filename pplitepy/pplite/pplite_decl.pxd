@@ -600,17 +600,17 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Topol topology()
         dim_type space_dim()
         dim_type affine_dim()
-        # # Poly_Con_Rel relation_with(const Con& c)
-        # # Poly_Gen_Rel relation_with(const Gen& g)
-        # cppbool min(const Affine_Expr& ae, Rational& value, cppbool* included_ptr, Gen* g_ptr)
-        # cppbool max(const Affine_Expr& ae, Rational& value, cppbool* included_ptr, Gen* g_ptr)
-        # Itv get_bounds(Var var)
-        # Itv get_bounds(Affine_Expr& ae)
+        Poly_Con_Rel relation_with(const Con& c)
+        Poly_Gen_Rel relation_with(const Gen& g)
+        cppbool min(const Affine_Expr& ae, FLINT_Rational& value, cppbool* included_ptr, Gen* g_ptr)
+        cppbool max(const Affine_Expr& ae, FLINT_Rational& value, cppbool* included_ptr, Gen* g_ptr)
+        Itv get_bounds(Var var)
+        Itv get_bounds(Affine_Expr& ae)
         # # Itv get_bounds(Itv_Expr& ie)
         # Index_Set get_unconstrained()
-        # size_t hash() 
-        # Cons_Proxy cons()
-        # Gens_Proxy gens()
+        size_t hash() 
+        Cons_Proxy cons()
+        Gens_Proxy gens()
         # Cons copy_cons()
         # Gens copy_gens()
         # Cons_Proxy normalized_cons()
@@ -648,3 +648,31 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         # void widening_assign(const Poly& y, const Cons& upto_cons, Widen_Impl w_impl, Widen_Spec w_spec)
         # void time_elapse_assign(const Poly& y)
         # split
+
+# PPlite/Poly_Rel.hh
+    cdef cppclass Poly_Con_Rel:
+        ctypedef unsigned int Impl
+        Poly_Con_Rel()
+        Impl& impl()
+        Impl impl()
+        Poly_Con_Rel nothing() 
+        Poly_Con_Rel is_disjoint()
+        Poly_Con_Rel strictly_intersects()
+        Poly_Con_Rel is_included()
+        Poly_Con_Rel saturates()
+        cppbool implies(const Poly_Con_Rel& y)
+
+    cdef cppclass Poly_Gen_Rel:
+        ctypedef unsigned int Impl
+        Poly_Gen_Rel()
+        Impl& impl()
+        Impl impl()
+        Poly_Gen_Rel nothing()
+        Poly_Gen_Rel subsumes()
+        cppbool implies(const Poly_Gen_Rel& y)
+
+# PPLite/U_Poly.hh
+
+    cdef struct Cons_Proxy "U_Wrap::Cons_Proxy"
+    
+    cdef struct Gens_Proxy "U_Wrap::Gens_Proxy"
