@@ -236,6 +236,10 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         void strong_normalize()
         cppbool check_strong_normalized()
 
+    # Cons defn.
+
+    ctypedef cppvector[Con] Cons
+
     # Operators for constraint class
     Con operator=(Con &c)
     Con operator<(Linear_Expr e1, const Linear_Expr& e2)
@@ -345,6 +349,8 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
     # Index_Set invalid_rays(const Gens& gs)
     # void rase_higher_dims(Gens& gs, dim_type d)
     # Gen materialize(const Indices& is, const Gens& gs)
+
+    ctypedef cppvector[Gen] Gens
 
     # "pplite/Itv.hh"
     cdef struct Itv:
@@ -557,30 +563,46 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         const FLINT_Rational& lb(dim_type i)
         const FLINT_Rational& ub(dim_type i)
 
-# "pplite/Poly.hh"
 
+# "pplite/Poly.hh"
     cdef cppclass Poly_Impl:
         # enum Status:
         #     EMPTY
         #     MINIMIZED
         #     PENDING
-
+        # cdef struct Sys "Sys<Cons>"
         # struct Sys_
-        pass 
+        ctypedef struct cs "Sys<Cons>":
+            pass
+
+        ctypedef struct gs "Sys<Gens>":
+            pass
+
+
+        # ctypedef struct Cons_Proxy "pplite::Mater_Sys<pplite::Poly_Impl::Sys<pplite::Cons>, pplite::Poly_Impl>": # Cons_Proxy
+        #     pass 
+
+        # ctypedef struct Gens_Proxy "pplite::Mater_Sys<pplite::Poly_Impl::Sys<pplite::Gens>, pplite::Poly_Impl>": # Gens_Proxy
+        #     pass  
+    
 
     cdef cppclass Poly:
-        Impl cppclass "Poly::Poly_Impl" # guess on how to alias this
+        Impl cppclass "pplite::Poly::Poly_Impl" # guess on how to alias this
         Poly(dim_type d, Spec_Elem s, Topol t)
         Poly(dim_type d, Topol t, Spec_Elem s)
         Poly(Spec_Elem s, Topol t, dim_type d)
         Poly(Topol t, dim_type d, Spec_Elem s)
         Poly(Topol t, Spec_Elem s, dim_type d)
         Poly(Poly& y)
+        Poly& operator=(Poly& y)
         Impl impl()
   # /* Types */
-  # using Impl::Cons_Proxy;
-  # using Impl::Gens_Proxy;
-    # Predicates
+        ctypedef struct Cons_Proxy "Impl::Cons_Proxy":   # using Impl::Cons_Proxy;
+            pass # treat as container protocol, just try to iterate over it and don't worry too much about wrapping properly
+            # these are c++ implementation details 
+        ctypedef struct Gens_Proxy "Impl::Gens_Proxy":   # using Impl::Gens_Proxy;
+            pass
+    # /* Predicates */
         cppbool is_necessarily_closed()
         cppbool check_inv()
         cppbool is_empty()
@@ -609,45 +631,63 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         # # Itv get_bounds(Itv_Expr& ie)
         # Index_Set get_unconstrained()
         size_t hash() 
-        Cons_Proxy cons()
+        Cons_Proxy cons() # not directly used.
         Gens_Proxy gens()
-        # Cons copy_cons()
-        # Gens copy_gens()
-        # Cons_Proxy normalized_cons()
+        Cons copy_cons()
+        Gens copy_gens()
+        Cons_Proxy normalized_cons()
         # Gens_Info gens_info()
-        # dim_type num_min_cons()
-        # dim_type num_min_gens()
-        # void collapse(dim_type n)
-        # dim_type num_disjuncts()
-        # Cons_Proxy disjunct_cons(dim_type n)
-        # cppbool geom_covers(const Poly& y)
+        dim_type num_min_cons()
+        dim_type num_min_gens()
+        void collapse(dim_type n)
+        dim_type num_disjuncts()
+        Cons_Proxy disjunct_cons(dim_type n)
+        cppbool geom_covers(const Poly& y)
         # # Modifiers
-        # void m_swap(Poly& y)
-        # void set_empty()
-        # void set_universe()
-        # void set_topology(Topol t)
-        # void add_con(Con c)
-        # void add_cons(Cons cs)
-        # #  void add_cons(Iter first, Iter last)
-        # void add_gen(Gen g)
-        # void add_gens(Gens gs)
-        # # void add_gens(Iter first, Iter last)
-        # void topological_closure_assign()
-        # # void unconstrain(Iter first, Iter last)
-        # void unconstrain(Var var)
+        void m_swap(Poly& y)
+        void set_empty()
+        void set_universe()
+        void set_topology(Topol t)
+        void add_con(Con c)
+        void add_cons(Cons cs)
+        #  void add_cons(Iter first, Iter last)
+        void add_gen(Gen g)
+        void add_gens(Gens gs)
+        # void add_gens(Iter first, Iter last)
+        void topological_closure_assign()
+        # void unconstrain(Iter first, Iter last)
+        void unconstrain(Var var)
         # void unconstrain(const Index_Set& vars)
-        # void intersection_assign(const Poly& y)
-        # void join_assign(const Poly& y)
-        # void poly_hull_assign(const Poly& y)
-        # void con_hull_assign(const Poly& y, cppbool boxed)
-        # void poly_difference_assign(const Poly& y)
-        # void affine_image(Var var, const Linear_Expr& expr,Flint_Integer& inhomo, Flint_Integer& den) # default args
-        # void affine_preimage(Var var, const Linear_Expr& expr,Flint_Integer& inhomo, Flint_Integer& den) # default args
+        void intersection_assign(const Poly& y)
+        void join_assign(const Poly& y)
+        void poly_hull_assign(const Poly& y)
+        void con_hull_assign(const Poly& y, cppbool boxed)
+        void poly_difference_assign(const Poly& y)
+        void affine_image(Var var, const Linear_Expr& expr, FLINT_Integer& inhomo, FLINT_Integer& den) # default args
+        void affine_preimage(Var var, const Linear_Expr& expr,FLINT_Integer& inhomo, FLINT_Integer& den) # default args
         # void parallel_affine_image(const Vars& vars, const Linear_Exprs& exprs, const Integers& inhomos, const Integers& dens)
         # void widening_assign(const Poly& y, Widen_Impl w_impl, Widen_Spec w_spec)
         # void widening_assign(const Poly& y, const Cons& upto_cons, Widen_Impl w_impl, Widen_Spec w_spec)
-        # void time_elapse_assign(const Poly& y)
-        # split
+        void time_elapse_assign(const Poly& y)
+        # /*split*/ 
+        Poly split(const Con& c, Topol t)
+        Poly integral_split(const Con& c)
+        #   /* Change of space dim */
+        void add_space_dims(dim_type m, cppbool project)#bool project = false)
+        void concatenate_assign(const Poly& y)
+        # void map_space_dims(const Dims& pfunc)
+        void remove_space_dim(Var var)
+        # void remove_space_dims(Iter first, Iter last)
+        # void remove_space_dims(const Index_Set& vars)
+        void remove_higher_space_dims(dim_type new_dim)
+        void expand_space_dim(Var var, dim_type m)
+        # void fold_space_dims(const Index_Set& vars, Var dest) 
+        ## semantically const, but may affect syntactic reper
+        void minimize() 
+
+    cppbool operator==(const Poly& x, const Poly& y)
+    cppbool operator!=(const Poly& x, const Poly& y)
+
 
 # PPlite/Poly_Rel.hh
     cdef cppclass Poly_Con_Rel:
@@ -671,8 +711,24 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         Poly_Gen_Rel subsumes()
         cppbool implies(const Poly_Gen_Rel& y)
 
+
 # PPLite/U_Poly.hh
 
-    cdef struct Cons_Proxy "U_Wrap::Cons_Proxy"
-    
-    cdef struct Gens_Proxy "U_Wrap::Gens_Proxy"
+    # cdef cppclass U_Wrap:
+    # ctypedef struct Cons_Proxy:
+    #     pass
+    # ctypedef struct Gens_Proxy:
+    #     pass
+
+
+# "pplite/mater_iterator.hh"
+    # cdef struct[Sys, Impl] Mater_Sys:
+    #     pass
+
+
+
+#to do define Sys<Cons>
+#define Sys<Gens>
+# this is in Poly_Impl
+# where is cons?
+# general question, in C++ code, how do you quickly find the names of things/backtrace this. 
