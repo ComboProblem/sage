@@ -338,12 +338,12 @@ cdef extern from "pplite/pplite.hh" namespace "pplite":
         void strong_normalize()
         cppbool check_strong_normalized()
 
-    # Gen line(Linear_Expr e)
-    # Gen ray(Linear_Expr e)
-    # Gen point(Linear_Expr e, FLINT_Integer d) # double check
-    # Gen closure_point(Linear_Expr e, FLINT_Integer d)
-    # cppbool operator==(const Gen& x, const Gen& y)
-    # cppbool operator!=(const Gen& x, const Gen& y)
+    Gen line(Linear_Expr e)
+    Gen ray(Linear_Expr e)
+    Gen point(Linear_Expr e, FLINT_Integer d) # double check
+    Gen closure_point(Linear_Expr e, FLINT_Integer d)
+    cppbool operator==(const Gen& x, const Gen& y)
+    cppbool operator!=(const Gen& x, const Gen& y)
     # void erase_space_dims(Gens& gs, Iter first, Iter last)
     # Index_Set invalid_lines(const Gens& gs)
     # Index_Set invalid_rays(const Gens& gs)

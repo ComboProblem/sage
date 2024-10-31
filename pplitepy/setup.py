@@ -17,7 +17,7 @@ class build_ext(_build_ext):
             from Cython.Build.Dependencies import cythonize
         except ImportError as E:
             sys.stderr.write("Error: {0}\n".format(E))
-            sys.stderr.write("The installation of ppl requires Cython\n")
+            sys.stderr.write("The installation of pplite requires Cython\n")
             sys.exit(1)
 
         try:
@@ -25,7 +25,7 @@ class build_ext(_build_ext):
             import cysignals
         except ImportError as E:
             sys.stderr.write("Error: {0}\n".format(E))
-            sys.stderr.write("The installation of ppl requires cysignals\n")
+            sys.stderr.write("The installation of pplite requires cysignals\n")
             sys.exit(1)
 
         try:
@@ -33,7 +33,7 @@ class build_ext(_build_ext):
             import gmpy2
         except ImportError as E:
             sys.stderr.write("Error: {0}\n".format(E))
-            sys.stderr.write("The installation of ppl requires gmpy2\n")
+            sys.stderr.write("The installation of pplite requires gmpy2\n")
             sys.exit(1)
 
         self.extensions[:] = cythonize(
@@ -66,11 +66,11 @@ class TestCommand(Command):
                 raise SystemExit("Doctest failures")
 
             if subprocess.call([sys.executable, 'setup.py', 'build_ext', '--inplace']) or \
-                    subprocess.call([sys.executable, '-c', "import testpplpy; testpplpy.test(); testpplpy.example()"]):
+                    subprocess.call([sys.executable, '-c', "import testpplitepy; testpplitepy.test(); testpplitepy.example()"]):
                 raise SystemExit("Cython test 1 failure")
 
             if subprocess.call([sys.executable, 'setup2.py', 'build_ext', '--inplace']) or \
-                    subprocess.call([sys.executable, '-c', "import testpplpy2; testpplpy2.test(); testpplpy2.example()"]):
+                    subprocess.call([sys.executable, '-c', "import testpplitepy2; testpplitepy2.test(); testpplitepy2.example()"]):
                 raise SystemExit("Cython test 2 failure")
         finally:
             os.chdir(old_path)

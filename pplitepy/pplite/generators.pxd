@@ -5,10 +5,10 @@ from .pplite_decl cimport *
 from .constraint cimport *
 
 cdef class PPliteGenerator(object):
-	cdef Gen *thisptr
+    cdef Gen *thisptr
 
 cdef enum GenType:
-	LINE
-	RAY
-	POINT
-	CLOSURE_POINT
+    LINE
+    RAY
+    POINT
+    CLOSURE_POINT

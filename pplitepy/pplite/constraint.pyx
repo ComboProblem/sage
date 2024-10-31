@@ -5,18 +5,15 @@
 from gmpy2 cimport GMPy_MPZ_From_mpz, import_gmpy2, mpz, mpz_t, GMPy_MPZ_From_mpz, MPZ_Check
 from cython.operator cimport dereference as deref
 from cpython.object cimport Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
-
-#from .congruence cimport Congruence
 from .linear_algebra import Variable, Affine_Expression, Linear_Expression
 # from .integer_conversions cimport FLINT_Integer_to_Python, Python_int_to_FLINT_Integer
 # from .integer_conversions import FLINT_Integer_Conversion_Check
-
 
 import_gmpy2()
 
 cdef class Constraint(object):
     r"""
-    Wrapper for PPL's ``Constraint`` class.
+    Wrapper for PPLite's ``Constraint`` class.
 
     An object of the class ``Constraint`` is either:
 
@@ -32,8 +29,8 @@ cdef class Constraint(object):
 
     INPUT/OUTPUT:
 
-    You construct constraints by writing inequalities in
-    :class:`Linear_Expression` or :class:`Affine_Expression`. Do not attempt to manually construct
+    You construct constraints by writing inequalities in :class:`Variable`,
+    :class:`Linear_Expression`, or :class:`Affine_Expression`. Do not attempt to manually construct
     constraints.
 
     Examples:
@@ -55,6 +52,9 @@ cdef class Constraint(object):
     x0+x1>0
     >>> x <= 0
     -x0>=0
+    >>> constraint_list = [x+y >= 2, x>0, y<1] 
+    >>> constraint_list
+    [x0+x1-2>=0, x0>0, -x1+1>0]
 
     Special care is needed if the left hand side is a constant:
 
@@ -65,9 +65,6 @@ cdef class Constraint(object):
     >>> Affine_Expression(0) == 1
     -1==0
     """
-
-
-
     def __init__(self, arg=None):
         if arg is None:
             self.thisptr = new Con()
@@ -98,16 +95,6 @@ cdef class Constraint(object):
         del self.thisptr
 
     def __hash__(self):
-        r"""
-
-        """
-        #         Tests:
-
-        # >>> import pplite
-        # >>> hash(ppl.Variable(0) == 3)
-        # Traceback (most recent call last):
-        # ...
-        # TypeError: Constraint unhashable
         raise TypeError('Constraint unhashable')
 
     def __repr__(self):
@@ -148,8 +135,6 @@ cdef class Constraint(object):
             return 'strict_inequality'
         else:
             raise RuntimeError
-
-
 
     def coefficient(self, v):
         r"""
@@ -254,7 +239,6 @@ cdef class Constraint(object):
         Returns true if the constraint is an inequality (<=, >=, <, >). 
 
         OUTPUT: bool
-
 
         TESTS:
         >>> from pplite import Variable, Linear_Expression, Affine_Expression, Constraint
@@ -396,9 +380,8 @@ cdef class Constraint(object):
     def check_strong_normalized(self):
         return self.thisptr.check_strong_normalized()
 
+
 cdef _make_Constraint_from_richcmp(lhs_, rhs_, op):
-    # To ensure functionallity, the cases on comparing var and int as well as linear expression and variable
-    # have been added. This are not in the origional pplite code. It is added for python functionality.
     cdef Affine_Expr lhs_a
     cdef Affine_Expr rhs_a
     cdef Linear_Expr lhs_e
@@ -493,7 +476,6 @@ cdef _make_Constraint_from_richcmp(lhs_, rhs_, op):
             raise NotImplementedError
         else:
             assert(False)
-# python and teh c code don't jive for operations. Conherece types to make linear to affine conparsions work. 
     if isinstance(lhs_, Affine_Expression) and isinstance(rhs_, Linear_Expression):
         lhs_a = (<Affine_Expression> lhs_).thisptr[0]
         rhs_a = (<Affine_Expression> Affine_Expression(rhs_, 0)).thisptr[0]        
@@ -612,7 +594,9 @@ cdef _wrap_Constraint(Con constraint):
     wrapped_constraint.thisptr[0] = constraint
     return wrapped_constraint
 
-# TODO: Figure out how to write one instance of this rather than recopy and pasting fucntions
+
+# Reproduction of these functions here is necessary. Removing this causes things to break.
+# Investigation is pending.
 cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
     r""" Converts FLINT_Integer to python integer."""
     cdef mpz_t new_int
@@ -621,6 +605,7 @@ cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
     y = GMPy_MPZ_From_mpz(new_int)
     mpz_clear(new_int)
     return y
+
 
 cdef FLINT_Integer Python_int_to_FLINT_Integer(integer):
     cdef fmpz_t x
@@ -633,6 +618,7 @@ cdef FLINT_Integer Python_int_to_FLINT_Integer(integer):
         y = <fmpz> integer
         return FLINT_Integer(y)
     raise ValueError("Integer Conversion Failed")
+
 
 def FLINT_Integer_Conversion_Check(possible_integer):
     """
@@ -647,4 +633,3 @@ def FLINT_Integer_Conversion_Check(possible_integer):
     if MPZ_Check(possible_integer):
         return True
     return False
-

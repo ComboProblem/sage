@@ -1,9 +1,16 @@
 r"""
-Cython wrapper for the Parma Polyhedra Lite Library (PPLite)
+Cython wrapper for the Parma Polyhedra Lite Library (PPLite).
 
+The Parma Polyhedra Lite Library (PPLite) is a library for polyhedral computations over
+the rationals. This interface tries to reproduce the C++ API as faithfully as possible
+in Python.
+
+AUTHORS:
+
+- Acadia Larsen (2024): initial version.
 """
 
-__version__ = "0.0.27"
+__version__ = "0.0.50"
 
 from .linear_algebra import (
         Variable, Linear_Expression, Affine_Expression
@@ -14,7 +21,7 @@ from .constraint import (
         )
 
 from .generators import (
-        PPliteGenerator
+        PPliteGenerator, Point, Closure_point, Ray, Line
         )
 
 from .intervals import (

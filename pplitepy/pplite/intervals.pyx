@@ -5,16 +5,14 @@ cimport cython
 
 from gmpy2 cimport import_gmpy2, mpz, mpz_t, GMPy_MPZ_From_mpz, MPZ_Check
 from libcpp.vector cimport vector as cppvector
-
 from .integer_conversions cimport FLINT_Integer_to_Python, Python_int_to_FLINT_Integer, FLINT_Rational_to_Python, Python_float_to_FLINT_Rational
 from .constraint cimport Constraint
 from .linear_algebra cimport Variable
 
-# struct is fully public class in c++. del is for manual memory management. new needs a corresponding del.
-
 cdef class Interval(object):
     """
-    cython wrapper for pplite Itv struct. This represent a topologically closed 1 dimensional interval.
+    cython wrapper for pplite ``Itv`` struct. 
+    This represent a topologically closed 1 dimensional interval.
 
     EXAMPLES:
     >>> from pplite.intervals import Interval
@@ -38,19 +36,14 @@ cdef class Interval(object):
     >>> I.is_empty() # something is wrong here. investigate
     False
     """
-    # def __init__(self, *args):
-    #     """
-
-    #     """
     def __hash__(self):
         cdef size_t h
         h = self.interval.hash()
-        return h # doth this work?
+        return h
 
     def __repr__(self):
         """
         TESTS:
-
         """
         s = ""
         if self.is_universe():
@@ -105,7 +98,6 @@ cdef class Interval(object):
             return self.get_lower_bound()
         if member == "ub":
             return self.get_upper_bound()
-
 
     def set_lower_bound(self, value):
         """
@@ -568,11 +560,11 @@ cdef class Interval(object):
         r = Python_float_to_FLINT_Rational(value)
         self.interval.mul_assign(r)
 
-#######################################################
-#######################################################
-################# Functions in itv.hh #################
-#######################################################
-#######################################################
+###########################
+###########################
+### Functions in itv.hh ###
+###########################
+###########################
 
 def interval_from_con_inhomo(constraint):
     cdef Con c
