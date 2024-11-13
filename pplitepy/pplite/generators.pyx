@@ -451,7 +451,7 @@ def Ray(linear_expression):
 
 cdef GenType string_to_GenType(t):
     """
-    Converts a string to an enum GenType.
+    Converts a string to an enum pplite::GenType.
 
     Input: String - 'line', 'ray', 'point', 'closure point'
     

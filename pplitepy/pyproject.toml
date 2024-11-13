@@ -9,15 +9,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pplitepy"
-description = "Python PPLite wrapper"
+description = "Python pplite wrapper"
 readme = "README.rst"
-authors = [{name = "Acadia Larsen", email = "alarsen@math.ucdavis.edu"}]
+authors = [{name = "Acadia Larsen", email = "acadia.larsen@gmail.com"}]
 license = {text = "GPL v3"}
 classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: C++",
     "Programming Language :: Python",
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 3 - Alpha",
     "Operating System :: Unix",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3.8",
@@ -25,6 +25,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Mathematics"
 ]
 keywords = [
     "polyhedron",
@@ -48,8 +49,8 @@ doc = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ComboProblem/PPLitePy"
-Download = "https://github.com/ComboProblem/PPLitePy"
+Homepage = "https://github.com/ComboProblem/pplitepy"
+Download = "https://github.com/ComboProblem/pplitepy"
 
 [tool.setuptools]
 packages = ["pplite"]

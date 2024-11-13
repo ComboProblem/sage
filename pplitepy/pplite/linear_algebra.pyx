@@ -13,7 +13,7 @@ from .constraint cimport _make_Constraint_from_richcmp
 import_gmpy2()
 
 cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
-    r""" Converts FLINT_Integer to python integer."""
+    r""" Converts PPLite::FLINT_Integer to python integer."""
     cdef mpz_t new_int
     mpz_init(new_int)
     fmpz_get_mpz(new_int, integer.impl())
@@ -22,6 +22,7 @@ cdef FLINT_Integer_to_Python(FLINT_Integer& integer):
     return y
 
 cdef FLINT_Integer Python_int_to_FLINT_Integer(integer):
+    r"""Converts python sting or int to a PPLite::FLINT_Integer."""
     cdef fmpz_t x
     cdef fmpz y
     if isinstance(integer, (int, str)):

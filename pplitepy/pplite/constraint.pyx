@@ -8,6 +8,8 @@ from cpython.object cimport Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from .linear_algebra import Variable, Affine_Expression, Linear_Expression
 # from .integer_conversions cimport FLINT_Integer_to_Python, Python_int_to_FLINT_Integer
 # from .integer_conversions import FLINT_Integer_Conversion_Check
+# Using imported integer conversions breaks the code.
+
 
 import_gmpy2()
 
